@@ -4,6 +4,8 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using tpo10_rest.Models;
+using tpo10_rest.Services;
+using System;
 
 namespace tpo10_rest
 {
@@ -28,16 +30,26 @@ namespace tpo10_rest
             // Configure validation logic for passwords
             manager.PasswordValidator = new PasswordValidator
             {
-                RequiredLength = 6,
-                RequireNonLetterOrDigit = true,
+                RequiredLength = 8,
+                RequireNonLetterOrDigit = false,
                 RequireDigit = true,
-                RequireLowercase = true,
-                RequireUppercase = true,
+                RequireLowercase = false,
+                RequireUppercase = false,
             };
+            // Configure email service
+            manager.EmailService = new EmailService();
+            // Configure account lockup
+            manager.MaxFailedAccessAttemptsBeforeLockout = 3;
+            manager.DefaultAccountLockoutTimeSpan = new TimeSpan(0, 5, 0);
+            manager.UserLockoutEnabledByDefault = true;
+
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
             {
-                manager.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
+                manager.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"))
+                {
+                    TokenLifespan = TimeSpan.FromHours(5)
+                };
             }
             return manager;
         }

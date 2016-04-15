@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
+using System;
 
 namespace tpo10_rest.Models
 {
@@ -16,12 +17,15 @@ namespace tpo10_rest.Models
             // Add custom user claims here
             return userIdentity;
         }
+
+        public DateTime? LastLogin { get; set; }
+        public string LastLoginIp { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("tpo10db", throwIfV1Schema: false)
         {
         }
         
@@ -29,5 +33,25 @@ namespace tpo10_rest.Models
         {
             return new ApplicationDbContext();
         }
+    }
+
+    public class Patient : ApplicationUser
+    {
+
+    }
+
+    public class Doctor : ApplicationUser
+    {
+
+    }
+
+    public class Nurse : ApplicationUser
+    {
+
+    }
+
+    public class Administrator : ApplicationUser
+    {
+
     }
 }

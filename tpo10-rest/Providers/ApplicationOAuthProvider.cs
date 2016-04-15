@@ -31,20 +31,59 @@ namespace tpo10_rest.Providers
         {
             var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
 
-            ApplicationUser user = await userManager.FindAsync(context.UserName, context.Password);
+            var db = context.OwinContext.Get<ApplicationDbContext>();
+
+            var user = await userManager.FindByNameAsync(context.UserName);
 
             if (user == null)
             {
-                context.SetError("invalid_grant", "The user name or password is incorrect.");
+                context.SetError("invalid_grant", "Napačno uporabniško ime ali geslo.");
                 return;
             }
+
+            if (await userManager.IsLockedOutAsync(user.Id))
+            {
+                context.SetError("invalid_grant", "Uporabniški račun je bil zaklenjen za 5 minut.");
+                return;
+            }
+
+            var check = await userManager.CheckPasswordAsync(user, context.Password);
+
+            if (!check)
+            {
+                await userManager.AccessFailedAsync(user.Id);
+                context.SetError("invalid_grant", "Napačno uporabniško ime ali geslo.");
+                return;
+            }
+
+            if (!user.EmailConfirmed)
+            {
+                context.SetError("invalid_grant", "Uporabniški račun še ni potrjen.");
+                return;
+            }
+
+            await userManager.ResetAccessFailedCountAsync(user.Id);
+
+            string lastLogin = "";
+            string lastLoginIp = "";
+            if (user.LastLogin.HasValue)
+            {
+                lastLogin = user.LastLogin.Value.ToUniversalTime().ToString("o");
+            }
+            if (user.LastLoginIp != null)
+            {
+                lastLoginIp = user.LastLoginIp;
+            }
+            user.LastLogin = DateTime.UtcNow;
+            user.LastLoginIp = context.Request.RemoteIpAddress;
+            await db.SaveChangesAsync();
 
             ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(userManager,
                OAuthDefaults.AuthenticationType);
             ClaimsIdentity cookiesIdentity = await user.GenerateUserIdentityAsync(userManager,
                 CookieAuthenticationDefaults.AuthenticationType);
 
-            AuthenticationProperties properties = CreateProperties(user.UserName);
+            AuthenticationProperties properties = CreateProperties(user.Id, user.Email, lastLogin, lastLoginIp);
             AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
             context.Validated(ticket);
             context.Request.Context.Authentication.SignIn(cookiesIdentity);
@@ -86,11 +125,14 @@ namespace tpo10_rest.Providers
             return Task.FromResult<object>(null);
         }
 
-        public static AuthenticationProperties CreateProperties(string userName)
+        public static AuthenticationProperties CreateProperties(string userId, string email, string lastLogin, string lastLoginIp)
         {
             IDictionary<string, string> data = new Dictionary<string, string>
             {
-                { "userName", userName }
+                { "userId", userId },
+                { "email", email },
+                { "lastLogin", lastLogin },
+                { "lastLoginIp", lastLoginIp }
             };
             return new AuthenticationProperties(data);
         }
