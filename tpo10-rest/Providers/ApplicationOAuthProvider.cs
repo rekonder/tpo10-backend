@@ -58,7 +58,7 @@ namespace tpo10_rest.Providers
 
             if (!user.EmailConfirmed)
             {
-                context.SetError("invalid_grant", "Uporabniški račun še ni potrjen.");
+                context.SetError("invalid_grant", "Uporabniški račun še ni aktiviran.");
                 return;
             }
 
@@ -78,12 +78,18 @@ namespace tpo10_rest.Providers
             user.LastLoginIp = context.Request.RemoteIpAddress;
             await db.SaveChangesAsync();
 
+            string role = (await userManager.GetRolesAsync(user.Id)).FirstOrDefault();
+            if(role == null)
+            {
+                role = "";
+            }
+
             ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(userManager,
                OAuthDefaults.AuthenticationType);
             ClaimsIdentity cookiesIdentity = await user.GenerateUserIdentityAsync(userManager,
                 CookieAuthenticationDefaults.AuthenticationType);
 
-            AuthenticationProperties properties = CreateProperties(user.Id, user.Email, lastLogin, lastLoginIp);
+            AuthenticationProperties properties = CreateProperties(user.Id, user.Email,  role, lastLogin, lastLoginIp);
             AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
             context.Validated(ticket);
             context.Request.Context.Authentication.SignIn(cookiesIdentity);
@@ -125,12 +131,13 @@ namespace tpo10_rest.Providers
             return Task.FromResult<object>(null);
         }
 
-        public static AuthenticationProperties CreateProperties(string userId, string email, string lastLogin, string lastLoginIp)
+        public static AuthenticationProperties CreateProperties(string userId, string email, string role, string lastLogin, string lastLoginIp)
         {
             IDictionary<string, string> data = new Dictionary<string, string>
             {
                 { "userId", userId },
                 { "email", email },
+                { "role", role },
                 { "lastLogin", lastLogin },
                 { "lastLoginIp", lastLoginIp }
             };

@@ -107,10 +107,10 @@ namespace tpo10_rest.Controllers
 
             var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
 
-            var callbackUrl = string.Format("{0}/#/login/forgotten/change?userId={1}&code={2}", _frontendBaseUrl, HttpUtility.UrlEncode(user.Id), HttpUtility.UrlEncode(code));
+            var callbackUrl = string.Format("{0}/#/login/changeForgotten?userId={1}&code={2}", _frontendBaseUrl, HttpUtility.UrlEncode(user.Id), HttpUtility.UrlEncode(code));
 
-            await UserManager.SendEmailAsync(user.Id, "Reset Password",
-                "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
+            await UserManager.SendEmailAsync(user.Id, "Zamenjava gesla",
+                "Za zamenjavo gesla pojdite na spodnjo povezavo: <a href=\"" + callbackUrl + "\">" + callbackUrl + "</a>");
 
             return Ok();
         }
@@ -165,8 +165,8 @@ namespace tpo10_rest.Controllers
 
             var callbackUrl = string.Format("{0}/#/register/activate?userId={1}&code={2}", _frontendBaseUrl, HttpUtility.UrlEncode(user.Id), HttpUtility.UrlEncode(code));
 
-            await UserManager.SendEmailAsync(user.Id, "Confirm your account",
-               "Please confirm your account by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
+            await UserManager.SendEmailAsync(user.Id, "Aktivacija računa",
+               "S klikom na spodnjo povezavo aktivirate svoj uporabniški račun: <a href=\"" + callbackUrl + "\">" + callbackUrl + "</a>");
 
             return Ok(new RegisterViewModel { UserId = user.Id });
         }
@@ -200,8 +200,8 @@ namespace tpo10_rest.Controllers
 
             var callbackUrl = string.Format("{0}/#/register/activate?userId={1}&code={2}", _frontendBaseUrl, HttpUtility.UrlEncode(user.Id), HttpUtility.UrlEncode(code));
 
-            await UserManager.SendEmailAsync(user.Id, "Confirm your account",
-               "Please confirm your account by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
+            await UserManager.SendEmailAsync(user.Id, "Aktivacija računa",
+               "S klikom na spodnjo povezavo aktivirate svoj uporabniški račun: <a href=\"" + callbackUrl + "\">" + callbackUrl + "</a>");
 
             return Ok(new CreateAccountViewModel { UserId = user.Id });
         }
