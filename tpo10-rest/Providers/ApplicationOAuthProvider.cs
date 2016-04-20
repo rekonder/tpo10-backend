@@ -84,12 +84,37 @@ namespace tpo10_rest.Providers
                 role = "";
             }
 
+            string profileCount = "0";
+            switch (role)
+            {
+                case nameof(Administrator):
+                    var a = db.Users.Find(user.Id) as Administrator;
+                    if (a != null)
+                        profileCount = "0";
+                    break;
+                case nameof(Doctor):
+                    var d = db.Users.Find(user.Id) as Doctor;
+                    if (d != null && d.DoctorProfile != null)
+                        profileCount = "1";
+                    break;
+                case nameof(Nurse):
+                    var n = db.Users.Find(user.Id) as Nurse;
+                    if (n != null && n.NurseProfile != null)
+                        profileCount = "1";
+                    break;
+                case nameof(Patient):
+                    var p = db.Users.Find(user.Id) as Patient;
+                    if (p != null) profileCount = p.PatientProfiles.LongCount().ToString();                        
+                    break;
+                default: break;
+            }
+
             ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(userManager,
                OAuthDefaults.AuthenticationType);
             ClaimsIdentity cookiesIdentity = await user.GenerateUserIdentityAsync(userManager,
                 CookieAuthenticationDefaults.AuthenticationType);
 
-            AuthenticationProperties properties = CreateProperties(user.Id, user.Email,  role, lastLogin, lastLoginIp);
+            AuthenticationProperties properties = CreateProperties(user.Id, user.Email,  role, lastLogin, lastLoginIp, profileCount);
             AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
             context.Validated(ticket);
             context.Request.Context.Authentication.SignIn(cookiesIdentity);
@@ -131,7 +156,7 @@ namespace tpo10_rest.Providers
             return Task.FromResult<object>(null);
         }
 
-        public static AuthenticationProperties CreateProperties(string userId, string email, string role, string lastLogin, string lastLoginIp)
+        public static AuthenticationProperties CreateProperties(string userId, string email, string role, string lastLogin, string lastLoginIp, string profileCount)
         {
             IDictionary<string, string> data = new Dictionary<string, string>
             {
@@ -139,7 +164,8 @@ namespace tpo10_rest.Providers
                 { "email", email },
                 { "role", role },
                 { "lastLogin", lastLogin },
-                { "lastLoginIp", lastLoginIp }
+                { "lastLoginIp", lastLoginIp },
+                { "profileCount", profileCount }
             };
             return new AuthenticationProperties(data);
         }

@@ -32,6 +32,38 @@ namespace tpo10_rest.Models
             return new ApplicationDbContext();
         }
 
-        public DbSet<Profile> Profiles { get; set; }
+        public virtual DbSet<Profile> Profiles { get; set; }
+        public virtual DbSet<PatientProfileContact> PatientProfileContacts { get; set; }
+        public virtual DbSet<HealthCareProvider> HealthCareProviders { get; set; }
+        public virtual DbSet<Post> Posts { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Profile>()
+                .HasRequired(e => e.Post)
+                .WithMany()
+                .WillCascadeOnDelete(false);
+            modelBuilder.Entity<DoctorProfile>()
+               .HasRequired(e => e.HealthCareProvider)
+               .WithMany()
+               .WillCascadeOnDelete(false);
+            modelBuilder.Entity<NurseProfile>()
+               .HasRequired(e => e.HealthCareProvider)
+               .WithMany()
+               .WillCascadeOnDelete(false);
+
+            //modelBuilder.Entity<Doctor>()
+            //    .HasOptional(e => e.DoctorProfile)
+            //    .WithOptionalPrincipal(e => e.Doctor);
+
+            //modelBuilder.Entity<Nurse>()
+            //    .HasOptional(e => e.NurseProfile)
+            //    .WithOptionalPrincipal(e => e.Nurse);
+
+            //modelBuilder.Entity<PatientProfile>()
+            //    .HasRequired(e => e.PatientProfileContact)
+            //    .WithRequiredPrincipal(e => e.PatientProfile);
+        }
     }
 }

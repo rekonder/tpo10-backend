@@ -148,27 +148,43 @@ namespace tpo10_rest.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-            var userResult = await UserManager.CreateAsync(user, model.Password);
-            if (!userResult.Succeeded)
+            using (var context = Request.GetOwinContext().Get<ApplicationDbContext>())
+            using (var transaction = context.Database.BeginTransaction())
             {
-                return GetErrorResult(userResult);
+                try
+                {
+                    var user = new Patient { UserName = model.Email, Email = model.Email };
+                    var userResult = await UserManager.CreateAsync(user, model.Password);
+                    if (!userResult.Succeeded)
+                    {
+                        transaction.Rollback();
+                        return GetErrorResult(userResult);
+                    }
+
+
+                    var roleResult = await UserManager.AddToRoleAsync(user.Id, nameof(Patient));
+                    if (!roleResult.Succeeded)
+                    {
+                        transaction.Rollback();
+                        return GetErrorResult(roleResult);
+                    }
+
+                    var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+
+                    var callbackUrl = string.Format("{0}/#/register/activate?userId={1}&code={2}", _frontendBaseUrl, HttpUtility.UrlEncode(user.Id), HttpUtility.UrlEncode(code));
+
+                    await UserManager.SendEmailAsync(user.Id, "Aktivacija računa",
+                       "S klikom na spodnjo povezavo aktivirate svoj uporabniški račun: <a href=\"" + callbackUrl + "\">" + callbackUrl + "</a>");
+
+                    transaction.Commit();
+                    return Ok(new RegisterViewModel { UserId = user.Id });
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    return BadRequest(e.Message);
+                }
             }
-
-            var roleResult = await UserManager.AddToRoleAsync(user.Id, nameof(Patient));
-            if (!roleResult.Succeeded)
-            {
-                return GetErrorResult(roleResult);
-            }
-
-            var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-
-            var callbackUrl = string.Format("{0}/#/register/activate?userId={1}&code={2}", _frontendBaseUrl, HttpUtility.UrlEncode(user.Id), HttpUtility.UrlEncode(code));
-
-            await UserManager.SendEmailAsync(user.Id, "Aktivacija računa",
-               "S klikom na spodnjo povezavo aktivirate svoj uporabniški račun: <a href=\"" + callbackUrl + "\">" + callbackUrl + "</a>");
-
-            return Ok(new RegisterViewModel { UserId = user.Id });
         }
 
         // POST api/Account/CreateAccount
@@ -183,27 +199,50 @@ namespace tpo10_rest.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-            var userResult = await UserManager.CreateAsync(user, model.Password);
-            if (!userResult.Succeeded)
+            using (var context = Request.GetOwinContext().Get<ApplicationDbContext>())
+            using (var transaction = context.Database.BeginTransaction())
             {
-                return GetErrorResult(userResult);
+                try
+                {
+                    ApplicationUser user = null;
+                    switch(model.Role)
+                    {
+                        case nameof(Administrator): user = new Administrator { UserName = model.Email, Email = model.Email }; break;
+                        case nameof(Doctor): user = new Doctor { UserName = model.Email, Email = model.Email }; break;               
+                        case nameof(Nurse): user = new Nurse { UserName = model.Email, Email = model.Email }; break;
+                        case nameof(Patient): user = new Patient { UserName = model.Email, Email = model.Email }; break;
+                        default: user = new Patient { UserName = model.Email, Email = model.Email }; break;
+                    }
+                    var userResult = await UserManager.CreateAsync(user, model.Password);
+                    if (!userResult.Succeeded)
+                    {
+                        transaction.Rollback();
+                        return GetErrorResult(userResult);
+                    }
+
+                    var roleResult = await UserManager.AddToRoleAsync(user.Id, model.Role);
+                    if (!roleResult.Succeeded)
+                    {
+                        transaction.Rollback();
+                        return GetErrorResult(roleResult);
+                    }
+
+                    var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+
+                    var callbackUrl = string.Format("{0}/#/register/activate?userId={1}&code={2}", _frontendBaseUrl, HttpUtility.UrlEncode(user.Id), HttpUtility.UrlEncode(code));
+
+                    await UserManager.SendEmailAsync(user.Id, "Aktivacija računa",
+                       "S klikom na spodnjo povezavo aktivirate svoj uporabniški račun: <a href=\"" + callbackUrl + "\">" + callbackUrl + "</a>");
+
+                    transaction.Commit();
+                    return Ok(new CreateAccountViewModel { UserId = user.Id });
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    return BadRequest(e.Message);
+                }
             }
-
-            var roleResult = await UserManager.AddToRoleAsync(user.Id, model.Role);
-            if (!roleResult.Succeeded)
-            {
-                return GetErrorResult(roleResult);
-            }
-
-            var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-
-            var callbackUrl = string.Format("{0}/#/register/activate?userId={1}&code={2}", _frontendBaseUrl, HttpUtility.UrlEncode(user.Id), HttpUtility.UrlEncode(code));
-
-            await UserManager.SendEmailAsync(user.Id, "Aktivacija računa",
-               "S klikom na spodnjo povezavo aktivirate svoj uporabniški račun: <a href=\"" + callbackUrl + "\">" + callbackUrl + "</a>");
-
-            return Ok(new CreateAccountViewModel { UserId = user.Id });
         }
 
         // POST api/Account/Activate

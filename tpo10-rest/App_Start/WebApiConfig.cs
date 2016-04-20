@@ -6,6 +6,7 @@ using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
 using System.Web.Http.Cors;
+using System.Net.Http.Formatting;
 
 namespace tpo10_rest
 {
@@ -23,6 +24,10 @@ namespace tpo10_rest
 
             // Enable CORS
             config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
+
+            config.Formatters.Clear();
+            config.Formatters.Add(new JsonMediaTypeFormatter());
+            config.Formatters.Add(new FormUrlEncodedMediaTypeFormatter());
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

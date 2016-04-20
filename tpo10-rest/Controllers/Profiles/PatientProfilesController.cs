@@ -13,10 +13,16 @@ using tpo10_rest.Models;
 
 namespace tpo10_rest.Controllers.Profiles
 {
-    [Authorize(Roles = "Patient, Administrator")]
+    [RoutePrefix("api/PatientProfiles")]
+    //[Authorize(Roles = "Patient, Administrator")]
     public class PatientProfilesController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+
+        public PatientProfilesController()
+        {
+
+        }
 
         // GET: api/PatientProfiles
         public IQueryable<PatientProfile> GetProfiles()
@@ -37,86 +43,121 @@ namespace tpo10_rest.Controllers.Profiles
             return Ok(patientProfile);
         }
 
-        // PUT: api/PatientProfiles/5
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutPatientProfile(Guid id, PatientProfile patientProfile)
+        //// PUT: api/PatientProfiles/5
+        //[ResponseType(typeof(void))]
+        //public async Task<IHttpActionResult> PutPatientProfile(Guid id, PatientProfile patientProfile)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    if (id != patientProfile.Id)
+        //    {
+        //        return BadRequest();
+        //    }
+
+        //    db.Entry(patientProfile).State = EntityState.Modified;
+
+        //    try
+        //    {
+        //        await db.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!PatientProfileExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
+
+        //    return StatusCode(HttpStatusCode.NoContent);
+        //}
+
+        // POST: api/PatientProfiles/{userId}
+        [AllowAnonymous]
+        [Route("{userId}")]
+        [ResponseType(typeof(PatientProfile))]
+        public async Task<IHttpActionResult> PostPatientProfile(string userId, PatientProfileBindingModel model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != patientProfile.Id)
+            var user = await db.Users.Where(e => e.Id == userId).FirstOrDefaultAsync() as Patient;
+            var post = await db.Posts.Where(e => e.PostNumber == model.PostNumber).FirstOrDefaultAsync();
+            var contactPost = await db.Posts.Where(e => e.PostNumber == model.ContactPostNumber).FirstOrDefaultAsync();
+
+            if (user == null || post == null || contactPost == null)
             {
                 return BadRequest();
             }
 
-            db.Entry(patientProfile).State = EntityState.Modified;
+            using (var transaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    var contact = new PatientProfileContact
+                    {
+                        FirstName = model.ContactFirstName,
+                        LastName = model.ContactLastName,
+                        Address = model.ContactAddress,
+                        Post = contactPost,
+                        Telephone = model.ContactTelephone,
+                        FamilyRelationship = model.ContactFamilyRelationship
+                    };
+                    db.PatientProfileContacts.Add(contact);
+                    await db.SaveChangesAsync();
 
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PatientProfileExists(id))
-                {
-                    return NotFound();
+                    var profile = new PatientProfile
+                    {
+                        HealthInsuranceNumber = model.HealthInsuranceNumber,
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        Address = model.Address,
+                        Post = post,
+                        Telephone = model.Telephone,
+                        Gender = model.Gender,
+                        BirthDate = model.BirthDate,
+                        PatientProfileContact = contact
+                    };
+                    db.Profiles.Add(profile);
+                    await db.SaveChangesAsync();
+
+                    user.PatientProfiles.Add(profile);
+                    await db.SaveChangesAsync();
+
+                    transaction.Commit();
+                    return Ok(profile);
                 }
-                else
+                catch (Exception e)
                 {
+                    transaction.Rollback();
                     throw;
                 }
             }
-
-            return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/PatientProfiles
-        [ResponseType(typeof(PatientProfile))]
-        public async Task<IHttpActionResult> PostPatientProfile(PatientProfile patientProfile)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        //// DELETE: api/PatientProfiles/5
+        //[ResponseType(typeof(PatientProfile))]
+        //public async Task<IHttpActionResult> DeletePatientProfile(Guid id)
+        //{
+        //    PatientProfile patientProfile = await db.Profiles.FindAsync(id) as PatientProfile;
+        //    if (patientProfile == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            db.Profiles.Add(patientProfile);
+        //    db.Profiles.Remove(patientProfile);
+        //    await db.SaveChangesAsync();
 
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (PatientProfileExists(patientProfile.Id))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtRoute("DefaultApi", new { id = patientProfile.Id }, patientProfile);
-        }
-
-        // DELETE: api/PatientProfiles/5
-        [ResponseType(typeof(PatientProfile))]
-        public async Task<IHttpActionResult> DeletePatientProfile(Guid id)
-        {
-            PatientProfile patientProfile = await db.Profiles.FindAsync(id) as PatientProfile;
-            if (patientProfile == null)
-            {
-                return NotFound();
-            }
-
-            db.Profiles.Remove(patientProfile);
-            await db.SaveChangesAsync();
-
-            return Ok(patientProfile);
-        }
+        //    return Ok(patientProfile);
+        //}
 
         protected override void Dispose(bool disposing)
         {
