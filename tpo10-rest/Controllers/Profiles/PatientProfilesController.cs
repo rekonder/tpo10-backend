@@ -19,67 +19,118 @@ namespace tpo10_rest.Controllers.Profiles
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        public PatientProfilesController()
+        // GET: api/PatientProfiles/{userId}
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("{userId}")]
+        [ResponseType(typeof(List<PatientProfileViewModel>))]
+        public IHttpActionResult GetPatientProfiles(string userId)
         {
-
-        }
-
-        // GET: api/PatientProfiles
-        public IQueryable<PatientProfile> GetProfiles()
-        {
-            return db.Profiles.OfType<PatientProfile>();
-        }
-
-        // GET: api/PatientProfiles/5
-        [ResponseType(typeof(PatientProfile))]
-        public async Task<IHttpActionResult> GetPatientProfile(Guid id)
-        {
-            PatientProfile patientProfile = await db.Profiles.FindAsync(id) as PatientProfile;
-            if (patientProfile == null)
+            var user = db.Users.Find(userId) as Patient;
+            if(user == null)
             {
                 return NotFound();
             }
 
-            return Ok(patientProfile);
+            var patientProfiles = user.PatientProfiles.ToList();
+            var profiles = new List<PatientProfileViewModel>();
+            foreach (var patientProfile in patientProfiles)
+            {
+                var profile = new PatientProfileViewModel
+                {
+                    Id                          = patientProfile.Id,
+
+                    HealthInsuranceNumber       = patientProfile.HealthInsuranceNumber,
+                    FirstName                   = patientProfile.FirstName,
+                    LastName                    = patientProfile.LastName,
+                    Address                     = patientProfile.Address,
+                    PostNumber                  = patientProfile.Post.PostNumber,
+                    Telephone                   = patientProfile.Telephone,
+                    Gender                      = patientProfile.Gender,
+                    BirthDate                   = patientProfile.BirthDate,
+
+                    ContactFirstName            = patientProfile.PatientProfileContact.FirstName,
+                    ContactLastName             = patientProfile.PatientProfileContact.LastName,
+                    ContactAddress              = patientProfile.PatientProfileContact.Address,
+                    ContactPostNumber           = patientProfile.PatientProfileContact.Post.PostNumber,
+                    ContactTelephone            = patientProfile.PatientProfileContact.Telephone,
+                    ContactFamilyRelationship   = patientProfile.PatientProfileContact.FamilyRelationship
+                };
+
+                profiles.Add(profile);
+            }
+
+            return Ok(profiles);
         }
 
-        //// PUT: api/PatientProfiles/5
-        //[ResponseType(typeof(void))]
-        //public async Task<IHttpActionResult> PutPatientProfile(Guid id, PatientProfile patientProfile)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
+        // PUT: api/PatientProfiles/{patientProfileId}
+        [AllowAnonymous]
+        [HttpPut]
+        [Route("{patientProfileId}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PutPatientProfile(Guid patientProfileId, PatientProfileBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        //    if (id != patientProfile.Id)
-        //    {
-        //        return BadRequest();
-        //    }
+            if (patientProfileId != model.Id)
+            {
+                return BadRequest();
+            }
 
-        //    db.Entry(patientProfile).State = EntityState.Modified;
+            var profile = db.Profiles.Find(patientProfileId) as PatientProfile;
+            var profileContact = profile.PatientProfileContact;
+            var profilePost = db.Posts.Find(model.PostNumber);
+            var profileContactPost = db.Posts.Find(model.ContactPostNumber);
 
-        //    try
-        //    {
-        //        await db.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!PatientProfileExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
+            if(profile == null || profilePost == null || profileContactPost == null)
+            {
+                return NotFound();
+            }
 
-        //    return StatusCode(HttpStatusCode.NoContent);
-        //}
+            using (var transaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    profileContact.FirstName = model.ContactFirstName;
+                    profileContact.LastName = model.ContactLastName;
+                    profileContact.Address = model.ContactAddress;
+                    profileContact.Post = profileContactPost;
+                    profileContact.Telephone = model.ContactTelephone;
+                    profileContact.FamilyRelationship = model.ContactFamilyRelationship;
+
+                    db.Entry(profileContact).State = EntityState.Modified;
+                    await db.SaveChangesAsync();
+
+                    profile.HealthInsuranceNumber = model.HealthInsuranceNumber;
+                    profile.FirstName = model.FirstName;
+                    profile.LastName = model.LastName;
+                    profile.Address = model.Address;
+                    profile.Post = profilePost;
+                    profile.Telephone = model.Telephone;
+                    profile.Gender = model.Gender;
+                    profile.BirthDate = model.BirthDate;
+                    profile.PatientProfileContact = profileContact;
+
+                    db.Entry(profile).State = EntityState.Modified;
+                    await db.SaveChangesAsync();
+
+                    transaction.Commit();
+                    return StatusCode(HttpStatusCode.NoContent);
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
+        }
 
         // POST: api/PatientProfiles/{userId}
         [AllowAnonymous]
+        [HttpPost]
         [Route("{userId}")]
         [ResponseType(typeof(PatientProfile))]
         public async Task<IHttpActionResult> PostPatientProfile(string userId, PatientProfileBindingModel model)
@@ -95,7 +146,7 @@ namespace tpo10_rest.Controllers.Profiles
 
             if (user == null || post == null || contactPost == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
             using (var transaction = db.Database.BeginTransaction())
@@ -104,27 +155,27 @@ namespace tpo10_rest.Controllers.Profiles
                 {
                     var contact = new PatientProfileContact
                     {
-                        FirstName = model.ContactFirstName,
-                        LastName = model.ContactLastName,
-                        Address = model.ContactAddress,
-                        Post = contactPost,
-                        Telephone = model.ContactTelephone,
-                        FamilyRelationship = model.ContactFamilyRelationship
+                        FirstName           = model.ContactFirstName,
+                        LastName            = model.ContactLastName,
+                        Address             = model.ContactAddress,
+                        Post                = contactPost,
+                        Telephone           = model.ContactTelephone,
+                        FamilyRelationship  = model.ContactFamilyRelationship
                     };
                     db.PatientProfileContacts.Add(contact);
                     await db.SaveChangesAsync();
 
                     var profile = new PatientProfile
                     {
-                        HealthInsuranceNumber = model.HealthInsuranceNumber,
-                        FirstName = model.FirstName,
-                        LastName = model.LastName,
-                        Address = model.Address,
-                        Post = post,
-                        Telephone = model.Telephone,
-                        Gender = model.Gender,
-                        BirthDate = model.BirthDate,
-                        PatientProfileContact = contact
+                        HealthInsuranceNumber   = model.HealthInsuranceNumber,
+                        FirstName               = model.FirstName,
+                        LastName                = model.LastName,
+                        Address                 = model.Address,
+                        Post                    = post,
+                        Telephone               = model.Telephone,
+                        Gender                  = model.Gender,
+                        BirthDate               = model.BirthDate,
+                        PatientProfileContact   = contact
                     };
                     db.Profiles.Add(profile);
                     await db.SaveChangesAsync();
@@ -143,21 +194,24 @@ namespace tpo10_rest.Controllers.Profiles
             }
         }
 
-        //// DELETE: api/PatientProfiles/5
-        //[ResponseType(typeof(PatientProfile))]
-        //public async Task<IHttpActionResult> DeletePatientProfile(Guid id)
-        //{
-        //    PatientProfile patientProfile = await db.Profiles.FindAsync(id) as PatientProfile;
-        //    if (patientProfile == null)
-        //    {
-        //        return NotFound();
-        //    }
+        // DELETE: api/PatientProfiles/{patientProfileId}
+        [AllowAnonymous]
+        [HttpDelete]
+        [Route("{patientProfileId}")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> DeletePatientProfile(Guid patientProfileId)
+        {
+            PatientProfile patientProfile = await db.Profiles.FindAsync(patientProfileId) as PatientProfile;
+            if (patientProfile == null)
+            {
+                return NotFound();
+            }
 
-        //    db.Profiles.Remove(patientProfile);
-        //    await db.SaveChangesAsync();
+            db.Profiles.Remove(patientProfile);
+            await db.SaveChangesAsync();
 
-        //    return Ok(patientProfile);
-        //}
+            return StatusCode(HttpStatusCode.NoContent);
+        }
 
         protected override void Dispose(bool disposing)
         {
