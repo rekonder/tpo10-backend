@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -13,6 +14,7 @@ using tpo10_rest.Models;
 
 namespace tpo10_rest.Controllers.Profiles
 {
+    [RoutePrefix("api/DoctorProfile")]
     [Authorize(Roles = "Doctor, Administrator")]
     public class DoctorProfileController : ApiController
     {
@@ -72,34 +74,64 @@ namespace tpo10_rest.Controllers.Profiles
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/DoctorProfile
+        // POST: api/DoctorProfile/{doctorId}
+        [Authorize(Roles = "Doctor, Administrator")]
+        [HttpPost]
+        [Route("{doctorId}")]
         [ResponseType(typeof(DoctorProfile))]
-        public async Task<IHttpActionResult> PostDoctorProfile(DoctorProfile doctorProfile)
+        public async Task<IHttpActionResult> PostDoctorProfile(string doctorId, DoctorProfileBindingModel doctorProfile)
         {
+            var userId = User.Identity.GetUserId();
+            if (User.IsInRole("Doctor") && userId != doctorId)
+                return Unauthorized();
+
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Profiles.Add(doctorProfile);
+            var user = await db.Users.Where(e => e.Id == doctorId).FirstOrDefaultAsync() as Doctor;
+            var post = await db.Posts.Where(e => e.PostNumber == doctorProfile.PostNumber).FirstOrDefaultAsync();
+            var healthCareProvider = await db.HealthCareProviders.Where(e => e.Key == doctorProfile.HealthCareProviderNumber).FirstOrDefaultAsync();
 
-            try
+            if(user == null || post == null || healthCareProvider == null)
+                return NotFound();
+
+            if( db.Profiles.OfType<DoctorProfile>().Any(e => e.DoctorKey == doctorProfile.DoctorKey))
+                return BadRequest("Doctor with that key already exsists");
+
+            using (var transaction = db.Database.BeginTransaction())
             {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (DoctorProfileExists(doctorProfile.Id))
+                try
                 {
-                    return Conflict();
+                    var docProfile = new DoctorProfile
+                    {
+                        DoctorKey = doctorProfile.DoctorKey,
+                        FirstName = doctorProfile.FirstName,
+                        LastName = doctorProfile.LastName,
+                        Address = doctorProfile.Address,
+                        Telephone = doctorProfile.Telephone,
+                        PatientNumber = doctorProfile.PatientNumber,
+                        HealthCareProvider = healthCareProvider,
+                        Post = post
+                    };
+
+                    db.Profiles.Add(docProfile);
+                    await db.SaveChangesAsync();
+
+                    user.DoctorProfile = docProfile;
+                    await db.SaveChangesAsync();
+
+                    transaction.Commit();
+                    return Ok(docProfile);
                 }
-                else
+                catch (Exception e)
                 {
+                    transaction.Rollback();
                     throw;
                 }
             }
-
-            return CreatedAtRoute("DefaultApi", new { id = doctorProfile.Id }, doctorProfile);
         }
 
         // DELETE: api/DoctorProfile/5
@@ -130,6 +162,16 @@ namespace tpo10_rest.Controllers.Profiles
         private bool DoctorProfileExists(Guid id)
         {
             return db.Profiles.Count(e => e.Id == id) > 0;
+        }
+        [AllowAnonymous]
+        [AcceptVerbs("OPTIONS")]
+        public HttpResponseMessage Options()
+        {
+            var response = new HttpResponseMessage(HttpStatusCode.OK);
+            response.Headers.Add("Access-Control-Allow-Origin", "*");
+            response.Headers.Add("Access-Control-Allow-Headers", "*");
+            response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+            return response;
         }
     }
 }

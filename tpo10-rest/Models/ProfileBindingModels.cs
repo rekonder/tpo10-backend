@@ -43,4 +43,26 @@ namespace tpo10_rest.Models
         public Guid PersonalDoctor { get; set; }
         public Guid DentistDoctor { get; set; }
     }
+
+    public class DoctorProfileBindingModel
+    {
+        [Required]
+        public string FirstName { get; set; }
+        [Required]
+        public string LastName { get; set; }
+        [Required]
+        public string Address { get; set; }
+        [Required]
+        public int PostNumber { get; set; }
+        [Required]
+        public string Telephone { get; set; }
+        [Required]
+        [Range(1000, 9999)]
+        public string DoctorKey { get; set; }
+        [Required]
+        public int PatientNumber { get; set; }
+        [Required]
+        public int HealthCareProviderNumber { get; set; }
+    }
+
 }
