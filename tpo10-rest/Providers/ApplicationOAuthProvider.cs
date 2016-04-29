@@ -34,7 +34,6 @@ namespace tpo10_rest.Providers
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Headers", new[] { "*" });
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Methods", new[] { "GET", "POST", "PUT", "DELETE", "OPTIONS" });
 
-
             var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
 
             var db = context.OwinContext.Get<ApplicationDbContext>();

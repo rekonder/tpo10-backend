@@ -213,6 +213,17 @@ namespace tpo10_rest.Controllers.Profiles
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        [AllowAnonymous]
+        [AcceptVerbs("OPTIONS")]
+        public HttpResponseMessage Options()
+        {
+            var response = new HttpResponseMessage(HttpStatusCode.OK);
+            response.Headers.Add("Access-Control-Allow-Origin", "*");
+            response.Headers.Add("Access-Control-Allow-Headers", "*");
+            response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+            return response;
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
