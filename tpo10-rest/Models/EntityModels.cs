@@ -79,6 +79,11 @@ namespace tpo10_rest.Models
 
     public class DoctorProfile : Profile
     {
+        [Required]
+        [Range(1000, 9999)]
+        public string DoctorKey { get; set; }
+        [Required]
+        public int PatientNumber { get; set; }
         public virtual HealthCareProvider HealthCareProvider { get; set; }
     }
 
