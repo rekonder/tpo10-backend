@@ -39,5 +39,8 @@ namespace tpo10_rest.Models
         public string ContactTelephone { get; set; }
         [Required]
         public string ContactFamilyRelationship { get; set; }
+
+        public Guid PersonalDoctor { get; set; }
+        public Guid DentistDoctor { get; set; }
     }
 }

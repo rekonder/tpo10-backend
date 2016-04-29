@@ -24,5 +24,8 @@ namespace tpo10_rest.Models
         public int ContactPostNumber { get; set; }
         public string ContactTelephone { get; set; }
         public string ContactFamilyRelationship { get; set; }
+
+        public Guid PersonalDoctor { get; set; }
+        public Guid DentistDoctor { get; set; }
     }
 }
