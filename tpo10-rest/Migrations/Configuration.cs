@@ -19,7 +19,7 @@ namespace tpo10_rest.Migrations
 
         protected override void Seed(ApplicationDbContext context)
         {
-#if true
+#if false
             #region Roles
             var roleAdministrator = new IdentityRole { Name = nameof(Administrator) };
             var roleDoctor = new IdentityRole { Name = nameof(Doctor) };
