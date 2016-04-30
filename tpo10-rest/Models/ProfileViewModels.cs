@@ -27,6 +27,14 @@ namespace tpo10_rest.Models
 
         public virtual DoctorProfile PersonalDoctor { get; set; }
         public virtual DoctorProfile DentistDoctor { get; set; }
-
     }
+
+    public class PatientProfileDoctorsViewModel
+    {
+        public Guid Id { get; set; }
+
+        public virtual DoctorProfile PersonalDoctor { get; set; }
+        public virtual DoctorProfile DentistDoctor { get; set; }
+    }
+
 }

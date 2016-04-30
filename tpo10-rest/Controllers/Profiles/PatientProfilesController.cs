@@ -238,44 +238,12 @@ namespace tpo10_rest.Controllers.Profiles
             return db.Profiles.Count(e => e.Id == id) > 0;
         }
 
-        // get zdravnike za vse profile
-        // GET: api/PatientProfiles/{userId}/Doctors
-        [AllowAnonymous]
-        [HttpGet]
-        [Route("all/{userId}/Doctors")]
-        [ResponseType(typeof(List<PatientProfileViewModel>))]
-        public IHttpActionResult GetPatientProfilesDoctors(string userId)
-        {
-            var user = db.Users.Find(userId) as Patient;
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            var patientProfiles = user.PatientProfiles.ToList();
-            var profiles = new List<PatientProfileViewModel>();
-            foreach (var patientProfile in patientProfiles)
-            {
-                var profile = new PatientProfileViewModel
-                {
-                    Id = patientProfile.Id,
-
-                    PersonalDoctor = patientProfile.PersonalDoctor,
-                    DentistDoctor = patientProfile.DentistDoctor
-                };
-
-                profiles.Add(profile);
-            }
-
-            return Ok(profiles);
-        }
-
         // get zdravnike za 1 profil
         // GET: api/PatientProfiles/{patientProfileId}/Doctors
         [AllowAnonymous]
         [HttpGet]
-        [Route("one/{patientProfileId}/Doctors")]
-        [ResponseType(typeof(List<PatientProfileViewModel>))]
+        [Route("{patientProfileId}/Doctors")]
+        [ResponseType(typeof(PatientProfileDoctorsViewModel))]
         public IHttpActionResult GetPatientProfileDoctors(Guid patientProfileId)
         {
             PatientProfile patientProfile = db.Profiles.Find(patientProfileId) as PatientProfile;
@@ -286,6 +254,55 @@ namespace tpo10_rest.Controllers.Profiles
 
             return Ok(patientProfile);
         }
+
+
+
+        // PUT: api/PatientProfiles/{patientProfileId}/Doctors
+        [AllowAnonymous]
+        [HttpPut]
+        [Route("{patientProfileId}/Doctors")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PutPatientProfileDoctor(Guid patientProfileId, PatientProfileDoctorsBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (patientProfileId != model.Id)
+            {
+                return BadRequest();
+            }
+
+            var profile = db.Profiles.Find(patientProfileId) as PatientProfile;
+
+            if (profile == null)
+            {
+                return NotFound();
+            }
+
+            using (var transaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    profile.PersonalDoctor = model.PersonalDoctor;
+                    profile.DentistDoctor = model.DentistDoctor;
+                    
+
+                    db.Entry(profile).State = EntityState.Modified;
+                    await db.SaveChangesAsync();
+
+                    transaction.Commit();
+                    return StatusCode(HttpStatusCode.NoContent);
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
+        }
+
 
 
     }

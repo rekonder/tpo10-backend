@@ -40,10 +40,18 @@ namespace tpo10_rest.Models
         [Required]
         public string ContactFamilyRelationship { get; set; }
 
+    }
+
+
+    public class PatientProfileDoctorsBindingModel
+    {
+        public Guid Id { get; set; }
+
+        [Required]
         public virtual DoctorProfile PersonalDoctor { get; set; }
 
+        [Required]
         public virtual DoctorProfile DentistDoctor { get; set; }
-
     }
 
     public class DoctorProfileBindingModel
