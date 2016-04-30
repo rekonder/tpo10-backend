@@ -15,7 +15,7 @@ using tpo10_rest.Models;
 namespace tpo10_rest.Controllers.Profiles
 {
     [RoutePrefix("api/DoctorProfile")]
-    [Authorize(Roles = "Doctor, Administrator")]
+    //[Authorize(Roles = "Doctor, Administrator")]
     public class DoctorProfileController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -113,6 +113,7 @@ namespace tpo10_rest.Controllers.Profiles
                         Address = doctorProfile.Address,
                         Telephone = doctorProfile.Telephone,
                         PatientNumber = doctorProfile.PatientNumber,
+                        CurrectPatientNumber = 0,
                         HealthCareProvider = healthCareProvider,
                         Post = post
                     };
