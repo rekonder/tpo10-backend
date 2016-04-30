@@ -84,6 +84,7 @@ namespace tpo10_rest.Models
         public string DoctorKey { get; set; }
         [Required]
         public int PatientNumber { get; set; }
+        public int CurrectPatientNumber { get; set; }
         public virtual HealthCareProvider HealthCareProvider { get; set; }
     }
 

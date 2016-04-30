@@ -113,6 +113,7 @@ namespace tpo10_rest.Controllers.Profiles
                         Address = doctorProfile.Address,
                         Telephone = doctorProfile.Telephone,
                         PatientNumber = doctorProfile.PatientNumber,
+                        CurrectPatientNumber = 0,
                         HealthCareProvider = healthCareProvider,
                         Post = post
                     };
