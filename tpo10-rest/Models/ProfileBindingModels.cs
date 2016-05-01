@@ -57,5 +57,18 @@ namespace tpo10_rest.Models
         [Required]
         public int HealthCareProviderNumber { get; set; }
     }
-
+    public class NurseProfileBindingModel
+    {
+        [Required]
+        public string FirstName { get; set; }
+        [Required]
+        public string LastName { get; set; }
+        [Required]
+        public string Telephone { get; set; }
+        [Required]
+        [Range(1000, 9999)]
+        public string NurseKey { get; set; }
+        [Required]
+        public int HealthCareProviderNumber { get; set; }
+    }
 }

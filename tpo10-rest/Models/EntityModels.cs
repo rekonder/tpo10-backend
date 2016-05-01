@@ -90,6 +90,9 @@ namespace tpo10_rest.Models
 
     public class NurseProfile : Profile
     {
+        [Required]
+        [Range(1000, 9999)]
+        public string NurseKey { get; set; }
         public virtual HealthCareProvider HealthCareProvider { get; set; }
     }
 

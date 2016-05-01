@@ -97,8 +97,8 @@ namespace tpo10_rest.Controllers.Profiles
             if(user == null || healthCareProvider == null)
                 return NotFound();
 
-            if( db.Profiles.OfType<DoctorProfile>().Any(e => e.DoctorKey == doctorProfile.DoctorKey))
-                return BadRequest("Doctor with that key already exsists");
+            if (db.Profiles.OfType<NurseProfile>().Any(e => e.NurseKey == doctorProfile.DoctorKey) || db.Profiles.OfType<DoctorProfile>().Any(e => e.DoctorKey == doctorProfile.DoctorKey))
+                return BadRequest("Doctor or nurse with that key already exsists");
 
             using (var transaction = db.Database.BeginTransaction())
             {
