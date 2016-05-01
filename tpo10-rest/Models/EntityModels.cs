@@ -42,13 +42,13 @@ namespace tpo10_rest.Models
         [Required]
         public string LastName { get; set; }
         [Required]
-        public string Address { get; set; }
-        [Required]
         public string Telephone { get; set; }
     }
 
     public class PatientProfile : Profile
     {
+        [Required]
+        public string Address { get; set; }
         [Required]
         public string HealthInsuranceNumber { get; set; }
         [Required]

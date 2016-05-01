@@ -109,7 +109,6 @@ namespace tpo10_rest.Controllers.Profiles
                         DoctorKey = doctorProfile.DoctorKey,
                         FirstName = doctorProfile.FirstName,
                         LastName = doctorProfile.LastName,
-                        Address = doctorProfile.Address,
                         Telephone = doctorProfile.Telephone,
                         PatientNumber = doctorProfile.PatientNumber,
                         CurrectPatientNumber = 0,
