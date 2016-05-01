@@ -80,7 +80,7 @@ namespace tpo10_rest.Models
     public class DoctorProfile : Profile
     {
         [Required]
-        [Range(1000, 9999)]
+        [StringLength(4)]
         public string DoctorKey { get; set; }
         [Required]
         public int PatientNumber { get; set; }
@@ -91,7 +91,7 @@ namespace tpo10_rest.Models
     public class NurseProfile : Profile
     {
         [Required]
-        [Range(1000, 9999)]
+        [StringLength(4)]
         public string NurseKey { get; set; }
         public virtual HealthCareProvider HealthCareProvider { get; set; }
     }

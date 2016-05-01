@@ -50,7 +50,7 @@ namespace tpo10_rest.Models
         [Required]
         public string Telephone { get; set; }
         [Required]
-        [Range(1000, 9999)]
+        [StringLength(4)]
         public string DoctorKey { get; set; }
         [Required]
         public int PatientNumber { get; set; }
@@ -66,7 +66,7 @@ namespace tpo10_rest.Models
         [Required]
         public string Telephone { get; set; }
         [Required]
-        [Range(1000, 9999)]
+        [StringLength(4)]
         public string NurseKey { get; set; }
         [Required]
         public int HealthCareProviderNumber { get; set; }
