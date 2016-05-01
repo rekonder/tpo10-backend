@@ -260,6 +260,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\EntityModels.cs" />
+    <Compile Include="Models\HelperViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ProfileBindingModels.cs" />
     <Compile Include="Models\ProfileViewModels.cs" />

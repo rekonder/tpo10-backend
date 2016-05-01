@@ -227,12 +227,12 @@ namespace tpo10_rest.Controllers
                         return GetErrorResult(roleResult);
                     }
 
-                   // var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
 
-                   // var callbackUrl = string.Format("{0}/#/register/activate?userId={1}&code={2}", _frontendBaseUrl, HttpUtility.UrlEncode(user.Id), HttpUtility.UrlEncode(code));
+                    var callbackUrl = string.Format("{0}/#/register/activate?userId={1}&code={2}", _frontendBaseUrl, HttpUtility.UrlEncode(user.Id), HttpUtility.UrlEncode(code));
 
-                    //await UserManager.SendEmailAsync(user.Id, "Aktivacija računa",
-                      // "S klikom na spodnjo povezavo aktivirate svoj uporabniški račun: <a href=\"" + callbackUrl + "\">" + callbackUrl + "</a>");
+                    await UserManager.SendEmailAsync(user.Id, "Aktivacija računa",
+                       "S klikom na spodnjo povezavo aktivirate svoj uporabniški račun: <a href=\"" + callbackUrl + "\">" + callbackUrl + "</a>");
 
                     transaction.Commit();
                     return Ok(new CreateAccountViewModel { UserId = user.Id });
