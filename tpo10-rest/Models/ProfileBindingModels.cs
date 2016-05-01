@@ -50,8 +50,6 @@ namespace tpo10_rest.Models
         [Required]
         public string Address { get; set; }
         [Required]
-        public int PostNumber { get; set; }
-        [Required]
         public string Telephone { get; set; }
         [Required]
         [Range(1000, 9999)]

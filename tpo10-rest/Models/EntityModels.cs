@@ -45,8 +45,6 @@ namespace tpo10_rest.Models
         public string Address { get; set; }
         [Required]
         public string Telephone { get; set; }
-
-        public virtual Post Post { get; set; }
     }
 
     public class PatientProfile : Profile
@@ -57,6 +55,8 @@ namespace tpo10_rest.Models
         public string Gender { get; set; }
         [Required]
         public DateTime BirthDate { get; set; }
+
+        public virtual Post Post { get; set; }
 
         public virtual PatientProfileContact PatientProfileContact { get; set; }
     }

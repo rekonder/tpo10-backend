@@ -92,10 +92,9 @@ namespace tpo10_rest.Controllers.Profiles
             }
 
             var user = await db.Users.Where(e => e.Id == doctorId).FirstOrDefaultAsync() as Doctor;
-            var post = await db.Posts.Where(e => e.PostNumber == doctorProfile.PostNumber).FirstOrDefaultAsync();
             var healthCareProvider = await db.HealthCareProviders.Where(e => e.Key == doctorProfile.HealthCareProviderNumber).FirstOrDefaultAsync();
 
-            if(user == null || post == null || healthCareProvider == null)
+            if(user == null || healthCareProvider == null)
                 return NotFound();
 
             if( db.Profiles.OfType<DoctorProfile>().Any(e => e.DoctorKey == doctorProfile.DoctorKey))
@@ -114,8 +113,7 @@ namespace tpo10_rest.Controllers.Profiles
                         Telephone = doctorProfile.Telephone,
                         PatientNumber = doctorProfile.PatientNumber,
                         CurrectPatientNumber = 0,
-                        HealthCareProvider = healthCareProvider,
-                        Post = post
+                        HealthCareProvider = healthCareProvider
                     };
 
                     db.Profiles.Add(docProfile);
