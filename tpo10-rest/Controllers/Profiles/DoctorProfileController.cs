@@ -92,14 +92,13 @@ namespace tpo10_rest.Controllers.Profiles
             }
 
             var user = await db.Users.Where(e => e.Id == doctorId).FirstOrDefaultAsync() as Doctor;
-            var post = await db.Posts.Where(e => e.PostNumber == doctorProfile.PostNumber).FirstOrDefaultAsync();
             var healthCareProvider = await db.HealthCareProviders.Where(e => e.Key == doctorProfile.HealthCareProviderNumber).FirstOrDefaultAsync();
 
-            if(user == null || post == null || healthCareProvider == null)
+            if(user == null || healthCareProvider == null)
                 return NotFound();
 
-            if( db.Profiles.OfType<DoctorProfile>().Any(e => e.DoctorKey == doctorProfile.DoctorKey))
-                return BadRequest("Doctor with that key already exsists");
+            if (db.Profiles.OfType<NurseProfile>().Any(e => e.NurseKey == doctorProfile.DoctorKey) || db.Profiles.OfType<DoctorProfile>().Any(e => e.DoctorKey == doctorProfile.DoctorKey))
+                return BadRequest("Doctor or nurse with that key already exsists");
 
             using (var transaction = db.Database.BeginTransaction())
             {
@@ -110,12 +109,10 @@ namespace tpo10_rest.Controllers.Profiles
                         DoctorKey = doctorProfile.DoctorKey,
                         FirstName = doctorProfile.FirstName,
                         LastName = doctorProfile.LastName,
-                        Address = doctorProfile.Address,
                         Telephone = doctorProfile.Telephone,
                         PatientNumber = doctorProfile.PatientNumber,
                         CurrectPatientNumber = 0,
-                        HealthCareProvider = healthCareProvider,
-                        Post = post
+                        HealthCareProvider = healthCareProvider
                     };
 
                     db.Profiles.Add(docProfile);
