@@ -24,5 +24,17 @@ namespace tpo10_rest.Models
         public int ContactPostNumber { get; set; }
         public string ContactTelephone { get; set; }
         public string ContactFamilyRelationship { get; set; }
+
+        public virtual DoctorProfile PersonalDoctor { get; set; }
+        public virtual DoctorProfile DentistDoctor { get; set; }
     }
+
+    public class PatientProfileDoctorsViewModel
+    {
+        public Guid Id { get; set; }
+
+        public virtual DoctorProfile PersonalDoctor { get; set; }
+        public virtual DoctorProfile DentistDoctor { get; set; }
+    }
+
 }

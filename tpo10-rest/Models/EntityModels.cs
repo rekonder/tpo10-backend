@@ -58,6 +58,9 @@ namespace tpo10_rest.Models
         [Required]
         public DateTime BirthDate { get; set; }
 
+        public virtual DoctorProfile PersonalDoctor { get; set; }
+        public virtual DoctorProfile DentistDoctor { get; set; }
+
         public virtual PatientProfileContact PatientProfileContact { get; set; }
     }
 
@@ -79,6 +82,14 @@ namespace tpo10_rest.Models
 
     public class DoctorProfile : Profile
     {
+        [Required]
+        [Range(1000, 9999)]
+        public string DoctorKey { get; set; }
+        [Required]
+        public int PatientNumber { get; set; }
+
+        public int CurrectPatientNumber { get; set; }
+
         public virtual HealthCareProvider HealthCareProvider { get; set; }
     }
 

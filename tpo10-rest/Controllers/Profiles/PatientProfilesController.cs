@@ -237,5 +237,73 @@ namespace tpo10_rest.Controllers.Profiles
         {
             return db.Profiles.Count(e => e.Id == id) > 0;
         }
+
+        // get zdravnike za 1 profil
+        // GET: api/PatientProfiles/{patientProfileId}/Doctors
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("{patientProfileId}/Doctors")]
+        [ResponseType(typeof(PatientProfileDoctorsViewModel))]
+        public IHttpActionResult GetPatientProfileDoctors(Guid patientProfileId)
+        {
+            PatientProfile patientProfile = db.Profiles.Find(patientProfileId) as PatientProfile;
+            if (patientProfile == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(patientProfile);
+        }
+
+
+
+        // PUT: api/PatientProfiles/{patientProfileId}/Doctors
+        [AllowAnonymous]
+        [HttpPut]
+        [Route("{patientProfileId}/Doctors")]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PutPatientProfileDoctor(Guid patientProfileId, PatientProfileDoctorsBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (patientProfileId != model.Id)
+            {
+                return BadRequest();
+            }
+
+            var profile = db.Profiles.Find(patientProfileId) as PatientProfile;
+
+            if (profile == null)
+            {
+                return NotFound();
+            }
+
+            using (var transaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    profile.PersonalDoctor = model.PersonalDoctor;
+                    profile.DentistDoctor = model.DentistDoctor;
+                    
+
+                    db.Entry(profile).State = EntityState.Modified;
+                    await db.SaveChangesAsync();
+
+                    transaction.Commit();
+                    return StatusCode(HttpStatusCode.NoContent);
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
+        }
+
+
+
     }
 }

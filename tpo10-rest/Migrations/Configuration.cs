@@ -1173,6 +1173,7 @@ namespace tpo10_rest.Migrations
             #endregion
 
             AddOrUpdateApplicationUser(context, "matjaz.mav@tpo10.com", "matjazmav1", nameof(Administrator));
+            AddOrUpdateApplicationUser(context, "admin@tpo10.com", "administrator", nameof(Administrator));
 #endif
         }
 
