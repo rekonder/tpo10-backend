@@ -42,15 +42,13 @@ namespace tpo10_rest.Models
         [Required]
         public string LastName { get; set; }
         [Required]
-        public string Address { get; set; }
-        [Required]
         public string Telephone { get; set; }
-
-        public virtual Post Post { get; set; }
     }
 
     public class PatientProfile : Profile
     {
+        [Required]
+        public string Address { get; set; }
         [Required]
         public string HealthInsuranceNumber { get; set; }
         [Required]
@@ -60,6 +58,7 @@ namespace tpo10_rest.Models
 
         public virtual DoctorProfile PersonalDoctor { get; set; }
         public virtual DoctorProfile DentistDoctor { get; set; }
+        public virtual Post Post { get; set; }
 
         public virtual PatientProfileContact PatientProfileContact { get; set; }
     }
@@ -83,7 +82,7 @@ namespace tpo10_rest.Models
     public class DoctorProfile : Profile
     {
         [Required]
-        [Range(1000, 9999)]
+        [StringLength(4)]
         public string DoctorKey { get; set; }
         [Required]
         public int PatientNumber { get; set; }
@@ -95,6 +94,9 @@ namespace tpo10_rest.Models
 
     public class NurseProfile : Profile
     {
+        [Required]
+        [StringLength(4)]
+        public string NurseKey { get; set; }
         public virtual HealthCareProvider HealthCareProvider { get; set; }
     }
 

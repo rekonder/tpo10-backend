@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -13,6 +14,7 @@ using tpo10_rest.Models;
 
 namespace tpo10_rest.Controllers.Profiles
 {
+    [RoutePrefix("api/NurseProfile")]
     public class NurseProfileController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -72,33 +74,59 @@ namespace tpo10_rest.Controllers.Profiles
         }
 
         // POST: api/NurseProfile
+        [Authorize(Roles = "Nurse, Administrator")]
+        [HttpPost]
+        [Route("{nurseId}")]
         [ResponseType(typeof(NurseProfile))]
-        public async Task<IHttpActionResult> PostNurseProfile(NurseProfile nurseProfile)
+        public async Task<IHttpActionResult> PostNurseProfile(string nurseId, NurseProfileBindingModel nurseProfile)
         {
+            var userId = User.Identity.GetUserId();
+            if (User.IsInRole("Nurse") && userId != nurseId)
+                return Unauthorized();
+
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Profiles.Add(nurseProfile);
+            var user = await db.Users.Where(e => e.Id == nurseId).FirstOrDefaultAsync() as Nurse;
+            var healthCareProvider = await db.HealthCareProviders.Where(e => e.Key == nurseProfile.HealthCareProviderNumber).FirstOrDefaultAsync();
 
-            try
+            if (user == null || healthCareProvider == null)
+                return NotFound();
+
+            if (db.Profiles.OfType<NurseProfile>().Any(e => e.NurseKey == nurseProfile.NurseKey) || db.Profiles.OfType<DoctorProfile>().Any(e => e.DoctorKey == nurseProfile.NurseKey))
+                return BadRequest("Doctor or nurse with that key already exsists");
+
+            using (var transaction = db.Database.BeginTransaction())
             {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (NurseProfileExists(nurseProfile.Id))
+                try
                 {
-                    return Conflict();
+                    var nurProfile = new NurseProfile
+                    {
+                        NurseKey = nurseProfile.NurseKey,
+                        FirstName = nurseProfile.FirstName,
+                        LastName = nurseProfile.LastName,
+                        Telephone = nurseProfile.Telephone,
+                        HealthCareProvider = healthCareProvider
+                    };
+
+                    db.Profiles.Add(nurProfile);
+                    await db.SaveChangesAsync();
+
+                    user.NurseProfile = nurProfile;
+                    await db.SaveChangesAsync();
+
+                    transaction.Commit();
+                    return Ok(nurProfile);
                 }
-                else
+                catch (Exception e)
                 {
+                    transaction.Rollback();
                     throw;
                 }
             }
-
-            return CreatedAtRoute("DefaultApi", new { id = nurseProfile.Id }, nurseProfile);
         }
 
         // DELETE: api/NurseProfile/5

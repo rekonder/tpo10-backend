@@ -61,18 +61,27 @@ namespace tpo10_rest.Models
         [Required]
         public string LastName { get; set; }
         [Required]
-        public string Address { get; set; }
-        [Required]
-        public int PostNumber { get; set; }
-        [Required]
         public string Telephone { get; set; }
         [Required]
-        [Range(1000, 9999)]
+        [StringLength(4)]
         public string DoctorKey { get; set; }
         [Required]
         public int PatientNumber { get; set; }
         [Required]
         public int HealthCareProviderNumber { get; set; }
     }
-
+    public class NurseProfileBindingModel
+    {
+        [Required]
+        public string FirstName { get; set; }
+        [Required]
+        public string LastName { get; set; }
+        [Required]
+        public string Telephone { get; set; }
+        [Required]
+        [StringLength(4)]
+        public string NurseKey { get; set; }
+        [Required]
+        public int HealthCareProviderNumber { get; set; }
+    }
 }
