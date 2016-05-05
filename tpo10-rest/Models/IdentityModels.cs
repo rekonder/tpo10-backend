@@ -44,6 +44,10 @@ namespace tpo10_rest.Models
                 .HasRequired(e => e.Post)
                 .WithMany()
                 .WillCascadeOnDelete(false);
+            modelBuilder.Entity<PatientProfileContact>()
+                .HasRequired(e => e.Post)
+                .WithMany()
+                .WillCascadeOnDelete(false);
             modelBuilder.Entity<DoctorProfile>()
                .HasRequired(e => e.HealthCareProvider)
                .WithMany()
