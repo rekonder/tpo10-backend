@@ -111,6 +111,7 @@ namespace tpo10_rest.Controllers.Profiles
                         LastName = doctorProfile.LastName,
                         Telephone = doctorProfile.Telephone,
                         PatientNumber = doctorProfile.PatientNumber,
+                        DocOrDentist = doctorProfile.DocOrDentist,
                         CurrentPatientNumber = 0,
                         HealthCareProvider = healthCareProvider
                     };

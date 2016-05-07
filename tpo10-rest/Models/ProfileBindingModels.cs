@@ -66,6 +66,9 @@ namespace tpo10_rest.Models
         [StringLength(4)]
         public string DoctorKey { get; set; }
         [Required]
+        [Range(0, 1)]
+        public int DocOrDentist { get; set; }
+        [Required]
         public int PatientNumber { get; set; }
         [Required]
         public int HealthCareProviderNumber { get; set; }

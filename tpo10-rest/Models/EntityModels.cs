@@ -84,11 +84,12 @@ namespace tpo10_rest.Models
     {
         [Required]
         [StringLength(4)]
-        //[Index(IsUnique = true)]
         public string DoctorKey { get; set; }
         [Required]
         public int PatientNumber { get; set; }
-
+        [Required]
+        [Range(0, 1)]
+        public int DocOrDentist { get; set; } //0-Doctor, 1-Dentist
         public int CurrentPatientNumber { get; set; }
 
         public virtual HealthCareProvider HealthCareProvider { get; set; }
@@ -98,7 +99,6 @@ namespace tpo10_rest.Models
     {
         [Required]
         [StringLength(4)]
-       // [Index(IsUnique = true)]
         public string NurseKey { get; set; }
         public virtual HealthCareProvider HealthCareProvider { get; set; }
     }
