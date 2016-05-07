@@ -38,23 +38,29 @@ namespace tpo10_rest.Controllers.Profiles
             {
                 var profile = new PatientProfileViewModel
                 {
-                    Id                          = patientProfile.Id,
+                    Id = patientProfile.Id,
 
-                    HealthInsuranceNumber       = patientProfile.HealthInsuranceNumber,
-                    FirstName                   = patientProfile.FirstName,
-                    LastName                    = patientProfile.LastName,
-                    Address                     = patientProfile.Address,
-                    PostNumber                  = patientProfile.Post.PostNumber,
-                    Telephone                   = patientProfile.Telephone,
-                    Gender                      = patientProfile.Gender,
-                    BirthDate                   = patientProfile.BirthDate,
+                    HealthInsuranceNumber = patientProfile.HealthInsuranceNumber,
+                    FirstName = patientProfile.FirstName,
+                    LastName = patientProfile.LastName,
+                    Address = patientProfile.Address,
+                    PostNumber = patientProfile.Post.PostNumber,
+                    Telephone = patientProfile.Telephone,
+                    Gender = patientProfile.Gender,
+                    BirthDate = patientProfile.BirthDate,
 
-                    ContactFirstName            = patientProfile.PatientProfileContact.FirstName,
-                    ContactLastName             = patientProfile.PatientProfileContact.LastName,
-                    ContactAddress              = patientProfile.PatientProfileContact.Address,
-                    ContactPostNumber           = patientProfile.PatientProfileContact.Post.PostNumber,
-                    ContactTelephone            = patientProfile.PatientProfileContact.Telephone,
-                    ContactFamilyRelationship   = patientProfile.PatientProfileContact.FamilyRelationship
+                    ContactFirstName = patientProfile.PatientProfileContact.FirstName,
+                    ContactLastName = patientProfile.PatientProfileContact.LastName,
+                    ContactAddress = patientProfile.PatientProfileContact.Address,
+                    ContactPostNumber = patientProfile.PatientProfileContact.Post.PostNumber,
+                    ContactTelephone = patientProfile.PatientProfileContact.Telephone,
+                    ContactFamilyRelationship = patientProfile.PatientProfileContact.FamilyRelationship,
+
+                    //ContactProfile = patientProfile.PatientProfileContact,
+
+                    PersonalDoctor = patientProfile.PersonalDoctor,
+                    DentistDoctor = patientProfile.DentistDoctor
+
                 };
 
                 profiles.Add(profile);
@@ -281,12 +287,25 @@ namespace tpo10_rest.Controllers.Profiles
                 return NotFound();
             }
 
+            var personalDoctor = db.Profiles.Find(model.PersonalDoctor) as DoctorProfile;
+            var dentistDoctor = db.Profiles.Find(model.DentistDoctor) as DoctorProfile;
+
+            if (model.PersonalDoctor != null && personalDoctor == null)
+            {
+                return NotFound();
+            }
+            if (model.DentistDoctor != null && dentistDoctor == null)
+            {
+                return NotFound();
+            }
+
             using (var transaction = db.Database.BeginTransaction())
             {
                 try
                 {
-                    profile.PersonalDoctor = model.PersonalDoctor;
-                    profile.DentistDoctor = model.DentistDoctor;
+
+                    profile.PersonalDoctor = personalDoctor;
+                    profile.DentistDoctor = dentistDoctor;
                     
 
                     db.Entry(profile).State = EntityState.Modified;
