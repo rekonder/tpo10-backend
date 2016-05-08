@@ -19,10 +19,10 @@ namespace tpo10_rest.Controllers.Profiles
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: api/PatientProfiles/{userId}
+        // GET: api/PatientProfiles/Account/{userId}
         [AllowAnonymous]
         [HttpGet]
-        [Route("{userId}")]
+        [Route("Account/{userId}")]
         [ResponseType(typeof(List<PatientProfileViewModel>))]
         public IHttpActionResult GetPatientProfiles(string userId)
         {
@@ -61,6 +61,43 @@ namespace tpo10_rest.Controllers.Profiles
             }
 
             return Ok(profiles);
+        }
+
+        // GET: api/PatientProfiles/{patinetId}
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("{patientId}")]
+        [ResponseType(typeof(PatientProfileViewModel))]
+        public IHttpActionResult GetPatientProfile(Guid patientId)
+        {
+            var patientProfile = db.PatientProfiles.Find(patientId);
+            if (patientProfile == null)
+            {
+                return NotFound();
+            }
+
+            var profile = new PatientProfileViewModel
+            {
+                Id = patientProfile.Id,
+
+                HealthInsuranceNumber = patientProfile.HealthInsuranceNumber,
+                FirstName = patientProfile.FirstName,
+                LastName = patientProfile.LastName,
+                Address = patientProfile.Address,
+                PostNumber = patientProfile.Post.PostNumber,
+                Telephone = patientProfile.Telephone,
+                Gender = patientProfile.Gender,
+                BirthDate = patientProfile.BirthDate,
+
+                ContactFirstName = patientProfile.PatientProfileContact.FirstName,
+                ContactLastName = patientProfile.PatientProfileContact.LastName,
+                ContactAddress = patientProfile.PatientProfileContact.Address,
+                ContactPostNumber = patientProfile.PatientProfileContact.Post.PostNumber,
+                ContactTelephone = patientProfile.PatientProfileContact.Telephone,
+                ContactFamilyRelationship = patientProfile.PatientProfileContact.FamilyRelationship
+            };
+            
+            return Ok(profile);
         }
 
         // PUT: api/PatientProfiles/{patientProfileId}
