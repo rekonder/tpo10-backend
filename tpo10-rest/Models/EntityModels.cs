@@ -89,6 +89,7 @@ namespace tpo10_rest.Models
         [Required]
         [Range(0, 1)]
         public int DocOrDentist { get; set; } //0-Doctor, 1-Dentist
+        [Required]
         public int CurrentPatientNumber { get; set; }
 
         public virtual HealthCareProvider HealthCareProvider { get; set; }
