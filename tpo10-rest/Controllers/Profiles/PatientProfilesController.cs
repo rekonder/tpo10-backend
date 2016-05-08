@@ -100,7 +100,10 @@ namespace tpo10_rest.Controllers.Profiles
                 ContactAddress = patientProfile.PatientProfileContact.Address,
                 ContactPostNumber = patientProfile.PatientProfileContact.Post.PostNumber,
                 ContactTelephone = patientProfile.PatientProfileContact.Telephone,
-                ContactFamilyRelationship = patientProfile.PatientProfileContact.FamilyRelationship
+                ContactFamilyRelationship = patientProfile.PatientProfileContact.FamilyRelationship,
+
+                PersonalDoctor = patientProfile.PersonalDoctor,
+                DentistDoctor = patientProfile.DentistDoctor
             };
             
             return Ok(profile);
