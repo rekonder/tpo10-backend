@@ -23,6 +23,23 @@ namespace tpo10_rest.Controllers
             return Ok(posts);
         }
 
+        [HttpGet]
+        [Route("HealthCareProvider")]
+        public IHttpActionResult GetHealthCareProviders()
+        {
+            List<HelperHealthCareProvider> seznam = new List<HelperHealthCareProvider>();
+            foreach (var line in db.HealthCareProviders)
+            {
+                HelperHealthCareProvider health = new HelperHealthCareProvider {
+                    Key = line.Key.ToString(),
+                    Name = line.Name
+                };
+                seznam.Add(health);
+               
+            }
+
+            return Ok(seznam);
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

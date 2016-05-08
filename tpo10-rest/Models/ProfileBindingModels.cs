@@ -39,5 +39,49 @@ namespace tpo10_rest.Models
         public string ContactTelephone { get; set; }
         [Required]
         public string ContactFamilyRelationship { get; set; }
+
+    }
+
+
+    public class PatientProfileDoctorsBindingModel
+    {
+        public Guid Id { get; set; }
+
+        [Required]
+        public virtual DoctorProfile PersonalDoctor { get; set; }
+
+        [Required]
+        public virtual DoctorProfile DentistDoctor { get; set; }
+    }
+
+    public class DoctorProfileBindingModel
+    {
+        [Required]
+        public string FirstName { get; set; }
+        [Required]
+        public string LastName { get; set; }
+        [Required]
+        public string Telephone { get; set; }
+        [Required]
+        [StringLength(4)]
+        public string DoctorKey { get; set; }
+        [Required]
+        public int PatientNumber { get; set; }
+        [Required]
+        public int HealthCareProviderNumber { get; set; }
+    }
+    public class NurseProfileBindingModel
+    {
+        [Required]
+        public string FirstName { get; set; }
+        [Required]
+        public string LastName { get; set; }
+        [Required]
+        public string Telephone { get; set; }
+        [Required]
+        [StringLength(4)]
+        public string NurseKey { get; set; }
+        [Required]
+        public int HealthCareProviderNumber { get; set; }
     }
 }

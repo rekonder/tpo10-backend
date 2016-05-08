@@ -40,7 +40,11 @@ namespace tpo10_rest.Models
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Profile>()
+            modelBuilder.Entity<PatientProfile>()
+                .HasRequired(e => e.Post)
+                .WithMany()
+                .WillCascadeOnDelete(false);
+            modelBuilder.Entity<PatientProfileContact>()
                 .HasRequired(e => e.Post)
                 .WithMany()
                 .WillCascadeOnDelete(false);
