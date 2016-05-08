@@ -80,7 +80,7 @@ namespace tpo10_rest.Controllers.Profiles
             var user = await db.Users.Where(e => e.Id == doctorId.ToString()).FirstOrDefaultAsync() as Doctor;
             var healthCareProvider = await db.HealthCareProviders.Where(e => e.Key == doctorProfile.HealthCareProviderNumber).FirstOrDefaultAsync();
             var profile = db.Profiles.Find(doctorProfile.Id) as DoctorProfile;
-            if (user.DoctorProfile.Id != doctorProfile.Id && user.DoctorProfile.CurrentPatientNumber > doctorProfile.PatientNumber)
+            if (user.DoctorProfile.Id != doctorProfile.Id || user.DoctorProfile.CurrentPatientNumber > doctorProfile.PatientNumber || (user.Email != doctorProfile.Email && db.Users.Any(e => e.Email == doctorProfile.Email)))
             {
                 return BadRequest();
             }
@@ -107,6 +107,8 @@ namespace tpo10_rest.Controllers.Profiles
                     await db.SaveChangesAsync();
 
                     user.Email = doctorProfile.Email;
+                    user.UserName = doctorProfile.Email;
+
 
                     db.Entry(user).State = EntityState.Modified;
                     await db.SaveChangesAsync();
