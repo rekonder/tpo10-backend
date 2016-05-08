@@ -322,8 +322,19 @@ namespace tpo10_rest.Controllers.Profiles
 
             var profile = db.Profiles.Find(patientProfileId) as PatientProfile;
 
-            var oldPersonalDoctor = db.Profiles.Find(profile.PersonalDoctor.Id) as DoctorProfile;
-            var oldDentistDoctor = db.Profiles.Find(profile.DentistDoctor.Id) as DoctorProfile;
+            DoctorProfile oldPersonalDoctor = null;
+            if (profile.PersonalDoctor != null)
+            {
+                oldPersonalDoctor = db.Profiles.Find(profile.PersonalDoctor.Id) as DoctorProfile;
+            }
+
+            DoctorProfile oldDentistDoctor = null;
+            if (profile.DentistDoctor != null)
+            {
+                oldDentistDoctor = db.Profiles.Find(profile.DentistDoctor.Id) as DoctorProfile;
+            }
+
+           
 
             if (profile == null)
             {
@@ -364,6 +375,16 @@ namespace tpo10_rest.Controllers.Profiles
                     
 
                     db.Entry(profile).State = EntityState.Modified;
+
+                    if (oldPersonalDoctor != null)
+                    {
+                        db.Entry(oldPersonalDoctor).State = EntityState.Modified;
+                    }
+                    if (oldDentistDoctor != null)
+                    {
+                        db.Entry(oldDentistDoctor).State = EntityState.Modified;
+                    }
+
                     db.Entry(personalDoctor).State = EntityState.Modified;
                     db.Entry(dentistDoctor).State = EntityState.Modified;
 
