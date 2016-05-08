@@ -48,10 +48,10 @@ namespace tpo10_rest.Models
         public Guid Id { get; set; }
 
         [Required]
-        public virtual DoctorProfile PersonalDoctor { get; set; }
+        public virtual Guid PersonalDoctor { get; set; }
 
         [Required]
-        public virtual DoctorProfile DentistDoctor { get; set; }
+        public virtual Guid DentistDoctor { get; set; }
     }
 
     public class DoctorProfileBindingModel
@@ -65,6 +65,9 @@ namespace tpo10_rest.Models
         [Required]
         [StringLength(4)]
         public string DoctorKey { get; set; }
+        [Required]
+        [Range(0, 1)]
+        public int DocOrDentist { get; set; }
         [Required]
         public int PatientNumber { get; set; }
         [Required]
