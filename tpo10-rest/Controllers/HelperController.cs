@@ -17,12 +17,13 @@ namespace tpo10_rest.Controllers
         // GET api/Helper/Post
         [HttpGet]
         [Route("Post")]
-        public IHttpActionResult GetPosts(string q)
+        public IHttpActionResult GetPosts()
         {
-            var posts = db.Posts.Where(e => (e.PostNumber.ToString() + " " + e.PostName).Contains(q)).ToList();
+            var posts = db.Posts.ToList();
             return Ok(posts);
         }
 
+        // GET api/Helper/HealthCareProvider
         [HttpGet]
         [Route("HealthCareProvider")]
         public IHttpActionResult GetHealthCareProviders()
