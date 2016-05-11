@@ -23,7 +23,7 @@ namespace tpo10_rest
             config.MapHttpAttributeRoutes();
 
             // Enable CORS
-            config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
+            //config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
 
             config.Formatters.Clear();
             config.Formatters.Add(new JsonMediaTypeFormatter());
