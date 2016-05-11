@@ -58,6 +58,7 @@ namespace tpo10_rest.Models
 
         public virtual DoctorProfile PersonalDoctor { get; set; }
         public virtual DoctorProfile DentistDoctor { get; set; }
+
         public virtual Post Post { get; set; }
 
         public virtual PatientProfileContact PatientProfileContact { get; set; }
