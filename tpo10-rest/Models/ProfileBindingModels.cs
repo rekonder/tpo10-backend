@@ -72,7 +72,7 @@ namespace tpo10_rest.Models
         [Required]
         public int PatientNumber { get; set; }
         [Required]
-        public string HealthCareProviderNumber { get; set; }
+        public int HealthCareProviderNumber { get; set; }
         [Required]
         public string Email { get; set; }
     }
@@ -88,6 +88,6 @@ namespace tpo10_rest.Models
         [StringLength(4)]
         public string NurseKey { get; set; }
         [Required]
-        public string HealthCareProviderNumber { get; set; }
+        public int HealthCareProviderNumber { get; set; }
     }
 }
