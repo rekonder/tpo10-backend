@@ -26,52 +26,120 @@ namespace tpo10_rest.Controllers.Profiles
             return db.Profiles.OfType<DoctorProfile>();
         }
 
-        // GET: api/DoctorProfile/5
-        [ResponseType(typeof(DoctorProfile))]
-        public async Task<IHttpActionResult> GetDoctorProfile(Guid id)
+        [HttpGet]
+        [Route("selectDoctor")]
+        [ResponseType(typeof(List<DoctorProfile>))]
+        public IHttpActionResult GetAvaliableProfiles()
         {
-            DoctorProfile doctorProfile = await db.Profiles.FindAsync(id) as DoctorProfile;
+            var doctorProfiles = db.Profiles.OfType<DoctorProfile>();
+            var profiles = new List<DoctorProfile>();
+            foreach (var docotorProfile in doctorProfiles)
+            {
+                if(docotorProfile.CurrentPatientNumber < docotorProfile.PatientNumber)
+                {
+                    profiles.Add(docotorProfile);
+                }
+            }
+
+                return Ok(profiles);
+        }
+        // GET: api/DoctorProfile/5
+        [Authorize(Roles = "Doctor")]
+        [HttpGet]
+        [Route("{userId}")]
+        [ResponseType(typeof(DoctorProfileViewModel))]
+        public IHttpActionResult GetDoctorProfile(string userId)
+        {
+            Doctor user = db.Users.Find(userId) as Doctor;
+            if (user == null)
+            {
+                return NotFound();
+            }
+            DoctorProfile doctorProfile = user.DoctorProfile;
             if (doctorProfile == null)
             {
                 return NotFound();
             }
+            HelperHealthCareProvider care = new HelperHealthCareProvider();
+            care.Key = doctorProfile.HealthCareProvider.Key;
+            care.Name = doctorProfile.HealthCareProvider.Name;
+            var profile = new DoctorProfileViewModel
+            {
+                Id = doctorProfile.Id,
+                FirstName = doctorProfile.FirstName,
+                LastName = doctorProfile.LastName,
+                Telephone = doctorProfile.Telephone,
+                DoctorKey = doctorProfile.DoctorKey,
+                PatientNumber = doctorProfile.PatientNumber,
+                CurrentPatientNumber = doctorProfile.CurrentPatientNumber,
+                DocOrDentist = doctorProfile.DocOrDentist,
+                HealthCareProvider = care,
+                Email = user.Email
+            };
 
-            return Ok(doctorProfile);
+            return Ok(profile);
         }
 
         // PUT: api/DoctorProfile/5
+        [Authorize(Roles = "Doctor")]
+        [HttpPut]
+        [Route("{doctorId}")]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutDoctorProfile(Guid id, DoctorProfile doctorProfile)
+        public async Task<IHttpActionResult> PutDoctorProfile(Guid doctorId, DoctorProfileBindingModel doctorProfile)
         {
+            var userId = User.Identity.GetUserId();
+            if (User.IsInRole("Doctor") && userId != doctorId.ToString())
+                return Unauthorized();
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
-            if (id != doctorProfile.Id)
+            var user = await db.Users.Where(e => e.Id == doctorId.ToString()).FirstOrDefaultAsync() as Doctor;
+            var healthCareProvider = await db.HealthCareProviders.Where(e => e.Key == doctorProfile.HealthCareProviderNumber).FirstOrDefaultAsync();
+            var profile = db.Profiles.Find(doctorProfile.Id) as DoctorProfile;
+            if (user.DoctorProfile.Id != doctorProfile.Id || user.DoctorProfile.CurrentPatientNumber > doctorProfile.PatientNumber || (user.Email != doctorProfile.Email && db.Users.Any(e => e.Email == doctorProfile.Email)))
             {
                 return BadRequest();
             }
+            if (user == null || healthCareProvider == null || profile == null)
+                return NotFound();
 
-            db.Entry(doctorProfile).State = EntityState.Modified;
+            if (doctorProfile.DoctorKey != profile.DoctorKey &&  (db.Profiles.OfType<NurseProfile>().Any(e => e.NurseKey == doctorProfile.DoctorKey) || db.Profiles.OfType<DoctorProfile>().Any(e => e.DoctorKey == doctorProfile.DoctorKey)))
+                return BadRequest("Doctor or nurse with that key already exsists");
 
-            try
+
+            using (var transaction = db.Database.BeginTransaction())
             {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!DoctorProfileExists(id))
+                try
                 {
-                    return NotFound();
+                    profile.DoctorKey = doctorProfile.DoctorKey;
+                    profile.FirstName = doctorProfile.FirstName;
+                    profile.LastName = doctorProfile.LastName;
+                    profile.Telephone = doctorProfile.Telephone;
+                    profile.PatientNumber = doctorProfile.PatientNumber;
+                    profile.DocOrDentist = doctorProfile.DocOrDentist;
+                    profile.HealthCareProvider = healthCareProvider;
+
+                    db.Entry(profile).State = EntityState.Modified;
+                    await db.SaveChangesAsync();
+
+                    user.Email = doctorProfile.Email;
+                    user.UserName = doctorProfile.Email;
+
+
+                    db.Entry(user).State = EntityState.Modified;
+                    await db.SaveChangesAsync();
+
+                    transaction.Commit();
+                    return StatusCode(HttpStatusCode.NoContent);
                 }
-                else
+                catch (Exception e)
                 {
+                    transaction.Rollback();
                     throw;
                 }
             }
-
-            return StatusCode(HttpStatusCode.NoContent);
+            
         }
 
         // POST: api/DoctorProfile/{doctorId}
@@ -119,6 +187,7 @@ namespace tpo10_rest.Controllers.Profiles
                     db.Profiles.Add(docProfile);
                     await db.SaveChangesAsync();
 
+                    user.Email = doctorProfile.Email;
                     user.DoctorProfile = docProfile;
                     await db.SaveChangesAsync();
 
@@ -134,7 +203,7 @@ namespace tpo10_rest.Controllers.Profiles
         }
 
         // DELETE: api/DoctorProfile/5
-        [ResponseType(typeof(DoctorProfile))]
+       /* [ResponseType(typeof(DoctorProfile))]
         public async Task<IHttpActionResult> DeleteDoctorProfile(Guid id)
         {
             DoctorProfile doctorProfile = await db.Profiles.FindAsync(id) as DoctorProfile;
@@ -147,7 +216,7 @@ namespace tpo10_rest.Controllers.Profiles
             await db.SaveChangesAsync();
 
             return Ok(doctorProfile);
-        }
+        }*/
 
         protected override void Dispose(bool disposing)
         {

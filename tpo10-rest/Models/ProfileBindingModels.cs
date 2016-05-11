@@ -56,6 +56,7 @@ namespace tpo10_rest.Models
 
     public class DoctorProfileBindingModel
     {
+        public Guid Id { get; set; }
         [Required]
         public string FirstName { get; set; }
         [Required]
@@ -71,7 +72,9 @@ namespace tpo10_rest.Models
         [Required]
         public int PatientNumber { get; set; }
         [Required]
-        public int HealthCareProviderNumber { get; set; }
+        public string HealthCareProviderNumber { get; set; }
+        [Required]
+        public string Email { get; set; }
     }
     public class NurseProfileBindingModel
     {
@@ -85,6 +88,6 @@ namespace tpo10_rest.Models
         [StringLength(4)]
         public string NurseKey { get; set; }
         [Required]
-        public int HealthCareProviderNumber { get; set; }
+        public string HealthCareProviderNumber { get; set; }
     }
 }

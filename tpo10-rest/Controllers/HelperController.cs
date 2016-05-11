@@ -31,7 +31,7 @@ namespace tpo10_rest.Controllers
             foreach (var line in db.HealthCareProviders)
             {
                 HelperHealthCareProvider health = new HelperHealthCareProvider {
-                    Key = line.Key.ToString(),
+                    Key = line.Key,
                     Name = line.Name
                 };
                 seznam.Add(health);
