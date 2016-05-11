@@ -1161,8 +1161,8 @@
             #endregion
 
             #region HealthCareProviders
-            var healthCareProvider0016 = new HealthCareProvider { Key = 16, Name = "SB NOVA GORICA", Address = "LISKUR 19", Post = post5000 };
-            var healthCareProvider0370 = new HealthCareProvider { Key = 370, Name = "ZD ČRNOMELJ", Address = "VAJDOVA ULICA 9", Post = post8333 };
+            var healthCareProvider0016 = new HealthCareProvider { Key = "00016", Name = "SB NOVA GORICA", Address = "LISKUR 19", Post = post5000 };
+            var healthCareProvider0370 = new HealthCareProvider { Key = "00370", Name = "ZD ČRNOMELJ", Address = "VAJDOVA ULICA 9", Post = post8333 };
             #region HealthCareProvider Inserts
             context.HealthCareProviders.AddOrUpdate(
                 h => h.Key,
@@ -1182,9 +1182,9 @@
             context.SaveChanges();
 
             //context, key, Fname, Lname, phone, patient#, HCprovider, doc(0)/dentist(1), email
-            AddDoctorProfile(context, "1111", "1111", "1111", "11111111", 10, 16, 0, "doctor1@tpo10.com");
-            AddDoctorProfile(context, "2222", "2222", "2222", "222222222", 10, 16, 0, "doctor2@tpo10.com");
-            AddDoctorProfile(context, "3333", "3333", "3333", "333333333", 10, 16, 1, "doctor3@tpo10.com");
+            AddDoctorProfile(context, "1111", "1111", "1111", "11111111", 10, "00016", 0, "doctor1@tpo10.com");
+            AddDoctorProfile(context, "2222", "2222", "2222", "222222222", 10, "00016", 0, "doctor2@tpo10.com");
+            AddDoctorProfile(context, "3333", "3333", "3333", "333333333", 10, "00016", 1, "doctor3@tpo10.com");
             
 #endif
         }
@@ -1214,7 +1214,7 @@
                 } 
              } 
         }
-        private void AddDoctorProfile(ApplicationDbContext context, string Key, string FirstName, string LastName, string Telephone, int PatientNumber, int HealthCareProviderNumber, int DocOrDentist,string email)
+        private void AddDoctorProfile(ApplicationDbContext context, string Key, string FirstName, string LastName, string Telephone, int PatientNumber, string HealthCareProviderNumber, int DocOrDentist,string email)
         {
             
             HealthCareProvider health = context.HealthCareProviders.FirstOrDefault(e => e.Key == HealthCareProviderNumber);
