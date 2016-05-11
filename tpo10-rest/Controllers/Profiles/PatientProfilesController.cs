@@ -319,7 +319,7 @@ namespace tpo10_rest.Controllers.Profiles
 
             if (profile == null)
             {
-                return NotFound();
+                return BadRequest();
             }
 
             DoctorProfile oldPersonalDoctor = null;
