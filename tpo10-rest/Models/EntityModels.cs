@@ -110,7 +110,7 @@ namespace tpo10_rest.Models
         [Key]
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public string Key { get; set; }
+        public int Key { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]

@@ -26,23 +26,6 @@ namespace tpo10_rest.Controllers.Profiles
             return db.Profiles.OfType<DoctorProfile>();
         }
 
-        [HttpGet]
-        [Route("selectDoctor")]
-        [ResponseType(typeof(List<DoctorProfile>))]
-        public IHttpActionResult GetAvaliableProfiles()
-        {
-            var doctorProfiles = db.Profiles.OfType<DoctorProfile>();
-            var profiles = new List<DoctorProfile>();
-            foreach (var docotorProfile in doctorProfiles)
-            {
-                if(docotorProfile.CurrentPatientNumber < docotorProfile.PatientNumber)
-                {
-                    profiles.Add(docotorProfile);
-                }
-            }
-
-                return Ok(profiles);
-        }
         // GET: api/DoctorProfile/5
         [Authorize(Roles = "Doctor")]
         [HttpGet]
