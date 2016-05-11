@@ -315,12 +315,12 @@ namespace tpo10_rest.Controllers.Profiles
                 return BadRequest(ModelState);
             }
 
-            if (patientProfileId != model.Id)
-            {
-                return BadRequest();
-            }
-
             var profile = db.Profiles.Find(patientProfileId) as PatientProfile;
+
+            if (profile == null)
+            {
+                return NotFound();
+            }
 
             DoctorProfile oldPersonalDoctor = null;
             if (profile.PersonalDoctor != null)
@@ -334,60 +334,65 @@ namespace tpo10_rest.Controllers.Profiles
                 oldDentistDoctor = db.Profiles.Find(profile.DentistDoctor.Id) as DoctorProfile;
             }
 
-           
-
-            if (profile == null)
-            {
-                return NotFound();
-            }
-
             var personalDoctor = db.Profiles.Find(model.PersonalDoctor) as DoctorProfile;
             var dentistDoctor = db.Profiles.Find(model.DentistDoctor) as DoctorProfile;
 
-            if (model.PersonalDoctor != null && personalDoctor == null)
-            {
-                return NotFound();
-            }
-            if (model.DentistDoctor != null && dentistDoctor == null)
-            {
-                return NotFound();
-            }
 
+            if (model.PersonalDoctor != Guid.Empty && personalDoctor == null)
+            {
+                return NotFound();
+            }
+            if (model.DentistDoctor != Guid.Empty && dentistDoctor == null)
+            {
+                return NotFound();
+            }
+            if(personalDoctor != null && personalDoctor.PatientNumber - personalDoctor.CurrentPatientNumber <= 0 && personalDoctor.DoctorKey != oldPersonalDoctor.DoctorKey)
+            {
+                return BadRequest();
+            }
+            if (dentistDoctor != null && dentistDoctor.PatientNumber - dentistDoctor.CurrentPatientNumber <= 0 && dentistDoctor.DoctorKey != dentistDoctor.DoctorKey)
+            {
+                return BadRequest();
+            }
             using (var transaction = db.Database.BeginTransaction())
             {
                 try
                 {
-
-                    profile.PersonalDoctor = personalDoctor;
-                    profile.DentistDoctor = dentistDoctor;
-
-                    if(oldPersonalDoctor != null)
+                    if(personalDoctor != null)
                     {
-                        oldPersonalDoctor.CurrentPatientNumber --;
+                        profile.PersonalDoctor = personalDoctor;
+                        if (oldPersonalDoctor != null)
+                        {
+                            oldPersonalDoctor.CurrentPatientNumber--;
+                        }
+                        personalDoctor.CurrentPatientNumber++;
+                       
+                        if (oldPersonalDoctor != null)
+                        {
+                            db.Entry(oldPersonalDoctor).State = EntityState.Modified;
+                        }
+
+                        db.Entry(personalDoctor).State = EntityState.Modified;
                     }
-                    if(oldDentistDoctor != null)
+                    if (dentistDoctor != null)
                     {
-                        oldDentistDoctor.CurrentPatientNumber--;
+                        profile.DentistDoctor = dentistDoctor;
+
+
+                        if (oldDentistDoctor != null)
+                        {
+                            oldDentistDoctor.CurrentPatientNumber--;
+                        }
+
+                        dentistDoctor.CurrentPatientNumber++;
+
+                        if (oldDentistDoctor != null)
+                        {
+                            db.Entry(oldDentistDoctor).State = EntityState.Modified;
+                        }
+                        db.Entry(dentistDoctor).State = EntityState.Modified;
                     }
-
-                    personalDoctor.CurrentPatientNumber ++;
-                    dentistDoctor.CurrentPatientNumber ++;
-                    
-
                     db.Entry(profile).State = EntityState.Modified;
-
-                    if (oldPersonalDoctor != null)
-                    {
-                        db.Entry(oldPersonalDoctor).State = EntityState.Modified;
-                    }
-                    if (oldDentistDoctor != null)
-                    {
-                        db.Entry(oldDentistDoctor).State = EntityState.Modified;
-                    }
-
-                    db.Entry(personalDoctor).State = EntityState.Modified;
-                    db.Entry(dentistDoctor).State = EntityState.Modified;
-
                     await db.SaveChangesAsync();
 
                     transaction.Commit();
