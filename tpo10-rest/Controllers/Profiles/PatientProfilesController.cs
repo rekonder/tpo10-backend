@@ -264,9 +264,9 @@ namespace tpo10_rest.Controllers.Profiles
         public HttpResponseMessage Options()
         {
             var response = new HttpResponseMessage(HttpStatusCode.OK);
-            //response.Headers.Add("Access-Control-Allow-Origin", "*");
-            //response.Headers.Add("Access-Control-Allow-Headers", "*");
-            //response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+            response.Headers.Add("Access-Control-Allow-Origin", "*");
+            response.Headers.Add("Access-Control-Allow-Headers", "*");
+            response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
             return response;
         }
 
