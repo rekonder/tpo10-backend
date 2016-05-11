@@ -234,3 +234,9 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+.vs/config/applicationhost.config
+*.config
+.vs/tpo10-rest/v14/.suo
+*.config
+packages/EntityFramework.6.1.3/content/App.config.transform
+*.transform
