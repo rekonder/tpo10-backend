@@ -7,7 +7,7 @@ namespace tpo10_rest.Models
 {
     public class HelperHealthCareProvider
     {
-        public int Key { get; set; }
+        public string Key { get; set; }
         public string Name { get; set; }
     }
 }
