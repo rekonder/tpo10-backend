@@ -19,10 +19,10 @@ namespace tpo10_rest.Controllers.Profiles
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: api/PatientProfiles/{userId}
+        // GET: api/PatientProfiles/Account/{userId}
         [AllowAnonymous]
         [HttpGet]
-        [Route("{userId}")]
+        [Route("Account/{userId}")]
         [ResponseType(typeof(List<PatientProfileViewModel>))]
         public IHttpActionResult GetPatientProfiles(string userId)
         {
@@ -38,29 +38,75 @@ namespace tpo10_rest.Controllers.Profiles
             {
                 var profile = new PatientProfileViewModel
                 {
-                    Id                          = patientProfile.Id,
+                    Id = patientProfile.Id,
 
-                    HealthInsuranceNumber       = patientProfile.HealthInsuranceNumber,
-                    FirstName                   = patientProfile.FirstName,
-                    LastName                    = patientProfile.LastName,
-                    Address                     = patientProfile.Address,
-                    PostNumber                  = patientProfile.Post.PostNumber,
-                    Telephone                   = patientProfile.Telephone,
-                    Gender                      = patientProfile.Gender,
-                    BirthDate                   = patientProfile.BirthDate,
+                    HealthInsuranceNumber = patientProfile.HealthInsuranceNumber,
+                    FirstName = patientProfile.FirstName,
+                    LastName = patientProfile.LastName,
+                    Address = patientProfile.Address,
+                    PostNumber = patientProfile.Post.PostNumber,
+                    Telephone = patientProfile.Telephone,
+                    Gender = patientProfile.Gender,
+                    BirthDate = patientProfile.BirthDate,
 
-                    ContactFirstName            = patientProfile.PatientProfileContact.FirstName,
-                    ContactLastName             = patientProfile.PatientProfileContact.LastName,
-                    ContactAddress              = patientProfile.PatientProfileContact.Address,
-                    ContactPostNumber           = patientProfile.PatientProfileContact.Post.PostNumber,
-                    ContactTelephone            = patientProfile.PatientProfileContact.Telephone,
-                    ContactFamilyRelationship   = patientProfile.PatientProfileContact.FamilyRelationship
+                    ContactFirstName = patientProfile.PatientProfileContact.FirstName,
+                    ContactLastName = patientProfile.PatientProfileContact.LastName,
+                    ContactAddress = patientProfile.PatientProfileContact.Address,
+                    ContactPostNumber = patientProfile.PatientProfileContact.Post.PostNumber,
+                    ContactTelephone = patientProfile.PatientProfileContact.Telephone,
+                    ContactFamilyRelationship = patientProfile.PatientProfileContact.FamilyRelationship,
+
+                    //ContactProfile = patientProfile.PatientProfileContact,
+
+                    PersonalDoctor = patientProfile.PersonalDoctor,
+                    DentistDoctor = patientProfile.DentistDoctor
+
                 };
 
                 profiles.Add(profile);
             }
 
             return Ok(profiles);
+        }
+
+        // GET: api/PatientProfiles/{patinetId}
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("{patientId}")]
+        [ResponseType(typeof(PatientProfileViewModel))]
+        public IHttpActionResult GetPatientProfile(Guid patientId)
+        {
+            var patientProfile = db.PatientProfiles.Find(patientId);
+            if (patientProfile == null)
+            {
+                return NotFound();
+            }
+
+            var profile = new PatientProfileViewModel
+            {
+                Id = patientProfile.Id,
+
+                HealthInsuranceNumber = patientProfile.HealthInsuranceNumber,
+                FirstName = patientProfile.FirstName,
+                LastName = patientProfile.LastName,
+                Address = patientProfile.Address,
+                PostNumber = patientProfile.Post.PostNumber,
+                Telephone = patientProfile.Telephone,
+                Gender = patientProfile.Gender,
+                BirthDate = patientProfile.BirthDate,
+
+                ContactFirstName = patientProfile.PatientProfileContact.FirstName,
+                ContactLastName = patientProfile.PatientProfileContact.LastName,
+                ContactAddress = patientProfile.PatientProfileContact.Address,
+                ContactPostNumber = patientProfile.PatientProfileContact.Post.PostNumber,
+                ContactTelephone = patientProfile.PatientProfileContact.Telephone,
+                ContactFamilyRelationship = patientProfile.PatientProfileContact.FamilyRelationship,
+
+                PersonalDoctor = patientProfile.PersonalDoctor,
+                DentistDoctor = patientProfile.DentistDoctor
+            };
+            
+            return Ok(profile);
         }
 
         // PUT: api/PatientProfiles/{patientProfileId}
@@ -276,7 +322,33 @@ namespace tpo10_rest.Controllers.Profiles
 
             var profile = db.Profiles.Find(patientProfileId) as PatientProfile;
 
+            DoctorProfile oldPersonalDoctor = null;
+            if (profile.PersonalDoctor != null)
+            {
+                oldPersonalDoctor = db.Profiles.Find(profile.PersonalDoctor.Id) as DoctorProfile;
+            }
+
+            DoctorProfile oldDentistDoctor = null;
+            if (profile.DentistDoctor != null)
+            {
+                oldDentistDoctor = db.Profiles.Find(profile.DentistDoctor.Id) as DoctorProfile;
+            }
+
+           
+
             if (profile == null)
+            {
+                return NotFound();
+            }
+
+            var personalDoctor = db.Profiles.Find(model.PersonalDoctor) as DoctorProfile;
+            var dentistDoctor = db.Profiles.Find(model.DentistDoctor) as DoctorProfile;
+
+            if (model.PersonalDoctor != null && personalDoctor == null)
+            {
+                return NotFound();
+            }
+            if (model.DentistDoctor != null && dentistDoctor == null)
             {
                 return NotFound();
             }
@@ -285,11 +357,37 @@ namespace tpo10_rest.Controllers.Profiles
             {
                 try
                 {
-                    profile.PersonalDoctor = model.PersonalDoctor;
-                    profile.DentistDoctor = model.DentistDoctor;
+
+                    profile.PersonalDoctor = personalDoctor;
+                    profile.DentistDoctor = dentistDoctor;
+
+                    if(oldPersonalDoctor != null)
+                    {
+                        oldPersonalDoctor.CurrentPatientNumber --;
+                    }
+                    if(oldDentistDoctor != null)
+                    {
+                        oldDentistDoctor.CurrentPatientNumber--;
+                    }
+
+                    personalDoctor.CurrentPatientNumber ++;
+                    dentistDoctor.CurrentPatientNumber ++;
                     
 
                     db.Entry(profile).State = EntityState.Modified;
+
+                    if (oldPersonalDoctor != null)
+                    {
+                        db.Entry(oldPersonalDoctor).State = EntityState.Modified;
+                    }
+                    if (oldDentistDoctor != null)
+                    {
+                        db.Entry(oldDentistDoctor).State = EntityState.Modified;
+                    }
+
+                    db.Entry(personalDoctor).State = EntityState.Modified;
+                    db.Entry(dentistDoctor).State = EntityState.Modified;
+
                     await db.SaveChangesAsync();
 
                     transaction.Commit();

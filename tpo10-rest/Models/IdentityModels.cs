@@ -26,7 +26,7 @@ namespace tpo10_rest.Models
             : base("tpo10db", throwIfV1Schema: false)
         {
         }
-        
+
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
@@ -36,6 +36,7 @@ namespace tpo10_rest.Models
         public virtual DbSet<PatientProfileContact> PatientProfileContacts { get; set; }
         public virtual DbSet<HealthCareProvider> HealthCareProviders { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
+        public virtual DbSet<PatientProfile> PatientProfiles {get;set;}
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

@@ -58,6 +58,7 @@ namespace tpo10_rest.Models
 
         public virtual DoctorProfile PersonalDoctor { get; set; }
         public virtual DoctorProfile DentistDoctor { get; set; }
+
         public virtual Post Post { get; set; }
 
         public virtual PatientProfileContact PatientProfileContact { get; set; }
@@ -83,12 +84,14 @@ namespace tpo10_rest.Models
     {
         [Required]
         [StringLength(4)]
-        //[Index(IsUnique = true)]
         public string DoctorKey { get; set; }
         [Required]
         public int PatientNumber { get; set; }
-
-        public int CurrectPatientNumber { get; set; }
+        [Required]
+        [Range(0, 1)]
+        public int DocOrDentist { get; set; } //0-Doctor, 1-Dentist
+        [Required]
+        public int CurrentPatientNumber { get; set; }
 
         public virtual HealthCareProvider HealthCareProvider { get; set; }
     }
@@ -97,7 +100,6 @@ namespace tpo10_rest.Models
     {
         [Required]
         [StringLength(4)]
-       // [Index(IsUnique = true)]
         public string NurseKey { get; set; }
         public virtual HealthCareProvider HealthCareProvider { get; set; }
     }

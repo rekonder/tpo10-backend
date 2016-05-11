@@ -25,6 +25,8 @@ namespace tpo10_rest.Models
         public string ContactTelephone { get; set; }
         public string ContactFamilyRelationship { get; set; }
 
+        //public virtual PatientProfileContact ContactProfile { get; set; }
+
         public virtual DoctorProfile PersonalDoctor { get; set; }
         public virtual DoctorProfile DentistDoctor { get; set; }
     }
@@ -35,6 +37,20 @@ namespace tpo10_rest.Models
 
         public virtual DoctorProfile PersonalDoctor { get; set; }
         public virtual DoctorProfile DentistDoctor { get; set; }
+    }
+
+    public class DoctorProfileViewModel
+    {
+        public Guid Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Telephone { get; set; }
+        public string DoctorKey { get; set; }
+        public int PatientNumber { get; set; }
+        public int CurrentPatientNumber { get; set; }
+        public int DocOrDentist { get; set; }
+        public string Email { get; set; }
+        public HelperHealthCareProvider HealthCareProvider { get; set; }
     }
 
 }
