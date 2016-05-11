@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -406,7 +407,56 @@ namespace tpo10_rest.Controllers.Profiles
             }
         }
 
+        [Authorize(Roles = "Doctor")]
+        [HttpGet]
+        [Route("{doctorId}/patients")]
+        [ResponseType(typeof(PatientProfileDoctorsViewModel))]
+        public async Task<IHttpActionResult> GetPatientProfileForDoctor(Guid doctorId)
+        {
+            var doctor = await db.Users.Where(e => e.Id == doctorId.ToString()).FirstOrDefaultAsync() as Doctor;
+            IQueryable<PatientProfile> patientProfiles;
+            if(doctor.DoctorProfile.DocOrDentist == 0)
+                patientProfiles = db.Profiles.OfType<PatientProfile>().Where(e => e.PersonalDoctor.Id == doctor.DoctorProfile.Id);
+            else
+                patientProfiles = db.Profiles.OfType<PatientProfile>().Where(e => e.DentistDoctor.Id == doctor.DoctorProfile.Id);
+            if (doctor == null || User.Identity.GetUserId() != doctorId.ToString())
+            {
+                return NotFound();
+            }
+            var profiles = new List<PatientProfileViewModel>();
+            foreach (var patientProfile in patientProfiles)
+            {
+                var profile = new PatientProfileViewModel
+                {
+                    Id = patientProfile.Id,
 
+                    HealthInsuranceNumber = patientProfile.HealthInsuranceNumber,
+                    FirstName = patientProfile.FirstName,
+                    LastName = patientProfile.LastName,
+                    Address = patientProfile.Address,
+                    PostNumber = patientProfile.Post.PostNumber,
+                    Telephone = patientProfile.Telephone,
+                    Gender = patientProfile.Gender,
+                    BirthDate = patientProfile.BirthDate,
+
+                    ContactFirstName = patientProfile.PatientProfileContact.FirstName,
+                    ContactLastName = patientProfile.PatientProfileContact.LastName,
+                    ContactAddress = patientProfile.PatientProfileContact.Address,
+                    ContactPostNumber = patientProfile.PatientProfileContact.Post.PostNumber,
+                    ContactTelephone = patientProfile.PatientProfileContact.Telephone,
+                    ContactFamilyRelationship = patientProfile.PatientProfileContact.FamilyRelationship,
+
+                    //ContactProfile = patientProfile.PatientProfileContact,
+
+                    PersonalDoctor = patientProfile.PersonalDoctor,
+                    DentistDoctor = patientProfile.DentistDoctor
+
+                };
+
+                profiles.Add(profile);
+            }
+            return Ok(profiles);
+        }
 
     }
 }
