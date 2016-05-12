@@ -1163,29 +1163,48 @@
             #region HealthCareProviders
             var healthCareProvider0016 = new HealthCareProvider { Key = "00016", Name = "SB NOVA GORICA", Address = "LISKUR 19", Post = post5000 };
             var healthCareProvider0370 = new HealthCareProvider { Key = "00370", Name = "ZD ČRNOMELJ", Address = "VAJDOVA ULICA 9", Post = post8333 };
+            var healthCareProvider0100 = new HealthCareProvider { Key = "00100", Name = "ZD BREŽICE", Address = "ČERNELČEVA CESTA 8", Post = post8250 };
+            var healthCareProvider0374 = new HealthCareProvider { Key = "00374", Name = "SB NOVO MESTO", Address = "ŠMIHELSKA CESTA 1", Post = post8000 };
+            var healthCareProvider2131 = new HealthCareProvider { Key = "02131", Name = "ZD CELJE", Address = "GREGORČIČEVA ULICA 5", Post = post3000 };
+            var healthCareProvider3561 = new HealthCareProvider { Key = "03561", Name = "ZDRAVSTVENI DOM ILIRSKA", Address = "GREGORČIČEVA ULICA 8", Post = post6250 };
+            var healthCareProvider4870 = new HealthCareProvider { Key = "04870", Name = "ZZV KRANJ", Address = "GOSPOSVETSKA ULICA 12", Post = post4000 };
+            var healthCareProvider4131 = new HealthCareProvider { Key = "04131", Name = "PSIHIATRIČNA BOLNIŠNICA", Address = "BEGUNJE NA GORENJSKEM 55", Post = post4275 };
+            var healthCareProvider6501 = new HealthCareProvider { Key = "06501", Name = "ŽZD LJUBLJANA", Address = "CELOVŠKA CESTA 4", Post = post1000 };
+            var healthCareProvider7602 = new HealthCareProvider { Key = "07602", Name = "ZZV MARIBOR", Address = "PRVOMAJSKA ULICA 1", Post = post2000 };
             #region HealthCareProvider Inserts
             context.HealthCareProviders.AddOrUpdate(
                 h => h.Key,
                 healthCareProvider0016,
-                healthCareProvider0370
+                healthCareProvider0370,
+                healthCareProvider0100,
+                healthCareProvider0374,
+                healthCareProvider2131,
+                healthCareProvider3561,
+                healthCareProvider4870,
+                healthCareProvider4131,
+                healthCareProvider6501,
+                healthCareProvider7602
             );
             #endregion
             #endregion
 
             AddOrUpdateApplicationUser(context, "matjaz.mav@tpo10.com", "matjazmav1", nameof(Administrator));
-            AddOrUpdateApplicationUser(context, "admin@tpo10.com", "administrator1", nameof(Administrator));
+            AddOrUpdateApplicationUser(context, "admin@tpo10.com", "geslo123", nameof(Administrator));
 
-            AddOrUpdateApplicationUser(context, "doctor1@tpo10.com", "doctor1tpo", nameof(Doctor));
-            AddOrUpdateApplicationUser(context, "doctor2@tpo10.com", "doctor2tpo", nameof(Doctor));
-            AddOrUpdateApplicationUser(context, "doctor3@tpo10.com", "doctor3tpo", nameof(Doctor));
+            AddOrUpdateApplicationUser(context, "doctor1@tpo10.com", "geslo123", nameof(Doctor));
+            AddOrUpdateApplicationUser(context, "doctor2@tpo10.com", "geslo123", nameof(Doctor));
+            AddOrUpdateApplicationUser(context, "doctor3@tpo10.com", "geslo123", nameof(Doctor));
+            AddOrUpdateApplicationUser(context, "doctor4@tpo10.com", "geslo123", nameof(Doctor));
 
             context.SaveChanges();
 
             //context, key, Fname, Lname, phone, patient#, HCprovider, doc(0)/dentist(1), email
-            AddDoctorProfile(context, "1111", "1111", "1111", "11111111", 10, "00016", 0, "doctor1@tpo10.com");
-            AddDoctorProfile(context, "2222", "2222", "2222", "222222222", 10, "00016", 0, "doctor2@tpo10.com");
-            AddDoctorProfile(context, "3333", "3333", "3333", "333333333", 10, "00016", 1, "doctor3@tpo10.com");
+            AddDoctorProfile(context, "1111", "Primož", "Trubar", "11111111", 10, "00016", 0, "doctor1@tpo10.com");
+            AddDoctorProfile(context, "2222", "Adam", "Bohorič", "222222222", 0, "00016", 0, "doctor2@tpo10.com");
             
+            AddDoctorProfile(context, "3333", "France", "Prešeren", "333333333", 10, "00016", 1, "doctor3@tpo10.com");
+            AddDoctorProfile(context, "3333", "Ivan", "Cankar", "333333333", 0, "00016", 1, "doctor4@tpo10.com");
+
 #endif
         }
 
@@ -1214,7 +1233,7 @@
                 } 
              } 
         }
-        private void AddDoctorProfile(ApplicationDbContext context, string Key, string FirstName, string LastName, string Telephone, int PatientNumber, string HealthCareProviderNumber, int DocOrDentist,string email)
+        private void AddDoctorProfile(ApplicationDbContext context, string Key, string FirstName, string LastName, string Telephone, int PatientNumber, string HealthCareProviderNumber, int DocOrDentist, string email)
         {
             
             HealthCareProvider health = context.HealthCareProviders.FirstOrDefault(e => e.Key == HealthCareProviderNumber);
