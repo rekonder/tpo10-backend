@@ -21,28 +21,33 @@ namespace tpo10_rest.Controllers.Profiles
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/DoctorProfile
-        public IQueryable<DoctorProfile> GetProfiles()
-        {
-            return db.Profiles.OfType<DoctorProfile>();
-        }
 
         [HttpGet]
-        [Route("selectDoctor")]
         [ResponseType(typeof(List<DoctorProfile>))]
-        public IHttpActionResult GetAvaliableProfiles()
+        public IHttpActionResult GetProfiles()
         {
-            var doctorProfiles = db.Profiles.OfType<DoctorProfile>();
-            var profiles = new List<DoctorProfile>();
-            foreach (var docotorProfile in doctorProfiles)
-            {
-                if(docotorProfile.CurrentPatientNumber < docotorProfile.PatientNumber)
-                {
-                    profiles.Add(docotorProfile);
-                }
-            }
-
-                return Ok(profiles);
+            var r = db.Profiles.OfType<DoctorProfile>().ToList();
+            return Ok(r);
         }
+
+        //[HttpGet]
+        //[Route("selectDoctor")]
+        //[ResponseType(typeof(List<DoctorProfile>))]
+        //public IHttpActionResult GetAvaliableProfiles()
+        //{
+        //    var doctorProfiles = db.Profiles.OfType<DoctorProfile>();
+        //    var profiles = new List<DoctorProfile>();
+        //    foreach (var docotorProfile in doctorProfiles)
+        //    {
+        //        if(docotorProfile.CurrentPatientNumber < docotorProfile.PatientNumber)
+        //        {
+        //            profiles.Add(docotorProfile);
+        //        }
+        //    }
+
+        //        return Ok(profiles);
+        //}
+
         // GET: api/DoctorProfile/5
         [Authorize(Roles = "Doctor")]
         [HttpGet]

@@ -127,11 +127,6 @@ namespace tpo10_rest.Controllers.Profiles
                 return BadRequest();
             }
 
-            if(db.Profiles.OfType<PatientProfile>().Where(e => e.HealthInsuranceNumber == model.HealthInsuranceNumber).Count() > 0)
-            {
-                return BadRequest("Ta ZZZS številka že obstaja.");
-            }
-
             var profile = db.Profiles.Find(patientProfileId) as PatientProfile;
             var profileContact = profile.PatientProfileContact;
             var profilePost = db.Posts.Find(model.PostNumber);
@@ -141,6 +136,12 @@ namespace tpo10_rest.Controllers.Profiles
             {
                 return NotFound();
             }
+
+            // TODO - preverjanje duplikatov
+            //if (db.Profiles.OfType<PatientProfile>().Where(e => e.HealthInsuranceNumber == model.HealthInsuranceNumber).Count() > 0)
+            //{
+            //    return BadRequest("Ta ZZZS številka že obstaja.");
+            //}
 
             using (var transaction = db.Database.BeginTransaction())
             {
