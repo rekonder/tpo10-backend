@@ -6,8 +6,8 @@ using System.Net.Http.Headers;
 namespace tpo10_rest.Areas.HelpPage
 {
     /// <summary>
-    /// This is used to identify the place where the sample should be applied.
-    /// </summary>
+    /// This is used to identify the place 
+    ////// </summary>
     public class HelpPageSampleKey
     {
         /// <summary>
