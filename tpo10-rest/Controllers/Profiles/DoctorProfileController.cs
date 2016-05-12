@@ -171,6 +171,7 @@ namespace tpo10_rest.Controllers.Profiles
                     await db.SaveChangesAsync();
 
                     user.Email = doctorProfile.Email;
+                    user.UserName = doctorProfile.Email;
                     user.DoctorProfile = docProfile;
                     await db.SaveChangesAsync();
 

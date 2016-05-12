@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -126,6 +127,11 @@ namespace tpo10_rest.Controllers.Profiles
                 return BadRequest();
             }
 
+            if(db.Profiles.OfType<PatientProfile>().Where(e => e.HealthInsuranceNumber == model.HealthInsuranceNumber).Count() > 0)
+            {
+                return BadRequest("Ta ZZZS številka že obstaja.");
+            }
+
             var profile = db.Profiles.Find(patientProfileId) as PatientProfile;
             var profileContact = profile.PatientProfileContact;
             var profilePost = db.Posts.Find(model.PostNumber);
@@ -184,6 +190,11 @@ namespace tpo10_rest.Controllers.Profiles
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
+            }
+
+            if (db.Profiles.OfType<PatientProfile>().Where(e => e.HealthInsuranceNumber == model.HealthInsuranceNumber).Count() > 0)
+            {
+                return BadRequest("Ta ZZZS številka že obstaja.");
             }
 
             var user = await db.Users.Where(e => e.Id == userId).FirstOrDefaultAsync() as Patient;
@@ -315,12 +326,12 @@ namespace tpo10_rest.Controllers.Profiles
                 return BadRequest(ModelState);
             }
 
-            if (patientProfileId != model.Id)
+            var profile = db.Profiles.Find(patientProfileId) as PatientProfile;
+
+            if (profile == null)
             {
                 return BadRequest();
             }
-
-            var profile = db.Profiles.Find(patientProfileId) as PatientProfile;
 
             DoctorProfile oldPersonalDoctor = null;
             if (profile.PersonalDoctor != null)
@@ -334,60 +345,65 @@ namespace tpo10_rest.Controllers.Profiles
                 oldDentistDoctor = db.Profiles.Find(profile.DentistDoctor.Id) as DoctorProfile;
             }
 
-           
-
-            if (profile == null)
-            {
-                return NotFound();
-            }
-
             var personalDoctor = db.Profiles.Find(model.PersonalDoctor) as DoctorProfile;
             var dentistDoctor = db.Profiles.Find(model.DentistDoctor) as DoctorProfile;
 
-            if (model.PersonalDoctor != null && personalDoctor == null)
-            {
-                return NotFound();
-            }
-            if (model.DentistDoctor != null && dentistDoctor == null)
-            {
-                return NotFound();
-            }
 
+            if (model.PersonalDoctor != Guid.Empty && personalDoctor == null)
+            {
+                return NotFound();
+            }
+            if (model.DentistDoctor != Guid.Empty && dentistDoctor == null)
+            {
+                return NotFound();
+            }
+            if(personalDoctor != null && personalDoctor.PatientNumber - personalDoctor.CurrentPatientNumber <= 0 && personalDoctor.DoctorKey != oldPersonalDoctor.DoctorKey)
+            {
+                return BadRequest();
+            }
+            if (dentistDoctor != null && dentistDoctor.PatientNumber - dentistDoctor.CurrentPatientNumber <= 0 && dentistDoctor.DoctorKey != dentistDoctor.DoctorKey)
+            {
+                return BadRequest();
+            }
             using (var transaction = db.Database.BeginTransaction())
             {
                 try
                 {
-
-                    profile.PersonalDoctor = personalDoctor;
-                    profile.DentistDoctor = dentistDoctor;
-
-                    if(oldPersonalDoctor != null)
+                    if(personalDoctor != null)
                     {
-                        oldPersonalDoctor.CurrentPatientNumber --;
+                        profile.PersonalDoctor = personalDoctor;
+                        if (oldPersonalDoctor != null)
+                        {
+                            oldPersonalDoctor.CurrentPatientNumber--;
+                        }
+                        personalDoctor.CurrentPatientNumber++;
+                       
+                        if (oldPersonalDoctor != null)
+                        {
+                            db.Entry(oldPersonalDoctor).State = EntityState.Modified;
+                        }
+
+                        db.Entry(personalDoctor).State = EntityState.Modified;
                     }
-                    if(oldDentistDoctor != null)
+                    if (dentistDoctor != null)
                     {
-                        oldDentistDoctor.CurrentPatientNumber--;
+                        profile.DentistDoctor = dentistDoctor;
+
+
+                        if (oldDentistDoctor != null)
+                        {
+                            oldDentistDoctor.CurrentPatientNumber--;
+                        }
+
+                        dentistDoctor.CurrentPatientNumber++;
+
+                        if (oldDentistDoctor != null)
+                        {
+                            db.Entry(oldDentistDoctor).State = EntityState.Modified;
+                        }
+                        db.Entry(dentistDoctor).State = EntityState.Modified;
                     }
-
-                    personalDoctor.CurrentPatientNumber ++;
-                    dentistDoctor.CurrentPatientNumber ++;
-                    
-
                     db.Entry(profile).State = EntityState.Modified;
-
-                    if (oldPersonalDoctor != null)
-                    {
-                        db.Entry(oldPersonalDoctor).State = EntityState.Modified;
-                    }
-                    if (oldDentistDoctor != null)
-                    {
-                        db.Entry(oldDentistDoctor).State = EntityState.Modified;
-                    }
-
-                    db.Entry(personalDoctor).State = EntityState.Modified;
-                    db.Entry(dentistDoctor).State = EntityState.Modified;
-
                     await db.SaveChangesAsync();
 
                     transaction.Commit();
@@ -401,7 +417,56 @@ namespace tpo10_rest.Controllers.Profiles
             }
         }
 
+        [Authorize(Roles = "Doctor")]
+        [HttpGet]
+        [Route("{doctorId}/patients")]
+        [ResponseType(typeof(PatientProfileDoctorsViewModel))]
+        public async Task<IHttpActionResult> GetPatientProfileForDoctor(Guid doctorId)
+        {
+            var doctor = await db.Users.Where(e => e.Id == doctorId.ToString()).FirstOrDefaultAsync() as Doctor;
+            IQueryable<PatientProfile> patientProfiles;
+            if(doctor.DoctorProfile.DocOrDentist == 0)
+                patientProfiles = db.Profiles.OfType<PatientProfile>().Where(e => e.PersonalDoctor.Id == doctor.DoctorProfile.Id);
+            else
+                patientProfiles = db.Profiles.OfType<PatientProfile>().Where(e => e.DentistDoctor.Id == doctor.DoctorProfile.Id);
+            if (doctor == null || User.Identity.GetUserId() != doctorId.ToString())
+            {
+                return NotFound();
+            }
+            var profiles = new List<PatientProfileViewModel>();
+            foreach (var patientProfile in patientProfiles)
+            {
+                var profile = new PatientProfileViewModel
+                {
+                    Id = patientProfile.Id,
 
+                    HealthInsuranceNumber = patientProfile.HealthInsuranceNumber,
+                    FirstName = patientProfile.FirstName,
+                    LastName = patientProfile.LastName,
+                    Address = patientProfile.Address,
+                    PostNumber = patientProfile.Post.PostNumber,
+                    Telephone = patientProfile.Telephone,
+                    Gender = patientProfile.Gender,
+                    BirthDate = patientProfile.BirthDate,
+
+                    ContactFirstName = patientProfile.PatientProfileContact.FirstName,
+                    ContactLastName = patientProfile.PatientProfileContact.LastName,
+                    ContactAddress = patientProfile.PatientProfileContact.Address,
+                    ContactPostNumber = patientProfile.PatientProfileContact.Post.PostNumber,
+                    ContactTelephone = patientProfile.PatientProfileContact.Telephone,
+                    ContactFamilyRelationship = patientProfile.PatientProfileContact.FamilyRelationship,
+
+                    //ContactProfile = patientProfile.PatientProfileContact,
+
+                    PersonalDoctor = patientProfile.PersonalDoctor,
+                    DentistDoctor = patientProfile.DentistDoctor
+
+                };
+
+                profiles.Add(profile);
+            }
+            return Ok(profiles);
+        }
 
     }
 }
