@@ -19,7 +19,7 @@
 
         protected override void Seed(ApplicationDbContext context)
         {
-#if false
+#if true
             #region Roles
             var roleAdministrator = new IdentityRole { Name = nameof(Administrator) };
             var roleDoctor = new IdentityRole { Name = nameof(Doctor) };
@@ -1173,19 +1173,22 @@
             #endregion
 
             AddOrUpdateApplicationUser(context, "matjaz.mav@tpo10.com", "matjazmav1", nameof(Administrator));
-            AddOrUpdateApplicationUser(context, "admin@tpo10.com", "administrator1", nameof(Administrator));
+            AddOrUpdateApplicationUser(context, "admin@tpo10.com", "geslo123", nameof(Administrator));
 
-            AddOrUpdateApplicationUser(context, "doctor1@tpo10.com", "doctor1tpo", nameof(Doctor));
-            AddOrUpdateApplicationUser(context, "doctor2@tpo10.com", "doctor2tpo", nameof(Doctor));
-            AddOrUpdateApplicationUser(context, "doctor3@tpo10.com", "doctor3tpo", nameof(Doctor));
+            AddOrUpdateApplicationUser(context, "doctor1@tpo10.com", "geslo123", nameof(Doctor));
+            AddOrUpdateApplicationUser(context, "doctor2@tpo10.com", "geslo123", nameof(Doctor));
+            AddOrUpdateApplicationUser(context, "doctor3@tpo10.com", "geslo123", nameof(Doctor));
+            AddOrUpdateApplicationUser(context, "doctor4@tpo10.com", "geslo123", nameof(Doctor));
 
             context.SaveChanges();
 
             //context, key, Fname, Lname, phone, patient#, HCprovider, doc(0)/dentist(1), email
-            AddDoctorProfile(context, "1111", "1111", "1111", "11111111", 10, 16, 0, "doctor1@tpo10.com");
-            AddDoctorProfile(context, "2222", "2222", "2222", "222222222", 10, 16, 0, "doctor2@tpo10.com");
-            AddDoctorProfile(context, "3333", "3333", "3333", "333333333", 10, 16, 1, "doctor3@tpo10.com");
-            
+            AddDoctorProfile(context, "Primož", "Trubar", "1111", "11111111", 10, 16, 0, "doctor1@tpo10.com");
+            AddDoctorProfile(context, "Adam", "Bohorič", "2222", "222222222", 0, 16, 0, "doctor2@tpo10.com");
+
+            AddDoctorProfile(context, "France", "Prešeren", "3333", "333333333", 10, 16, 1, "doctor3@tpo10.com");
+            AddDoctorProfile(context, "Ivan", "Cankar", "3333", "333333333", 0, 16, 1, "doctor4@tpo10.com");
+
 #endif
         }
 
