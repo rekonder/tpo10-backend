@@ -43,6 +43,10 @@ namespace tpo10_rest.Models
         public virtual DbSet<Diet> Diets { get; set; }
         public virtual DbSet<Medication> Medications { get; set; }
         public virtual DbSet<Observation> Observations { get; set; }
+        public virtual DbSet<Measurement> Measurements { get; set; }
+        public virtual DbSet<MeasurementPart> MeasurementParts { get; set; }
+        public virtual DbSet<MedicationInstruction> MedicationInstructions { get; set; }
+        public virtual DbSet<DietInstruction> DietInstructions { get; set; } 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

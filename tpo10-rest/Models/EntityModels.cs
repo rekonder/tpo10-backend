@@ -172,13 +172,8 @@ namespace tpo10_rest.Models
         public virtual ICollection<Observation> Observations { get; set; } = new List<Observation>();
     }
 
-    public partial class Instruction
+    public partial class Instruction : Entity
     {
-        [Key]
-        [StringLength(4)]
-        public string InstructionKey { get; set; }
-        [Required]
-        public string Description { get; set; }
         [Index(IsUnique = true)]
         [Required]
         [MaxLength(200)]
@@ -243,9 +238,10 @@ namespace tpo10_rest.Models
         public virtual MeasurementPart MeasurementPart { get; set; }
     }
 
-    public partial class Measurement 
+    public partial class Measurement : Entity
     {
-        [Key]
+        [Index(IsUnique = true)]
+        [Required]
         [MaxLength(200)]
         public string MeasurementName { get; set; }
         public string MeasurementNotes { get; set; }
