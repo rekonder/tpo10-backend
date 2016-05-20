@@ -62,6 +62,9 @@ namespace tpo10_rest.Models
         public virtual Post Post { get; set; }
 
         public virtual PatientProfileContact PatientProfileContact { get; set; }
+        
+        public virtual ICollection<PatientProfileMeasurement> PatientProfileMeasurements { get; set; } = new List<PatientProfileMeasurement>();
+        
     }
 
     public class PatientProfileContact : Entity
@@ -137,4 +140,135 @@ namespace tpo10_rest.Models
         [JsonIgnore]
         public virtual ICollection<PatientProfileContact> PatientProfileContacts { get; set; } = new List<PatientProfileContact>();
     }
+    
+    public partial class Allergy 
+    {
+        [Key]
+        [MaxLength(200)]
+        public string AllergyKey { get; set; }
+        [Required]
+        public string AllergyName { get; set; }
+        public virtual ICollection<Medication> Medications { get; set; } = new List<Medication>();
+        public virtual ICollection<Observation> Observations { get; set; } = new List<Observation>();
+    }
+
+    public partial class Disease 
+    {
+        [Key]
+        [MaxLength(200)]
+        public string DiseaseKey { get; set; }
+        public string DiseaseName { get; set; }
+        public virtual ICollection<Medication> Medications { get; set; } = new List<Medication>();
+        public virtual ICollection<Observation> Observations { get; set; } = new List<Observation>();
+    }
+
+    public partial class Diet
+    {
+        [Key]
+        [MaxLength(200)]
+        public string DietKey { get; set; }
+        public string DietName { get; set; }
+        public virtual ICollection<DietInstruction> DietInstructions { get; set; } = new List<DietInstruction>();
+        public virtual ICollection<Observation> Observations { get; set; } = new List<Observation>();
+    }
+
+    public partial class Instruction
+    {
+        [Key]
+        [StringLength(4)]
+        public string InstructionKey { get; set; }
+        [Required]
+        public string Description { get; set; }
+        [Index(IsUnique = true)]
+        [Required]
+        [MaxLength(200)]
+        public string Url { get; set; }
+    }
+
+    public partial class DietInstruction : Instruction
+    {
+        public virtual Diet Diet { get; set; }
+    }
+
+    public partial class MedicationInstruction : Instruction
+    {
+        public virtual ICollection<Medication> Medications { get; set; } = new List<Medication>();
+    }
+
+
+    public partial class Medication 
+    {
+        [Key]
+        [MaxLength(200)]
+        public string MedicationKey { get; set; }
+        public string MedicationName { set; get; }
+        public virtual MedicationInstruction MedicationInstruction { get; set; }
+        public virtual ICollection<Observation> Observations { get; set; } = new List<Observation>();
+        public virtual ICollection<Allergy> Allergies { get; set; } = new List<Allergy>();
+        public virtual ICollection<Disease> Diseases { get; set; } = new List<Disease>();
+    }
+
+    public partial class Observation : Entity
+    {   
+        //public virtual Appointment Appointment { get; set; }
+        public virtual DateTime ObservationTime { get; set; }
+        public virtual PatientProfile PatientProfile { get; set; }
+        public virtual DoctorProfile DoctorProfile { get; set; }
+        public virtual ICollection<Allergy> Allergies { get; set; } = new List<Allergy>();
+        public virtual ICollection<Disease> Diseases { get; set; } = new List<Disease>();
+        public virtual ICollection<Diet> Diets { get; set; } = new List<Diet>();
+        public virtual ICollection<Medication> Medications { get; set; } = new List<Medication>();
+        public virtual ICollection<ObservationMeasurement> ObservationMeasurements { get; set; } = new List<ObservationMeasurement>();
+    }
+
+    // An intermediate table between Observation and MeasurementPart
+    public class ObservationMeasurement : Entity
+    {
+        [Required]
+        public double Value { get; set; }
+        [Required]
+        public virtual DateTime MeasurementTime { get; set; }
+        public virtual Observation Observation { get; set; }
+        public virtual MeasurementPart MeasurementPart { get; set; }
+    }
+
+    // An intermediate table between PatientProfile and MeasurementPart
+    public class PatientProfileMeasurement : Entity
+    {
+        [Required]
+        public double Value { get; set; }
+        [Required]
+        public virtual DateTime MeasurementTime { get; set; }
+        public virtual PatientProfile PatientProfile { get; set; }
+        public virtual MeasurementPart MeasurementPart { get; set; }
+    }
+
+    public partial class Measurement 
+    {
+        [Key]
+        [MaxLength(200)]
+        public string MeasurementName { get; set; }
+        public string MeasurementNotes { get; set; }
+        public virtual ICollection<MeasurementPart> MeasurementParts { get; set; } = new List<MeasurementPart>();
+    }
+
+    public partial class MeasurementPart : Entity
+    {
+        [Index(IsUnique = true)]
+        [Required]
+        [MaxLength(200)]
+        public string MeasurementPartName { get; set; }
+        public string MeasurementTake { get; set; }
+        [Required]
+        public string MeasurementUnit { get; set; }
+        public string MeasurementTime { get; set; } //Which part of day
+        public string MeasurementNormal { get; set; }
+        public string MeasurementBelow { get; set; }
+        public string MeasurementMore { get; set; }
+        public string MeasurementExtreme { get; set; }
+        public virtual Measurement Measurement { get; set; }
+        //public virtual ICollection<ObservationMeasurementParts> ObservationMeasurementParts { get; set; } = new List<ObservationMeasurementParts>();
+        //public virtual ICollection<PatientProfile> PatientsProfile { get; set; } = new List<PatientProfile>();
+    }
+    
 }

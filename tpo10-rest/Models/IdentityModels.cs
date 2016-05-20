@@ -38,6 +38,11 @@ namespace tpo10_rest.Models
         public virtual DbSet<HealthCareProvider> HealthCareProviders { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<PatientProfile> PatientProfiles {get;set;}
+        public virtual DbSet<Allergy> Allergies { get; set; }
+        public virtual DbSet<Disease> Diseases { get; set; }
+        public virtual DbSet<Diet> Diets { get; set; }
+        public virtual DbSet<Medication> Medications { get; set; }
+        public virtual DbSet<Observation> Observations { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
