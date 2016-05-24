@@ -38,6 +38,7 @@ namespace tpo10_rest.Models
         public virtual DbSet<HealthCareProvider> HealthCareProviders { get; set; }
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<PatientProfile> PatientProfiles {get;set;}
+        public virtual DbSet<DoctorProfile> DoctorProfile { get; set; }
         public virtual DbSet<Allergy> Allergies { get; set; }
         public virtual DbSet<Disease> Diseases { get; set; }
         public virtual DbSet<Diet> Diets { get; set; }
@@ -47,6 +48,7 @@ namespace tpo10_rest.Models
         public virtual DbSet<MeasurementPart> MeasurementParts { get; set; }
         public virtual DbSet<MedicationInstruction> MedicationInstructions { get; set; }
         public virtual DbSet<DietInstruction> DietInstructions { get; set; } 
+        public virtual DbSet<ObservationMeasurement> ObservationMeasurement { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

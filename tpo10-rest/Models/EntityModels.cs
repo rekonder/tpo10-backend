@@ -206,6 +206,7 @@ namespace tpo10_rest.Models
     public partial class Observation : Entity
     {   
         //public virtual Appointment Appointment { get; set; }
+        public virtual string Notes { get; set; }
         public virtual DateTime ObservationTime { get; set; }
         public virtual PatientProfile PatientProfile { get; set; }
         public virtual DoctorProfile DoctorProfile { get; set; }
