@@ -148,7 +148,9 @@ namespace tpo10_rest.Models
         public string AllergyKey { get; set; }
         [Required]
         public string AllergyName { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Medication> Medications { get; set; } = new List<Medication>();
+        [JsonIgnore]
         public virtual ICollection<Observation> Observations { get; set; } = new List<Observation>();
     }
 
@@ -158,7 +160,9 @@ namespace tpo10_rest.Models
         [MaxLength(200)]
         public string DiseaseKey { get; set; }
         public string DiseaseName { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Medication> Medications { get; set; } = new List<Medication>();
+        [JsonIgnore]
         public virtual ICollection<Observation> Observations { get; set; } = new List<Observation>();
     }
 
@@ -169,6 +173,7 @@ namespace tpo10_rest.Models
         public string DietKey { get; set; }
         public string DietName { get; set; }
         public virtual ICollection<DietInstruction> DietInstructions { get; set; } = new List<DietInstruction>();
+        [JsonIgnore]
         public virtual ICollection<Observation> Observations { get; set; } = new List<Observation>();
     }
 
@@ -182,11 +187,13 @@ namespace tpo10_rest.Models
 
     public partial class DietInstruction : Instruction
     {
+        [JsonIgnore]
         public virtual Diet Diet { get; set; }
     }
 
     public partial class MedicationInstruction : Instruction
     {
+        [JsonIgnore]
         public virtual ICollection<Medication> Medications { get; set; } = new List<Medication>();
     }
 
@@ -198,8 +205,11 @@ namespace tpo10_rest.Models
         public string MedicationKey { get; set; }
         public string MedicationName { set; get; }
         public virtual MedicationInstruction MedicationInstruction { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Observation> Observations { get; set; } = new List<Observation>();
+        [JsonIgnore]
         public virtual ICollection<Allergy> Allergies { get; set; } = new List<Allergy>();
+        [JsonIgnore]
         public virtual ICollection<Disease> Diseases { get; set; } = new List<Disease>();
     }
 
@@ -224,6 +234,7 @@ namespace tpo10_rest.Models
         public double Value { get; set; }
         [Required]
         public virtual DateTime MeasurementTime { get; set; }
+        [JsonIgnore]
         public virtual Observation Observation { get; set; }
         public virtual MeasurementPart MeasurementPart { get; set; }
     }
@@ -263,6 +274,7 @@ namespace tpo10_rest.Models
         public string MeasurementBelow { get; set; }
         public string MeasurementMore { get; set; }
         public string MeasurementExtreme { get; set; }
+        [JsonIgnore]
         public virtual Measurement Measurement { get; set; }
         //public virtual ICollection<ObservationMeasurementParts> ObservationMeasurementParts { get; set; } = new List<ObservationMeasurementParts>();
         //public virtual ICollection<PatientProfile> PatientsProfile { get; set; } = new List<PatientProfile>();
