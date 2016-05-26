@@ -19,7 +19,7 @@
 
         protected override void Seed(ApplicationDbContext context)
         {
-#if false
+#if true
             #region Roles
             var roleAdministrator = new IdentityRole { Name = nameof(Administrator) };
             var roleDoctor = new IdentityRole { Name = nameof(Doctor) };
@@ -1188,6 +1188,212 @@
             #endregion
             #endregion
 
+            #region Sprint3Entities
+            AddOrUpdateDiseaseMedications(context, "I10", "Esencialna hipertenzija", "http://www.vitabalans.com/index.php?id=zopitin0004", "082392", "Enalapril Vitabalans 10 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "I10", "Esencialna hipertenzija", "http://www.cbz.si/cbz/bazazdr2.nsf/o/F2D46D0FDF63B711C12579C2003F5E1A/$File/a-016418.pdf", "016470", "Piramil 10 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "I10", "Esencialna hipertenzija", "http://www.krka.si/sl/zdravila-in-izdelki/zdravila-na-recept/enap/1323/#title", "028479", "Enap 10 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "I10", "Esencialna hipertenzija", "http://www.cbz.si/cbz/bazazdr2.nsf/o/68FDAEEE845A0E52C12579C2003F563B/$File/a-016414.pdf", "059064", "Olivin 10 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "I11", "Hipertenzivna srčna bolezen z (zastojno) srčno odpovedjo", "http://si.draagle.com/#!/drug/kzk/?sub=10", "011444", "Concor 5 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "I11", "Hipertenzivna srčna bolezen z (zastojno) srčno odpovedjo", "http://www.lek.si/si/zdravila/na-recept/pakiranje/5862/", "115746", "Byol 5 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "I11", "Hipertenzivna srčna bolezen z (zastojno) srčno odpovedjo", "http://www.cbz.si/cbz/bazazdr2.nsf/o/C393D32B6CCD5421C12579EC00200928/$File/a-009508.pdf", "129607", "Borez 5 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "I11", "Hipertenzivna srčna bolezen z (zastojno) srčno odpovedjo", "http://www.cbz.si/cbz/bazazdr2.nsf/o/65930B0D5833253BC1257C780004AF95/$File/a-013730.pdf", "146097", "Concordina 5 mg / 5 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "I11", "Hipertenzivna srčna bolezen z (zastojno) srčno odpovedjo", "http://www.cbz.si/cbz/bazazdr2.nsf/o/73A663A39EB07033C12579C2003F5EE2/$File/a-014615.pdf", "060755", "Lodoz 5 mg / 6,25 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "I11", "Hipertenzivna srčna bolezen z (zastojno) srčno odpovedjo", "http://www.cbz.si/cbz/bazazdr2.nsf/o/06C4EB4CE17A2068C1257C780004B023/$File/a-013839.pdf", "146144", "Sobycor 5 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "E11", "Diabetes tip 2", "http://www.medis.si/fileadmin/medis/medis.si/docs/Navodilo_za_uporabo_Aglurab_SI.pdf", "144343", "Aglurab 1000 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "E11", "Diabetes tip 2", "http://si.draagle.com/#!/greader/?file=http%3A%2F%2Fskrito.draagle.com%2Fmedia%2Fd%2Fpil%2F040886_pil.pdf", "040886", "Glucophage 1000 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "E11", "Diabetes tip 2", "https://mediately.co/si/drugs/WjSUunNJrYrsXmP7DiMg2FANnb9/belformin-500-mg-filmsko-oblozene-tablete", "145137", "Belformin 500 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "E11", "Diabetes tip 2", "http://www.cbz.si/cbz/bazazdr2.nsf/o/C35AF3CC02742C17C12579EC0020018C/$File/a-007344.pdf", "108375", "Formagliben 500 mg / 2,5 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "E11", "Diabetes tip 2", "http://www.cbz.si/cbz/bazazdr2.nsf/o/2482BE471CABFF87C12579C2003F5360/$File/a-015772.pdf", "040886", "Glucophage 1000 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "E11", "Diabetes tip 2", "http://www.cbz.si/cbz/bazazdr2.nsf/o/4FC2A54BA1DBA6A0C12579C2003F6956/$File/a-020018.pdf", "042021", "Metfogamma 1000 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "E11", "Diabetes tip 2", "http://www.cbz.si/cbz/bazazdr2.nsf/o/1D5A54DC62638DE6C12579C2003F61CD/$File/a-014628.pdf", "025550", "Siofor 1000 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "E10", "Diabetes tip 1", "https://www.diagnosia.com/si/zdravila/actrapid-100-ieml-raztopina-za-injiciranje-v-viali", "030619", "Actrapid 100 i.e.Raztopina za injiciranje v viali");
+            AddOrUpdateDiseaseMedications(context, "E10", "Diabetes tip 1", "https://www.diagnosia.com/si/zdravila/actrapid-flexpen-100-ieml-raztopina-za-injiciranje-v-napolnjenem-injekcijskem-peresniku", "051101", "Actrapid FlexPen 100 i.e.Raztopina za injiciranje v napolnjenem injekcijskem peresniku");
+            AddOrUpdateDiseaseMedications(context, "E10", "Diabetes tip 1", "http://www.cbz.si/cbz/bazazdr2.nsf/o/5536585C91748BDFC12579C2003F5D63/$File/a-012384.pdf", "095990", "Humulin M3 100 i.e./ ml suspenzija za injiciranje v vložku");
+            AddOrUpdateDiseaseMedications(context, "E10", "Diabetes tip 1", "https://myhealthbox.eu/fr/view/1697664/a841ce6cfa958e9d21d2636b18e07e8c/leaflet", "030147", "Insuman Rapid 100 i.e./ ml OptiSet raztopina za injiciranje");
+            AddOrUpdateDiseaseMedications(context, "E10", "Diabetes tip 1", "http://www.diagnosia.com/si/zdravila/mixtard-30-novolet-100-ieml-suspenzija-za-injiciranje-v-napolnjenem-injekcijskem-peresniku", "019534", "Mixtard 10 NovoLet 100 i.e./ ml suspenzija za injiciranje v napolnjenem injekcijskem peresniku");
+            AddOrUpdateDiseaseMedications(context, "K29", "Gastritis", "http://www.cbz.si/cbz/bazazdr2.nsf/o/C3E218A9243FF5E9C1257C310004BB75?opendocument", "145976", "Ranitidin Accord 150 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "K29", "Gastritis", "http://www.lek.si/si/zdravila/brez-recepta/ranital-s-150/", "071684", "Ranital 150 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "R10.0", "Bolečina v trebuhu ali medenici", "http://www.cbz.si/cbz/bazazdr2.nsf/o/017078003F4E9B32C1257CC90083116E/$File/a-014247.pdf", "146311", "Metamizol STADA 500 mg / ml peroralne kapljice, raztopina");
+            AddOrUpdateDiseaseMedications(context, "R10.0", "Bolečina v trebuhu ali medenici", "http://data.zdravila.net/pdf/a-010513.pdf", "000191", "Analgin 500 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "N40", "Hiperplazija prostate", "http://www.cbz.si/cbz/bazazdr2.nsf/o/7C3C54F51BD29C59C12579C2003F63EF?opendocument", "038695", "Omnic Ocas 0,4 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "N40", "Hiperplazija prostate", "http://si.draagle.com/#!/greader/?file=http%3A%2F%2Fskrito.draagle.com%2Fmedia%2Fd%2Fpil%2F105864_pil.pdf", "105864", "Combodart 0,5 mg / 0,4mg kaps");
+            AddOrUpdateDiseaseMedications(context, "N40", "Hiperplazija prostate", "http://www.cbz.si/cbz/bazazdr2.nsf/o/374B2D55A7D6E43AC12579EC002008A5/$File/a-016035.pdf", "128333", "Miktan 0,4 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "N40", "Hiperplazija prostate", "http://www.cbz.si/cbz/bazazdr2.nsf/o/CD18459F93237B13C12579C2003F68AF/$File/a-015652.pdf", "033880", "Morvesin 0,4 mg trde kapsule");
+            AddOrUpdateDiseaseMedications(context, "N40", "Hiperplazija prostate", "http://www.cbz.si/cbz/bazazdr2.nsf/o/B940B7C0F083BE58C12579C2003F637A/$File/a-015072.pdf", "038245", "Tanyz 0,4 mg trde kapsule");
+            AddOrUpdateDiseaseMedications(context, "E03", "Hipotiroza (druge vrste)", "http://www.cbz.si/cbz/bazazdr2.nsf/o/3291459E7EB4AD14C1257CB400833420?opendocument", "146102", "Dicitirox 50 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "E03", "Hipotiroza (druge vrste)", "http://www.cbz.si/cbz/bazazdr2.nsf/o/2ABD62F024313965C12579C2003F5CBB/$File/a-012092.pdf", "092010", "Eltroxin 50 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "E03", "Hipotiroza (druge vrste)", "http://si.draagle.com/#!/source/ljn/?drug=ljo", "023442", "Euthyrox 50 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "N30", "Cistitis (vnetja sečnega mehurja)", "http://www.cbz.si/cbz/bazazdr2.nsf/o/6151BEF7B09CA95AC12579C2003F5062?opendocument", "022454", "Ciprobay 500 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "N30", "Cistitis (vnetja sečnega mehurja)", "http://www.cbz.si/cbz/bazazdr2.nsf/o/44DDA83404E35C16C12579C2003F533A/$File/a-015920.pdf", "040398", "Ciprinol 500 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "N30", "Cistitis (vnetja sečnega mehurja)", "http://www.lek.si/si/zdravila/na-recept/pakiranje/1692/", "086029", "Ciprofloksacin Lek 500 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "N30", "Cistitis (vnetja sečnega mehurja)", "http://www.lek.si/si/zdravila/na-recept/pakiranje/433/", "069418", "Primotren 80mg / 400 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "E78.0", "Hiperholesterolemija", "http://www.cbz.si/cbz/bazazdr2.nsf/o/F52A113BA34EB9E3C12579EC00200024?opendocument", "104426", "Coupet 20 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "E78.0", "Hiperholesterolemija", "http://www.krka.si/sl/zdravila-in-izdelki/zdravila-na-recept/sorvastatablete/1673/", "109827", "Sorvasta 20 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "E78.0", "Hiperholesterolemija", "http://www.cbz.si/cbz/bazazdr2.nsf/o/EBA7391D45C8FEBDC12579EC0020021A/$File/a-014601.pdf", "109932", "Vosustat 20 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "E78.0", "Hiperholesterolemija", "http://www.cbz.si/cbz/bazazdr2.nsf/o/A2118DFEC432DB52C12579EC00200204/$File/a-016289.pdf", "109690", "Rosuvastatin Teva 20 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "J11", "Gripa, virus ni dokazan", "http://www.cbz.si/cbz/bazazdr2.nsf/o/1B374BA216FAD256C12579C2003F6932?opendocument", "034487", "Daleron 500 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "J11", "Gripa, virus ni dokazan", "http://www.lek.si/si/zdravila/brez-recepta/lekadol-filmsko-oblozene-tablete/", "055654", "Lekadol 500 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "J11", "Gripa, virus ni dokazan", "http://www.cbz.si/cbz/bazazdr2.nsf/o/74B2434C07A44F18C12579C2003F4B3E/$File/a-011568.pdf", "002739", "Calpol 250 mg / 5 ml peroralna suspenzija");
+            AddOrUpdateDiseaseMedications(context, "J11", "Gripa, virus ni dokazan", "http://www.cbz.si/cbz/bazazdr2.nsf/o/8BA9838F72FB4FA4C12579EC001FFABB?opendocument", "072940", "Doreta 37,5 mg / 325 mg");
+            AddOrUpdateDiseaseMedications(context, "J11", "Gripa, virus ni dokazan", "http://www.cbz.si/cbz/bazazdr2.nsf/o/4D14143C7F6E1F04C1257C620004CDD8/$File/a-016095.pdf", "146066", "Ibuem 250 mg / 250 mg / 50 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "J11", "Gripa, virus ni dokazan", "http://www.cbz.si/cbz/bazazdr2.nsf/o/97D3848355D4ABDAC12579C2003F5CDE/$File/a-015216.pdf", "093351", "Panadol 500 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "J11", "Gripa, virus ni dokazan", "http://www.cbz.si/cbz/bazazdr2.nsf/o/C8122F0572FA7141C12579EC001FFF17/$File/a-600695.pdf", "600695", "Paracetamol svečke 500 mg (Lekarne Ljubljana)");
+            AddOrUpdateDiseaseMedications(context, "J11", "Gripa, virus ni dokazan", "http://www.cbz.si/cbz/bazazdr2.nsf/o/FCD99A29EDCF611EC12579F900492129/$File/a-016002.pdf", "136058", "Tevitamol 500 mg tablete");
+            AddOrUpdateDiseaseMedications(context, "F41.0", "Panična anksiozna motnja", "http://www.cbz.si/cbz/bazazdr2.nsf/o/5C58B200098CB5A2C12579C2003F53E1?opendocument", "046124", "Lexaurin 3 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "F41.0", "Panična anksiozna motnja", "http://www.cbz.si/cbz/bazazdr2.nsf/o/1AF7CA6F1A775F6BC12579C2003F53C6/$File/a-015373.pdf", "045136", "Lekotam 3 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "F41.0", "Panična anksiozna motnja", "http://www.krka.si/sl/zdravila-in-izdelki/zdravila-na-recept/apaurintablete/1287/", "019348", "Apaurin 10 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "F32.1", "Zmerna depresivna motnja", "http://www.cbz.si/cbz/bazazdr2.nsf/o/0049AAE59E3AA8D3C12579C2003F532C?opendocument", "040096", "Cipralex 10 mg");
+            AddOrUpdateDiseaseMedications(context, "F32.1", "Zmerna depresivna motnja", "http://www.lek.si/si/zdravila/na-recept/pakiranje/5775/", "125610", "Citafort 10 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "F32.1", "Zmerna depresivna motnja", "http://www.cbz.si/cbz/bazazdr2.nsf/o/8911B2FE3FFF0EF2C12579EC001FF931/$File/a-016214.pdf", "058793", "Ecytara 10 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "F32.1", "Zmerna depresivna motnja", "http://www.cbz.si/cbz/bazazdr2.nsf/o/A9B3E333AEC06FBEC12579EC001FFC93/$File/a-016422.pdf", "085685", "Elicea 10 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "F32.1", "Zmerna depresivna motnja", "http://www.cbz.si/cbz/bazazdr2.nsf/o/C0CAA315ECDB0887C1257CC90083113C/$File/a-016017.pdf", "146299", "Escitalopram Krka 10 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "F32.1", "Zmerna depresivna motnja", "http://www.cbz.si/cbz/bazazdr2.nsf/o/011783EE948D7D8FC12579EC00200501/$File/a-016059.pdf", "118460", "Otigem 10 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "F32.1", "Zmerna depresivna motnja", "http://www.cbz.si/cbz/bazazdr2.nsf/o/90DBE9EE574E4B0BC12579EC00200012/$File/a-016440.pdf", "104213", "Solatcit 10 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "S52.5", "Zlom spodnjega dela koželjnice Bolečine", "http://www.cbz.si/cbz/bazazdr2.nsf/o/8BA9838F72FB4FA4C12579EC001FFABB?opendocument", "072940", "Doreta 37,5 mg / 325 mg");
+            AddOrUpdateDiseaseMedications(context, "S52.5", "Zlom spodnjega dela koželjnice Bolečine", "http://www.zdravila.net/navodilo.php?navodilo=s-005819.pdf&d", "012114", "Tramal 150 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "S52.5", "Zlom spodnjega dela koželjnice Bolečine", "http://www.cbz.si/cbz/bazazdr2.nsf/o/63B2B4273D302F22C12579C2003F4E25/$File/a-016266.pdf", "012084", "Tadol 100 mg tbl s podaljšanim sproščanjem");
+            AddOrUpdateDiseaseMedications(context, "S52.5", "Zlom spodnjega dela koželjnice Bolečine", "http://www.cbz.si/cbz/bazazdr2.nsf/o/031488B8CE92CA7AC1257BAC0083438E/$File/a-014109.pdf", "145499", "Tramadol Vitabalans 50 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "S52.5", "Zlom spodnjega dela koželjnice Bolečine", "http://www.cbz.si/cbz/bazazdr2.nsf/o/871247132BF7287FC12579EC0020072B/$File/a-011732.pdf", "124680", "Zaracet 37,5 mg / 325 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "J30.1", "Alergijski rinitis zaradi peloda", "http://www.cbz.si/cbz/bazazdr2.nsf/o/85571397365F09F1C12579EC001FF803?opendocument", "020583", "Flonidan 10 mg");
+            AddOrUpdateDiseaseMedications(context, "J30.1", "Alergijski rinitis zaradi peloda", "http://www.lekarnar.com/izdelki/claritine-s-tablete", "062987", "Claritine S 10 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "J30.1", "Alergijski rinitis zaradi peloda", "http://www.cbz.si/cbz/bazazdr2.nsf/o/DA55403BA60DE053C12579EC001FF806/$File/a-013832.pdf", "051420", "Florgan 10 mg orodisperzibilne tbl");
+            AddOrUpdateDiseaseMedications(context, "J30.1", "Alergijski rinitis zaradi peloda", "https://www.lekarna24ur.com/public/upload/dokumenti/Rinolan_navodilo_pdf.pdf", "058238", "Rinolan 10 mg tablete");
+            AddOrUpdateDiseaseMedications(context, "H40", "Glavkom", "http://www.cbz.si/cbz/bazazdr2.nsf/o/A3DFEF2F17A035ACC1257D1600831212?opendocument", "146530", "Bimatoprost Sandoz 0,3 mg / ml kapljice");
+            AddOrUpdateDiseaseMedications(context, "H40", "Glavkom", "https://www.diagnosia.com/si/zdravila/lumigan-01-mgml-kapljice-za-oko-raztopina", "102229", "Lumigan 0,1 mg / ml kapljice");
+            AddOrUpdateDiseaseMedications(context, "H40", "Glavkom", "http://www.cbz.si/cbz/bazazdr2.nsf/o/727DB8859728BBDEC12579F90049223E/$File/a-016139.pdf", "139603", "Brimonidin Medops 2 mg / ml kapljice za oko");
+            AddOrUpdateDiseaseMedications(context, "H40", "Glavkom", "http://www.cbz.si/cbz/bazazdr2.nsf/o/86C91BB4FE577DACC12579EC00200369/$File/a-014453.pdf", "114022", "Timalen 2,5 mg / ml kapljice za oko, raztopina");
+            AddOrUpdateDiseaseMedications(context, "H40", "Glavkom", "http://www.cbz.si/cbz/bazazdr2.nsf/o/159103D546E2C185C12579EC00200367/$File/a-020005.pdf", "114006", "Latanox 50 mg / ml kapljice za oko");
+            AddOrUpdateDiseaseMedications(context, "H65.0", "Akutno serozno vnetje srednjega ušesa", "http://www.cbz.si/cbz/bazazdr2.nsf/o/2F6CCCC907EB6078C12579C2003F514E?opendocument", "025666", "Hiconcil 500 mg trde kapsule");
+            AddOrUpdateDiseaseMedications(context, "H65.0", "Akutno serozno vnetje srednjega ušesa", "http://www.lek.si/si/zdravila/na-recept/pakiranje/89/", "069280", "Amoksiklav 500mg / 125mg tbl");
+            AddOrUpdateDiseaseMedications(context, "H65.0", "Akutno serozno vnetje srednjega ušesa", "http://www.cbz.si/cbz/bazazdr2.nsf/o/1FFC4EAA3F7319EEC1257EAB00837141/$File/a-015915.pdf", "147056", "Betaklav 500 mg / 125 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "H65.0", "Akutno serozno vnetje srednjega ušesa", "http://www.cbz.si/cbz/bazazdr2.nsf/o/1C2B687B0E1FB855C12579C2003F6948/$File/a-016157.pdf", "041866", "Ospamox 500 mg disperzibilne tbl");
+            AddOrUpdateDiseaseMedications(context, "I35.0", "Aortna (valvularna) stenoza", "http://www.cbz.si/cbz/bazazdr2.nsf/o/582412352E8F356CC12579C2003F58F2?opendocument", "072656", "Lasix 40 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "I35.0", "Aortna (valvularna) stenoza", "http://www.lek.si/si/zdravila/na-recept/pakiranje/198/", "026778", "Edemid 40 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "N48.4", "Impotenca organskega izvora", "http://www.cbz.si/cbz/bazazdr2.nsf/o/C78700915441F103C12579EC002001C7?opendocument", "108995", "Belfil 50 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "N48.4", "Impotenca organskega izvora", "https://www.diagnosia.com/si/zdravila/sildenafil-teva-100-mg-filmsko-oblozene-tablete", "097420", "Sildenafil Teva 100 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "N48.4", "Impotenca organskega izvora", "http://www.cbz.si/cbz/bazazdr2.nsf/o/396405FCEAF6D06DC12579EC001FFD67/$File/a-014664.pdf", "091782", "Tornetis 100 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "N48.4", "Impotenca organskega izvora", "https://www.diagnosia.com/si/zdravila/viagra-50-mg-filmsko-oblozene-tablete", "093564", "Viagra 50 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "K21", "Gastroezofagealna refluksna bolezen (GERB)", "http://www.cbz.si/cbz/bazazdr2.nsf/o/16D4CBF7CC46F980C12579C2003F67F1/$File/a-016396.pdf", "028622", "Acipan 20 mg gastrorezistentne tbl");
+            AddOrUpdateDiseaseMedications(context, "K21", "Gastroezofagealna refluksna bolezen (GERB)", "http://www.cbz.si/cbz/bazazdr2.nsf/o/C780D3BD9FE393DAC12579C2003F50BD/$File/a-015817.pdf", "023507", "Controloc 20 mg gastrorezistentne tbl");
+            AddOrUpdateDiseaseMedications(context, "K21", "Gastroezofagealna refluksna bolezen (GERB)", "http://www.cbz.si/cbz/bazazdr2.nsf/o/520C2C9888BDDC6CC12579C2003F6677/$File/a-016474.pdf", "013200", "Nolpaza 20 mg gastrorezistentne tbl");
+            AddOrUpdateDiseaseMedications(context, "K21", "Gastroezofagealna refluksna bolezen (GERB)", "http://www.cbz.si/cbz/bazazdr2.nsf/o/33C7A15D9E906947C12579C2003F4EB7/$File/a-015564.pdf", "013730", "Nexium 20 mg gastrorezistentne tbl");
+            AddOrUpdateDiseaseMedications(context, "K21", "Gastroezofagealna refluksna bolezen (GERB)", "http://www.cbz.si/cbz/bazazdr2.nsf/o/5C09B9EE0916EEB2C12579C2003F58AF/$File/a-016031.pdf", "071684", "Ranital 150 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "K21", "Gastroezofagealna refluksna bolezen (GERB)", "http://www.cbz.si/cbz/bazazdr2.nsf/o/AE0A1FEA862CC338C12579C2003F5986/$File/a-014527.pdf", "075566", "Rupurut 500 mg žvečljive tbl");
+            AddOrUpdateDiseaseMedications(context, "K25", "Razjeda na želodcu", "http://www.cbz.si/cbz/bazazdr2.nsf/o/16D4CBF7CC46F980C12579C2003F67F1/$File/a-016396.pdf", "028622", "Acipan 20 mg gastrorezistentne tbl");
+            AddOrUpdateDiseaseMedications(context, "K25", "Razjeda na želodcu", "http://www.cbz.si/cbz/bazazdr2.nsf/o/C780D3BD9FE393DAC12579C2003F50BD/$File/a-015817.pdf", "023507", "Controloc 20 mg gastrorezistentne tbl");
+            AddOrUpdateDiseaseMedications(context, "K25", "Razjeda na želodcu", "http://www.cbz.si/cbz/bazazdr2.nsf/o/520C2C9888BDDC6CC12579C2003F6677/$File/a-016474.pdf", "013200", "Nolpaza 20 mg gastrorezistentne tbl");
+            AddOrUpdateDiseaseMedications(context, "K25", "Razjeda na želodcu", "http://www.cbz.si/cbz/bazazdr2.nsf/o/33C7A15D9E906947C12579C2003F4EB7/$File/a-015564.pdf", "013730", "Nexium 20 mg gastrorezistentne tbl");
+            AddOrUpdateDiseaseMedications(context, "K25", "Razjeda na želodcu", "http://www.cbz.si/cbz/bazazdr2.nsf/o/AE0A1FEA862CC338C12579C2003F5986/$File/a-014527.pdf", "075566", "Rupurut 500 mg žvečljive tbl");
+            AddOrUpdateDiseaseMedications(context, "C91", "Limfatična levkemija", "http://rxed.eu/sl/g/Glivec/5/", "080608", "Glivec 100 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "C91", "Limfatična levkemija", "http://rxed.eu/sl/i/Imatinib+Teva/5/", "145204", "Imatinib Teva 100 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "C91", "Limfatična levkemija", "http://www.cbz.si/cbz/bazazdr2.nsf/o/9F5DD2DFF700BFEDC1257B4B00836C1C/$File/a-013808.pdf", "145415", "Meaxin 100 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "C92", "Mieloična levkemija", "http://rxed.eu/sl/i/Imatinib+Teva/5/", "145204", "Imatinib Teva 100 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "C92", "Mieloična levkemija", "http://www.cbz.si/cbz/bazazdr2.nsf/o/9F5DD2DFF700BFEDC1257B4B00836C1C/$File/a-013808.pdf", "145415", "Meaxin 100 mg tbl");
+            AddOrUpdateDiseaseMedications(context, "C92", "Mieloična levkemija", "http://rxed.eu/sl/g/Glivec/5/", "080608", "Glivec 100 mg tbl");
+
+            //Take from SifrantiIzUcilnice/Pregled sifrantov
+            context.Allergies.AddOrUpdate(k => k.AllergyKey,
+              new Allergy { AllergyKey = "D69.0", AllergyName = "Alergijska purpura" },
+              new Allergy { AllergyKey = "J30.1", AllergyName = "Alergijsi rinitis zaradi peloda" },
+              new Allergy { AllergyKey = "J45.0", AllergyName = "Pretežno alergijska astma " },
+              new Allergy { AllergyKey = "K52.2", AllergyName = "Alergijske in dietetični gastroenteritis in kolitis" },
+              new Allergy { AllergyKey = "L23", AllergyName = "Alergijski konatktni dermatitis" },
+              new Allergy { AllergyKey = "L50.0", AllergyName = "Preobčutljivostna koprivnica (alergijska urtikarija)" },
+              new Allergy { AllergyKey = "T78.4", AllergyName = "Alergija, neopredeljena" },
+              new Allergy { AllergyKey = "Z88.0", AllergyName = "Osebna anamneza alergije na penicilin" });
+
+            AddOrUpdateDietInstructions(context, "D001", "Dieta pri celiakiji", "http://www.drustvo-celiakija.si/celiakija");
+            AddOrUpdateDietInstructions(context, "D002", "Dieta za ledvične bolnike", "http://www.zveza-dlbs.si/Prehrana.html");
+            AddOrUpdateDietInstructions(context, "D003", "Dieta pri refluksni bolezni", "http://www.kclj.si/dokumenti/000203-0002f9.pdf");
+            AddOrUpdateDietInstructions(context, "D004", "Dieta za sladkorne bolnike", "http://www.diabetes-zveza.si/uploads/SB95_julij12clanki1.pdf");
+            AddOrUpdateDietInstructions(context, "D004", "Dieta za sladkorne bolnike", "http://www.ezdravje.com/srce-in-zilje/druge-bolezni-srca-in-zilja/sladkorna-bolezen/?s=9");
+            AddOrUpdateDietInstructions(context, "D004", "Dieta za sladkorne bolnike", "http://www.sladkorcki.si/media/docs/Prehrana_pri_SB.pdf");
+            AddOrUpdateDietInstructions(context, "D005", "Dieta za znižanje holesterola", "http://www.lek.si/si/skrb-za-zdravje/bolezni-in-simptomi/srce-ozilje/diete-holesterol/");
+            AddOrUpdateDietInstructions(context, "D005", "Dieta za znižanje holesterola", "http://www.krka.si/media/prk/dokumenti/0577_dieta_ob_povisanem_holesterolu.pdf");
+            AddOrUpdateDietInstructions(context, "D006", "Prehrana pri driski", "http://www.nasa-lekarna.si/clanki/clanek/skuhaj-olupi-ali-pusti/");
+            AddOrUpdateDietInstructions(context, "D006", "Prehrana pri driski", "http://www.dolenjske-lekarne.si/novice/samozdravljenje-driske");
+            AddOrUpdateDietInstructions(context, "D007", "Dieta za znižanje trigliceridov", "http://www.ave.si/novice/prehrana-pri-povisanih-trigliceridih");
+            AddOrUpdateDietInstructions(context, "D008", "Dieta pri boleznih jeter", "http://www.kclj.si/dokumenti/000203-0002fe.pdf");
+            AddOrUpdateDietInstructions(context, "D009", "Dieta pri boleznih želodca in dvanajstnika", "http://www.kclj.si/dokumenti/000203-0002f6.pdf");
+
+            Measurement mes = new Measurement { MeasurementName = "Glukoza", MeasurementNotes = "" };
+            AddOrUpdateMeasurement(context,
+                mes,
+                "Sladkor v krvi",
+                "7 na dan",
+                "milimol na liter - mmol/l",
+                "pred in po obrokih in pred spanjem",
+                "4,0 in 6,0 ",
+                "Hipoglikemija so vrednosti pod 4,0. Hipoglikemija ni bolezen temveč akutno stanje",
+                "Meritve za sladkorno bolezen so večje od 6,0, pogosto okoli 12,0",
+                "Neverjetne vrednosti so pod 0,0 ali nad 50,0"
+            );
+
+            mes = new Measurement { MeasurementName = "Krvni pritisk", MeasurementNotes = "" };
+            AddOrUpdateMeasurement(context,
+                mes,
+                "Sistolični tlak",
+                "2 na dan",
+                "millimeter živega srebra - mmHg",
+                "zjutraj in zvečer",
+                "100 – 135",
+                "Hipotenzija so vrednosti pod ali 90",
+                "Hipertenzija so vrednosti nad ali 140",
+                "pod 30, ali nad 300"
+            );
+            AddOrUpdateMeasurement(context,
+                mes,
+                "Diastolični tlak",
+                "2 na dan",
+                "millimeter živega srebra - mmHg",
+                "zjutraj in zvečer",
+                "60 – 85",
+                "Hipotenzija so vrednosti pod ali 60",
+                "Hipertenzija so vrednosti nad ali 90",
+                "pod 30, ali nad 300"
+            );
+
+            mes = new Measurement { MeasurementName = "Srčni utrip", MeasurementNotes = "Meri se skupaj z pritiskom" };
+            AddOrUpdateMeasurement(context,
+                mes,
+                "Število udarcev srca",
+                "2 na dan",
+                "število srčnih utripov v minuti – BPM (beats per minute)",
+                "zjutraj in zvečer",
+                "od 60 do 100",
+                "Bradikardija so meritve pod 60",
+                "Tahikardija so meritve nad 100",
+                "pod 30, ali nad 200"
+            );
+
+            mes = new Measurement { MeasurementName = "Telesna temperatura", MeasurementNotes = "" };
+            AddOrUpdateMeasurement(context,
+                mes,
+                "Telesna temperatura",
+                "2-3 na dan",
+                "stopinj Celzij - °C",
+                "Kadarkoli na dan",
+                "od 35,5 do 37,4",
+                "Hipotermija so meritve pod 35,5",
+                "Hipertermija so meritve nad 37,5",
+                "pod 34, ali nad 42"
+            );
+
+            mes = new Measurement { MeasurementName = "Teža", MeasurementNotes = "Meritve teže in primerjanje vrednosti je potrebno zračunat ITM količnik (Indeks telesne mase)" };
+            AddOrUpdateMeasurement(context,
+                mes,
+                "Telesna teža",
+                "1 krat na teden",
+                "kilogram - kg",
+                "Kadarkoli v tednu",
+                "vrednosti indeksa telesne mase 21-24 BMI (body mass index) ",
+                "Podhranjenost so BMI vrednosti pod 20 ",
+                "Prekomerna teža so BMI vrednosti nad 24",
+                "Neverjetne vrednosti so BMI vrednosti pod 15, ali nad 50"
+            );
+
+            #endregion
+
             AddOrUpdateApplicationUser(context, "matjaz.mav@tpo10.com", "matjazmav1", nameof(Administrator));
             AddOrUpdateApplicationUser(context, "admin@tpo10.com", "geslo123", nameof(Administrator));
 
@@ -1274,6 +1480,69 @@
                 }
             }
         }
+
+        #region Sprint3 AddOrUpdate methods for newly added entities.
+
+        private void AddOrUpdateDiseaseMedications(ApplicationDbContext context, string diseaseKey, string diseaseName, string urlInstruction, string medicationKey, string medicationName)
+        {
+
+            Disease dis = context.Diseases.FirstOrDefault(p => p.DiseaseKey == diseaseKey);
+
+            if (dis == null)
+            {
+                dis = new Disease { DiseaseKey = diseaseKey, DiseaseName = diseaseName };
+            }
+            MedicationInstruction ins = context.MedicationInstructions.FirstOrDefault(p=> p.Url == urlInstruction);
+            if (ins == null)
+            {
+                ins = new MedicationInstruction { Url = urlInstruction }; 
+            }
+
+            var medication = context.Medications.FirstOrDefault(p => p.MedicationKey == medicationKey);
+            if (medication == null)
+            {
+                medication = new Medication { MedicationKey = medicationKey, MedicationName = medicationName, MedicationInstruction = ins };
+            }
+
+            dis.Medications.Add(medication);
+            context.Diseases.AddOrUpdate(dis);
+            context.SaveChanges();
+        }
+
+        private void AddOrUpdateDietInstructions(ApplicationDbContext context, string dietKey, string dietName, string instructionUrl)
+        {
+            Diet diet = context.Diets.FirstOrDefault((p) => p.DietKey == dietKey);
+            if (diet == null)
+            {
+                diet = new Diet { DietKey = dietKey, DietName = dietName };
+                context.Diets.AddOrUpdate(diet);
+            }
+
+            DietInstruction ins = new DietInstruction { Diet = diet, Url = instructionUrl };
+            context.DietInstructions.AddOrUpdate(k => k.Url, ins);
+            context.SaveChanges();
+        }
+
+        private void AddOrUpdateMeasurement(ApplicationDbContext context, Measurement mes, string measurementPartName, string measurementPerDay, string measurementUnit, string measurementTime, string measurementNormal, string measurementBelow, string measurementMore, string measurementExtreme)
+        {
+            context.Measurements.AddOrUpdate(k => k.MeasurementName, mes);
+            MeasurementPart part = new MeasurementPart
+            {
+                MeasurementPartName = measurementPartName,
+                MeasurementTake = measurementPerDay,
+                MeasurementUnit = measurementUnit,
+                MeasurementTime = measurementTime,
+                MeasurementNormal = measurementNormal,
+                MeasurementBelow = measurementBelow,
+                MeasurementMore = measurementMore,
+                MeasurementExtreme = measurementExtreme,
+                Measurement = mes
+            };
+            context.MeasurementParts.AddOrUpdate(k => k.MeasurementPartName, part);
+            context.SaveChanges();
+        }
+        
+        #endregion
 
 
     }
