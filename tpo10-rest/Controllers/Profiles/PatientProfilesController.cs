@@ -193,7 +193,7 @@ namespace tpo10_rest.Controllers.Profiles
                 return BadRequest(ModelState);
             }
 
-            if (db.Profiles.OfType<PatientProfile>().Where(e => e.HealthInsuranceNumber == model.HealthInsuranceNumber).ToList().Count() > 0)
+            if (db.Profiles.OfType<PatientProfile>().Where(e => e.HealthInsuranceNumber == model.HealthInsuranceNumber).Count() > 0)
             {
                 return BadRequest("Ta ZZZS številka že obstaja.");
             }
@@ -425,11 +425,11 @@ namespace tpo10_rest.Controllers.Profiles
         public async Task<IHttpActionResult> GetPatientProfileForDoctor(Guid doctorId)
         {
             var doctor = await db.Users.Where(e => e.Id == doctorId.ToString()).FirstOrDefaultAsync() as Doctor;
-            List<PatientProfile> patientProfiles;
+            IQueryable<PatientProfile> patientProfiles;
             if(doctor.DoctorProfile.DocOrDentist == 0)
-                patientProfiles = db.Profiles.OfType<PatientProfile>().Where(e => e.PersonalDoctor.Id == doctor.DoctorProfile.Id).ToList();
+                patientProfiles = db.Profiles.OfType<PatientProfile>().Where(e => e.PersonalDoctor.Id == doctor.DoctorProfile.Id);
             else
-                patientProfiles = db.Profiles.OfType<PatientProfile>().Where(e => e.DentistDoctor.Id == doctor.DoctorProfile.Id).ToList();
+                patientProfiles = db.Profiles.OfType<PatientProfile>().Where(e => e.DentistDoctor.Id == doctor.DoctorProfile.Id);
             if (doctor == null || User.Identity.GetUserId() != doctorId.ToString())
             {
                 return NotFound();

@@ -25,7 +25,6 @@ namespace tpo10_rest.Models
         public ApplicationDbContext()
             : base("tpo10db", throwIfV1Schema: false)
         {
-            //this.Configuration.LazyLoadingEnabled = true;
         }
 
         public static ApplicationDbContext Create()
