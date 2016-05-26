@@ -117,6 +117,47 @@ namespace tpo10_rest.Controllers
         }
 
 
+        // GET: api/Observation/Allergies
+        [Route("Allergies")]
+        [ResponseType(typeof(List<Allergy>))]
+        public async Task<IHttpActionResult> GetAllAllergies()
+        {
+            var allergies = db.Allergies.ToList();
+
+            return Ok(allergies);
+        }
+
+
+        // GET: api/Observation/Diseases
+        [Route("Diseases")]
+        [ResponseType(typeof(List<Disease>))]
+        public async Task<IHttpActionResult> GetAllDiseases()
+        {
+            var diseases = db.Diseases.ToList();
+
+            return Ok(diseases);
+        }
+
+        // GET: api/Observation/Diets
+        [Route("Diets")]
+        [ResponseType(typeof(List<Diet>))]
+        public async Task<IHttpActionResult> GetAllDiets()
+        {
+            var diets = db.Diets.ToList();
+
+            return Ok(diets);
+        }
+
+        // GET: api/Observation/Medications
+        [Route("Medications")]
+        [ResponseType(typeof(List<Medication>))]
+        public async Task<IHttpActionResult> GetAllMedications()
+        {
+            var medications = db.Medications.ToList();
+
+            return Ok(medications);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
