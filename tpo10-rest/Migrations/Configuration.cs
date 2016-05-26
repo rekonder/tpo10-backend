@@ -1409,7 +1409,7 @@
             AddDoctorProfile(context, "2222", "Adam", "Bohorič", "222222222", 0, "00016", 0, "doctor2@tpo10.com");
             
             AddDoctorProfile(context, "3333", "France", "Prešeren", "333333333", 10, "00016", 1, "doctor3@tpo10.com");
-            AddDoctorProfile(context, "3333", "Ivan", "Cankar", "333333333", 0, "00016", 1, "doctor4@tpo10.com");
+            AddDoctorProfile(context, "4444", "Ivan", "Cankar", "444444444", 0, "00016", 1, "doctor4@tpo10.com");
 
 #endif
         }
