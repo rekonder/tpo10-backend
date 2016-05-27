@@ -232,6 +232,7 @@ namespace tpo10_rest.Models
     {
         [Required]
         public double Value { get; set; }
+        public string Notes { get; set; }
         [Required]
         public virtual DateTime MeasurementTime { get; set; }
         [JsonIgnore]
@@ -244,6 +245,7 @@ namespace tpo10_rest.Models
     {
         [Required]
         public double Value { get; set; }
+        public string Notes { get; set; }
         [Required]
         public virtual DateTime MeasurementTime { get; set; }
         public virtual PatientProfile PatientProfile { get; set; }
