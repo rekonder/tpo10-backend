@@ -368,6 +368,7 @@ namespace tpo10_rest.Controllers
             foreach (var observation in observations)
             {
                 OldObservationsViewModel al = new OldObservationsViewModel();
+                al.ObservationId = observation.Id;
                 al.ObservationTime = observation.ObservationTime;
                 al.DoctorName = observation.DoctorProfile.FirstName + ' ' + observation.DoctorProfile.LastName;
                 if (observation.DoctorProfile.DocOrDentist == 0)

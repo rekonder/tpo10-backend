@@ -15,6 +15,7 @@ namespace tpo10_rest.Models
     }
     public class OldObservationsViewModel
     {
+        public Guid ObservationId { get; set; }
         public DateTime ObservationTime { get; set; }
         public string DoctorName { get; set; }
     }

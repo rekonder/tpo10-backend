@@ -187,7 +187,9 @@ namespace tpo10_rest.Models
 
     public partial class DietInstruction : Instruction
     {
+        public string DietRefId { get; set; }
         [JsonIgnore]
+        [ForeignKey("DietRefId")]
         public virtual Diet Diet { get; set; }
     }
 
