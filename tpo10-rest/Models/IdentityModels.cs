@@ -18,6 +18,8 @@ namespace tpo10_rest.Models
 
         public DateTime? LastLogin { get; set; }
         public string LastLoginIp { get; set; }
+        public DateTime CreatedOn { get; set; }
+        //public bool IsDeleted { get; set; } = false;
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

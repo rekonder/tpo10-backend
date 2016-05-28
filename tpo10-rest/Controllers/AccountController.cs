@@ -153,7 +153,7 @@ namespace tpo10_rest.Controllers
             {
                 try
                 {
-                    var user = new Patient { UserName = model.Email, Email = model.Email };
+                    var user = new Patient { UserName = model.Email, Email = model.Email, CreatedOn = DateTime.UtcNow };
                     var userResult = await UserManager.CreateAsync(user, model.Password);
                     if (!userResult.Succeeded)
                     {
@@ -213,6 +213,7 @@ namespace tpo10_rest.Controllers
                         case nameof(Patient): user = new Patient { UserName = model.Email, Email = model.Email }; break;
                         default: user = new Patient { UserName = model.Email, Email = model.Email }; break;
                     }
+                    user.CreatedOn = DateTime.UtcNow;
                     var userResult = await UserManager.CreateAsync(user, model.Password);
                     if (!userResult.Succeeded)
                     {
