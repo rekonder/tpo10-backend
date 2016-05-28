@@ -49,6 +49,7 @@ namespace tpo10_rest.Models
         public virtual DbSet<MedicationInstruction> MedicationInstructions { get; set; }
         public virtual DbSet<DietInstruction> DietInstructions { get; set; } 
         public virtual DbSet<ObservationMeasurement> ObservationMeasurement { get; set; }
+        public virtual DbSet<PatientProfileMeasurement> PatientProfileMeasurements { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -82,5 +83,6 @@ namespace tpo10_rest.Models
             //    .HasRequired(e => e.PatientProfileContact)
             //    .WithRequiredPrincipal(e => e.PatientProfile);
         }
+
     }
 }

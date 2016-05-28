@@ -63,6 +63,7 @@ namespace tpo10_rest.Models
 
         public virtual PatientProfileContact PatientProfileContact { get; set; }
         
+        [JsonIgnore]
         public virtual ICollection<PatientProfileMeasurement> PatientProfileMeasurements { get; set; } = new List<PatientProfileMeasurement>();
         
     }
@@ -250,7 +251,9 @@ namespace tpo10_rest.Models
         public string Notes { get; set; }
         [Required]
         public virtual DateTime MeasurementTime { get; set; }
+        [Required]
         public virtual PatientProfile PatientProfile { get; set; }
+        [Required]
         public virtual MeasurementPart MeasurementPart { get; set; }
     }
 

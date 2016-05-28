@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace tpo10_rest.Models
 {
@@ -42,6 +43,19 @@ namespace tpo10_rest.Models
         public double Value { get; set; }
         public DateTime MeasurementTime { get; set; }
         public Guid MeasurementPartId { get; set; }
+    }
+
+    public class PatientProfileMeasurementBindingModel
+    {
+        [Required]
+        public Guid PatientProfileId { get; set; }
+        [Required]
+        public DateTime MeasurementTime { get; set; }
+        [Required]
+        public Guid MeasurementPartId { get; set; }
+        [Required]
+        public double Value { get; set; }
+        public string Note { get; set; }
     }
 
 

@@ -254,6 +254,7 @@
     <Compile Include="Controllers\HelperController.cs" />
     <Compile Include="Controllers\MeasurementController.cs" />
     <Compile Include="Controllers\ObservationController.cs" />
+    <Compile Include="Controllers\PatientProfileMeasurementController.cs" />
     <Compile Include="Controllers\Profiles\DoctorProfileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Profiles\NurseProfileController.cs" />
