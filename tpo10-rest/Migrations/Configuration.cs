@@ -19,7 +19,7 @@
 
         protected override void Seed(ApplicationDbContext context)
         {
-#if false
+#if true
             #region Roles
             var roleAdministrator = new IdentityRole { Name = nameof(Administrator) };
             var roleDoctor = new IdentityRole { Name = nameof(Doctor) };
