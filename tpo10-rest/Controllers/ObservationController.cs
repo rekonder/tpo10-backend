@@ -120,6 +120,25 @@ namespace tpo10_rest.Controllers
             return Ok(observations.ToList());
         }
 
+        // GET: api/Observation/PatientProfile/{patientId}
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("DoctorProfile/{doctorId}")]
+        [ResponseType(typeof(List<Observation>))]
+        public async Task<IHttpActionResult> GetDoctorObservations(Guid doctorId)
+        {
+            var doctor = db.DoctorProfile.Find(doctorId) as DoctorProfile;
+            if (doctor == null)
+            {
+                return NotFound();
+            }
+
+            var observations = db.Observations.Where(o => o.DoctorProfile.Id == doctor.Id);
+
+
+            return Ok(observations.ToList());
+        }
+
         [AllowAnonymous]
         [HttpGet]
         [Route("GetAlergies/{patientId}/{number}")]
