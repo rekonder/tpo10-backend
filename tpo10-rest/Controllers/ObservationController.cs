@@ -143,12 +143,17 @@ namespace tpo10_rest.Controllers
                 {
                     AlergiesViewModel al = new AlergiesViewModel();
                     al.Name = alergyObs.AllergyName;
-                    if (alergies.Count < number && !alergies.Any(f => f.Name == al.Name))
-                        alergies.Add(al);
+                    if (!alergies.Any(f => f.Name == al.Name))
+                    {
+                        if (number == -1)
+                            alergies.Add(al);
+                        else if (number != -1 && alergies.Count < number)
+                            alergies.Add(al);
+                    }
                     else
                         break;
                 }
-                if (alergies.Count >= number)
+                if(number != -1 && alergies.Count >= number)
                     break;
             }
             return Ok(alergies.ToList());
@@ -183,12 +188,17 @@ namespace tpo10_rest.Controllers
                         al.DoctorName += ", zdravnik";
                     else
                         al.DoctorName += ", zobozdravnik";
-                    if (diases.Count < number && !diases.Any(f => f.DiseaseName == al.DiseaseName && f.ObservationTime == al.ObservationTime ))
-                        diases.Add(al);
+                    if (!diases.Any(f => f.DiseaseName == al.DiseaseName && f.ObservationTime == al.ObservationTime))
+                    {
+                        if (number == -1)
+                            diases.Add(al);
+                        else if (number != -1 && diases.Count < number)
+                            diases.Add(al);
+                    }
                     else
                         break;
                 }
-                if (diases.Count >= number)
+                if (number != -1 && diases.Count >= number)
                     break;
             }
             return Ok(diases.ToList());
@@ -223,12 +233,17 @@ namespace tpo10_rest.Controllers
                         al.DoctorName += ", zdravnik";
                     else
                         al.DoctorName += ", zobozdravnik";
-                    if (diets.Count < number  && !diets.Any(f =>f.DietName == al.DietName && f.ObservationTime == al.ObservationTime))
-                        diets.Add(al);
+                    if (!diets.Any(f => f.DietName == al.DietName && f.ObservationTime == al.ObservationTime))
+                    {
+                        if (number == -1)
+                            diets.Add(al);
+                        else if (number != -1 && diets.Count < number)
+                            diets.Add(al);
+                    }
                     else
                         break;
                 }
-                if (diets.Count >= number)
+                if (number != -1 && diets.Count >= number)
                     break;
             }
             return Ok(diets.ToList());
@@ -264,12 +279,16 @@ namespace tpo10_rest.Controllers
                         al.DoctorName += ", zdravnik";
                     else
                         al.DoctorName += ", zobozdravnik";
-                    if (medications.Count < number && !medications.Any(f => f.MedicationName == al.MedicationName && f.ObservationTime == al.ObservationTime))
-                        medications.Add(al);
+                    if (!medications.Any(f => f.MedicationName == al.MedicationName && f.ObservationTime == al.ObservationTime)) { 
+                        if (number == -1)
+                            medications.Add(al);
+                        else if (number != -1 && medications.Count < number)
+                            medications.Add(al);
+                    }
                     else
                         break;
                 }
-                if (medications.Count >= number)
+                if (number != -1 && medications.Count >= number)
                     break;
             }
             return Ok(medications.ToList());
@@ -314,12 +333,17 @@ namespace tpo10_rest.Controllers
                         al.DoctorName += ", zdravnik";
                     else
                         al.DoctorName += ", zobozdravnik";
-                    if (measurements.Count < number && !measurements.Any(f => f.MeasurementPartName == al.MeasurementPartName && al.MeasurementPartName != "Ni na voljo" && f.MeasurementTime == al.MeasurementTime))
-                        measurements.Add(al);
+                    if (!measurements.Any(f => f.MeasurementPartName == al.MeasurementPartName && al.MeasurementPartName != "Ni na voljo" && f.MeasurementTime == al.MeasurementTime))
+                    {
+                        if (number == -1)
+                            measurements.Add(al);
+                        else if (number != -1 && measurements.Count < number)
+                            measurements.Add(al);
+                    }
                     else
                         break;
                 }
-                if (measurements.Count >= number)
+                if (number != -1 && measurements.Count >= number)
                     break;
             }
             return Ok(measurements.OrderByDescending(s =>s.MeasurementTime).ToList());
@@ -350,12 +374,55 @@ namespace tpo10_rest.Controllers
                     al.DoctorName += ", zdravnik";
                 else
                     al.DoctorName += ", zobozdravnik";
-                if (oldObservations.Count < number)
+                if (number == -1)
+                    oldObservations.Add(al);
+                else if (number != -1 && oldObservations.Count < number)
                     oldObservations.Add(al);
                 else
                     break;
             }
             return Ok(oldObservations.ToList());
+        }
+
+        // GET: api/Observation/Allergies
+        [Route("Allergies")]
+        [ResponseType(typeof(List<Allergy>))]
+        public async Task<IHttpActionResult> GetAllAllergies()
+        {
+            var allergies = db.Allergies.ToList();
+
+            return Ok(allergies);
+        }
+
+
+        // GET: api/Observation/Diseases
+        [Route("Diseases")]
+        [ResponseType(typeof(List<Disease>))]
+        public async Task<IHttpActionResult> GetAllDiseases()
+        {
+            var diseases = db.Diseases.ToList();
+
+            return Ok(diseases);
+        }
+
+        // GET: api/Observation/Diets
+        [Route("Diets")]
+        [ResponseType(typeof(List<Diet>))]
+        public async Task<IHttpActionResult> GetAllDiets()
+        {
+            var diets = db.Diets.ToList();
+
+            return Ok(diets);
+        }
+
+        // GET: api/Observation/Medications
+        [Route("Medications")]
+        [ResponseType(typeof(List<Medication>))]
+        public async Task<IHttpActionResult> GetAllMedications()
+        {
+            var medications = db.Medications.ToList();
+
+            return Ok(medications);
         }
 
         protected override void Dispose(bool disposing)
