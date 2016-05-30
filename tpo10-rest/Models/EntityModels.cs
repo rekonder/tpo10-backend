@@ -55,6 +55,8 @@ namespace tpo10_rest.Models
         public string Gender { get; set; }
         [Required]
         public DateTime BirthDate { get; set; }
+        [Required]
+        public bool IsGuardian { get; set; } = false;   
 
         public virtual DoctorProfile PersonalDoctor { get; set; }
         public virtual DoctorProfile DentistDoctor { get; set; }
