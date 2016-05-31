@@ -380,6 +380,7 @@ namespace tpo10_rest.Controllers
                     oldObservations.Add(al);
                 else
                     break;
+
             }
             return Ok(oldObservations.ToList());
         }
