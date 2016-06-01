@@ -16,6 +16,7 @@ namespace tpo10_rest.Models
         [Required]
         public virtual Guid DoctorProfileId { get; set; }
         public virtual Guid ObservationId { get; set; }
+        public bool delete { get; set; }
     }
 
 }

@@ -64,7 +64,12 @@ namespace tpo10_rest.Controllers
                 {
                     appointment.EndDateTime = model.EndDateTime;
                     appointment.StartDateTime = model.StartDateTime;
-                    appointment.PatientProfile = await db.PatientProfiles.FindAsync(model.PatientProfileId);
+                    if(!model.delete)
+                        appointment.PatientProfile = await db.PatientProfiles.FindAsync(model.PatientProfileId);
+                    else
+                    {
+                        appointment.PatientProfile = null;
+                    }
                     appointment.DoctorProfile = await db.DoctorProfile.FindAsync(model.DoctorProfileId);
                     appointment.IsAvailable = model.IsAvailable;
                     appointment.Notes = model.Notes;
