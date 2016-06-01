@@ -1411,6 +1411,31 @@
             AddDoctorProfile(context, "3333", "France", "Prešeren", "333333333", 10, "00016", 1, "doctor3@tpo10.com");
             AddDoctorProfile(context, "3333", "Ivan", "Cankar", "333333333", 0, "00016", 1, "doctor4@tpo10.com");
 
+            context.SaveChanges();
+          
+            var doctor1 = context.Users.FirstOrDefault(e => e.Email == "doctor1@tpo10.com") as Doctor;
+
+            // Add appointments
+            for(int i = 0; i < 10; i++)
+            {
+                Appointment appointment = new Appointment()
+                {
+                    DoctorProfile = doctor1.DoctorProfile,
+                    StartDateTime = DateTime.Now.AddHours(1*i),
+                    EndDateTime = DateTime.Now.AddHours(1*i + 0.75),
+                    Notes = "Prosti termin " + (i+1).ToString(),
+                    IsAvailable = true
+                };
+
+                context.Appointments.AddOrUpdate(appointment);
+                context.SaveChanges();
+
+            }
+            
+
+            
+        
+
 #endif
         }
 
