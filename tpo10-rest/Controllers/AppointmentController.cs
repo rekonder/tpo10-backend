@@ -43,17 +43,29 @@ namespace tpo10_rest.Controllers
 
         // PUT: api/Appointment/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutAppointment(Guid id, Appointment appointment)
+        public async Task<IHttpActionResult> PutAppointment(Guid id, AppointmentBindingModel model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != appointment.Id)
+
+            var appointment = await db.Appointments.FindAsync(id);
+            if(appointment == null)
             {
-                return BadRequest();
+                NotFound();
             }
+
+            appointment.EndDateTime = model.EndDateTime;
+            appointment.StartDateTime = model.StartDateTime;
+            appointment.PatientProfile = await db.PatientProfiles.FindAsync(model.PatientProfileId);
+            appointment.DoctorProfile = await db.DoctorProfile.FindAsync(model.DoctorProfileId);
+            appointment.IsAvailable = model.IsAvailable;
+            appointment.Notes = model.Notes;
+            appointment.Observation = await db.Observations.FindAsync(model.ObservationId);
+
+
 
             db.Entry(appointment).State = EntityState.Modified;
 
