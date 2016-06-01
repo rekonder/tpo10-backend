@@ -54,38 +54,35 @@ namespace tpo10_rest.Controllers
             var appointment = await db.Appointments.FindAsync(id);
             if(appointment == null)
             {
-                NotFound();
+                return NotFound();
             }
 
-            appointment.EndDateTime = model.EndDateTime;
-            appointment.StartDateTime = model.StartDateTime;
-            appointment.PatientProfile = await db.PatientProfiles.FindAsync(model.PatientProfileId);
-            appointment.DoctorProfile = await db.DoctorProfile.FindAsync(model.DoctorProfileId);
-            appointment.IsAvailable = model.IsAvailable;
-            appointment.Notes = model.Notes;
-            appointment.Observation = await db.Observations.FindAsync(model.ObservationId);
-
-
-
-            db.Entry(appointment).State = EntityState.Modified;
-
-            try
+            using (var transaction = db.Database.BeginTransaction())
             {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AppointmentExists(id))
+                try
                 {
-                    return NotFound();
+                    appointment.EndDateTime = model.EndDateTime;
+                    appointment.StartDateTime = model.StartDateTime;
+                    appointment.PatientProfile = await db.PatientProfiles.FindAsync(model.PatientProfileId);
+                    appointment.DoctorProfile = await db.DoctorProfile.FindAsync(model.DoctorProfileId);
+                    appointment.IsAvailable = model.IsAvailable;
+                    appointment.Notes = model.Notes;
+                    appointment.Observation = await db.Observations.FindAsync(model.ObservationId);
+
+                    db.Entry(appointment).State = EntityState.Modified;
+                    await db.SaveChangesAsync();
+
+                    transaction.Commit();
+                    return StatusCode(HttpStatusCode.NoContent);
+
                 }
-                else
+                catch (Exception e)
                 {
+                    transaction.Rollback();
                     throw;
                 }
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
         }
 
         // POST: api/Appointment
