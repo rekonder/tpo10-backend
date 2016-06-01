@@ -23,7 +23,8 @@ namespace tpo10_rest.Controllers
         [ResponseType(typeof(List<Appointment>))]
         public async Task<IHttpActionResult> GetAppointments(Guid doctorProfileId)
         {
-            var result = db.Appointments.Where(o => o.DoctorProfile.Id == doctorProfileId && o.IsAvailable == true).ToList();
+            //var result = db.Appointments.Where(o => o.DoctorProfile.Id == doctorProfileId && o.IsAvailable == true).ToList();
+            var result = db.Appointments.Where(o => o.DoctorProfile.Id == doctorProfileId).ToList();
 
             return Ok(result);
         }
