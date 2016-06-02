@@ -1431,11 +1431,12 @@
                         case nameof(Patient): user = new Patient { UserName = email, Email = email }; break;
                         default: user = new Patient { UserName = email, Email = email }; break;
                     }
-                     user.EmailConfirmed = true; 
-                     user.LockoutEnabled = true; 
- 
-                     userManager.Create(user, password); 
-                     userManager.AddToRole(user.Id, role);
+                    user.EmailConfirmed = true;
+                    user.LockoutEnabled = true;
+                    user.CreatedOn = DateTime.UtcNow;
+
+                    userManager.Create(user, password); 
+                    userManager.AddToRole(user.Id, role);
                 } 
              } 
         }
