@@ -279,10 +279,15 @@ namespace tpo10_rest.Models
         [Required]
         public string MeasurementUnit { get; set; }
         public string MeasurementTime { get; set; } //Which part of day
-        public string MeasurementNormal { get; set; }
-        public string MeasurementBelow { get; set; }
-        public string MeasurementMore { get; set; }
-        public string MeasurementExtreme { get; set; }
+        //public string MeasurementNormal { get; set; }
+        //public string MeasurementBelow { get; set; }
+        //public string MeasurementMore { get; set; }
+        //public string MeasurementExtreme { get; set; }
+
+        public double MeasurementMin { get; set; }
+        public double MeasurementMax { get; set; }
+        public double MeasurementNormalMin { get; set; }
+        public double MeasurementNormalMax { get; set; }
         [JsonIgnore]
         public virtual Measurement Measurement { get; set; }
         //public virtual ICollection<ObservationMeasurementParts> ObservationMeasurementParts { get; set; } = new List<ObservationMeasurementParts>();

@@ -41,6 +41,16 @@ namespace tpo10_rest.Controllers
 
             return Ok(seznam);
         }
+
+        // GET api/Helper/UserRoles
+        [HttpGet]
+        [Route("UserRoles")]
+        public IHttpActionResult GetUserRoles()
+        {
+            var roles = db.Roles.ToList();
+            return Ok(roles);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
