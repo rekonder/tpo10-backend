@@ -19,7 +19,7 @@
 
         protected override void Seed(ApplicationDbContext context)
         {
-#if true
+#if false
             #region Roles
             var roleAdministrator = new IdentityRole { Name = nameof(Administrator) };
             var roleDoctor = new IdentityRole { Name = nameof(Doctor) };
@@ -1321,12 +1321,16 @@
                 mes,
                 "Sladkor v krvi",
                 "7 na dan",
-                "milimol na liter - mmol/l",
+                "mmol/l",
                 "pred in po obrokih in pred spanjem",
-                "4,0 in 6,0 ",
-                "Hipoglikemija so vrednosti pod 4,0. Hipoglikemija ni bolezen temveč akutno stanje",
-                "Meritve za sladkorno bolezen so večje od 6,0, pogosto okoli 12,0",
-                "Neverjetne vrednosti so pod 0,0 ali nad 50,0"
+                //"4,0 in 6,0 ",
+                //"Hipoglikemija so vrednosti pod 4,0. Hipoglikemija ni bolezen temveč akutno stanje",
+                //"Meritve za sladkorno bolezen so večje od 6,0, pogosto okoli 12,0",
+                //"Neverjetne vrednosti so pod 0,0 ali nad 50,0"
+                0,
+                50,
+                4,
+                6
             );
 
             mes = new Measurement { MeasurementName = "Krvni pritisk", MeasurementNotes = "" };
@@ -1334,36 +1338,48 @@
                 mes,
                 "Sistolični tlak",
                 "2 na dan",
-                "millimeter živega srebra - mmHg",
+                "mmHg",
                 "zjutraj in zvečer",
-                "100 – 135",
-                "Hipotenzija so vrednosti pod ali 90",
-                "Hipertenzija so vrednosti nad ali 140",
-                "pod 30, ali nad 300"
+                //"100 – 135",
+                //"Hipotenzija so vrednosti pod ali 90",
+                //"Hipertenzija so vrednosti nad ali 140",
+                //"pod 30, ali nad 300"
+                30,
+                300,
+                100,
+                135
             );
             AddOrUpdateMeasurement(context,
                 mes,
                 "Diastolični tlak",
                 "2 na dan",
-                "millimeter živega srebra - mmHg",
+                "mmHg",
                 "zjutraj in zvečer",
-                "60 – 85",
-                "Hipotenzija so vrednosti pod ali 60",
-                "Hipertenzija so vrednosti nad ali 90",
-                "pod 30, ali nad 300"
+                //"60 – 85",
+                //"Hipotenzija so vrednosti pod ali 60",
+                //"Hipertenzija so vrednosti nad ali 90",
+                //"pod 30, ali nad 300"
+                30,
+                300,
+                60,
+                85
             );
 
-            mes = new Measurement { MeasurementName = "Srčni utrip", MeasurementNotes = "Meri se skupaj z pritiskom" };
+            mes = new Measurement { MeasurementName = "Srčni utrip", MeasurementNotes = "Meri se skupaj z pritiskom." };
             AddOrUpdateMeasurement(context,
                 mes,
                 "Število udarcev srca",
                 "2 na dan",
-                "število srčnih utripov v minuti – BPM (beats per minute)",
+                "udarcev/min",
                 "zjutraj in zvečer",
-                "od 60 do 100",
-                "Bradikardija so meritve pod 60",
-                "Tahikardija so meritve nad 100",
-                "pod 30, ali nad 200"
+                //"od 60 do 100",
+                //"Bradikardija so meritve pod 60",
+                //"Tahikardija so meritve nad 100",
+                //"pod 30, ali nad 200"
+                30,
+                200,
+                60,
+                100
             );
 
             mes = new Measurement { MeasurementName = "Telesna temperatura", MeasurementNotes = "" };
@@ -1371,25 +1387,33 @@
                 mes,
                 "Telesna temperatura",
                 "2-3 na dan",
-                "stopinj Celzij - °C",
+                "°C",
                 "Kadarkoli na dan",
-                "od 35,5 do 37,4",
-                "Hipotermija so meritve pod 35,5",
-                "Hipertermija so meritve nad 37,5",
-                "pod 34, ali nad 42"
+                //"od 35,5 do 37,4",
+                //"Hipotermija so meritve pod 35,5",
+                //"Hipertermija so meritve nad 37,5",
+                //"pod 34, ali nad 42"
+                34,
+                42,
+                35.5,
+                37.4
             );
 
-            mes = new Measurement { MeasurementName = "Teža", MeasurementNotes = "Meritve teže in primerjanje vrednosti je potrebno zračunat ITM količnik (Indeks telesne mase)" };
+            mes = new Measurement { MeasurementName = "Teža", MeasurementNotes = "" };
             AddOrUpdateMeasurement(context,
                 mes,
                 "Telesna teža",
                 "1 krat na teden",
-                "kilogram - kg",
+                "kg",
                 "Kadarkoli v tednu",
-                "vrednosti indeksa telesne mase 21-24 BMI (body mass index) ",
-                "Podhranjenost so BMI vrednosti pod 20 ",
-                "Prekomerna teža so BMI vrednosti nad 24",
-                "Neverjetne vrednosti so BMI vrednosti pod 15, ali nad 50"
+                //"vrednosti indeksa telesne mase 21-24 BMI (body mass index) ",
+                //"Podhranjenost so BMI vrednosti pod 20 ",
+                //"Prekomerna teža so BMI vrednosti nad 24",
+                //"Neverjetne vrednosti so BMI vrednosti pod 15, ali nad 50"
+                0,
+                1000,
+                40,
+                90
             );
 
             #endregion
@@ -1549,7 +1573,7 @@
             context.SaveChanges();
         }
 
-        private void AddOrUpdateMeasurement(ApplicationDbContext context, Measurement mes, string measurementPartName, string measurementPerDay, string measurementUnit, string measurementTime, string measurementNormal, string measurementBelow, string measurementMore, string measurementExtreme)
+        private void AddOrUpdateMeasurement(ApplicationDbContext context, Measurement mes, string measurementPartName, string measurementPerDay, string measurementUnit, string measurementTime, /*string measurementNormal, string measurementBelow, string measurementMore, string measurementExtreme*/ double measurementMin, double measurementMax, double measurementNormalMin, double measurementNormalMax)
         {
             context.Measurements.AddOrUpdate(k => k.MeasurementName, mes);
             MeasurementPart part = new MeasurementPart
@@ -1558,10 +1582,18 @@
                 MeasurementTake = measurementPerDay,
                 MeasurementUnit = measurementUnit,
                 MeasurementTime = measurementTime,
-                MeasurementNormal = measurementNormal,
-                MeasurementBelow = measurementBelow,
-                MeasurementMore = measurementMore,
-                MeasurementExtreme = measurementExtreme,
+
+                //MeasurementNormal = measurementNormal,
+                // normal min
+                //MeasurementBelow = measurementBelow,
+                // normal max
+                //MeasurementMore = measurementMore,
+                // min and max
+                //MeasurementExtreme = measurementExtreme,
+                MeasurementMin = measurementMin,
+                MeasurementMax = measurementMax,
+                MeasurementNormalMin = measurementNormalMin,
+                MeasurementNormalMax = measurementNormalMax,
                 Measurement = mes
             };
             context.MeasurementParts.AddOrUpdate(k => k.MeasurementPartName, part);
