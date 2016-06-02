@@ -435,11 +435,11 @@ namespace tpo10_rest.Controllers.Profiles
         public async Task<IHttpActionResult> GetPatientProfileForDoctor(Guid doctorId)
         {
             var doctor = await db.Users.Where(e => e.Id == doctorId.ToString()).FirstOrDefaultAsync() as Doctor;
-            IQueryable<PatientProfile> patientProfiles;
+            IEnumerable<PatientProfile> patientProfiles;
             if(doctor.DoctorProfile.DocOrDentist == 0)
-                patientProfiles = db.Profiles.OfType<PatientProfile>().Where(e => e.PersonalDoctor.Id == doctor.DoctorProfile.Id);
+                patientProfiles = db.Profiles.OfType<PatientProfile>().Where(e => e.PersonalDoctor.Id == doctor.DoctorProfile.Id).ToList();
             else
-                patientProfiles = db.Profiles.OfType<PatientProfile>().Where(e => e.DentistDoctor.Id == doctor.DoctorProfile.Id);
+                patientProfiles = db.Profiles.OfType<PatientProfile>().Where(e => e.DentistDoctor.Id == doctor.DoctorProfile.Id).ToList();
             if (doctor == null || User.Identity.GetUserId() != doctorId.ToString())
             {
                 return NotFound();

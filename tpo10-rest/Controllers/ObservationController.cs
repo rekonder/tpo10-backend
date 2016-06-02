@@ -151,7 +151,7 @@ namespace tpo10_rest.Controllers
                 return NotFound();
             }
 
-            var observations = db.Observations.Where(o => o.PatientProfile.Id == patient.Id).OrderByDescending(s => s.ObservationTime);
+            var observations = db.Observations.Where(o => o.PatientProfile.Id == patient.Id).OrderByDescending(s => s.ObservationTime).ToList();
 
             List<AlergiesViewModel> alergies = new List<AlergiesViewModel>();
 
@@ -190,7 +190,7 @@ namespace tpo10_rest.Controllers
                 return NotFound();
             }
 
-            var observations = db.Observations.Where(o => o.PatientProfile.Id == patient.Id).OrderByDescending(s => s.ObservationTime);
+            var observations = db.Observations.Where(o => o.PatientProfile.Id == patient.Id).OrderByDescending(s => s.ObservationTime).ToList();
 
             List<DiseaseViewModel> diases = new List<DiseaseViewModel>();
 
@@ -234,7 +234,7 @@ namespace tpo10_rest.Controllers
                 return NotFound();
             }
 
-            var observations = db.Observations.Where(o => o.PatientProfile.Id == patient.Id).OrderByDescending(s => s.ObservationTime);
+            var observations = db.Observations.Where(o => o.PatientProfile.Id == patient.Id).OrderByDescending(s => s.ObservationTime).ToList();
 
             List<DietViewModel> diets = new List<DietViewModel>();
 
@@ -280,7 +280,7 @@ namespace tpo10_rest.Controllers
                 return NotFound();
             }
 
-            var observations = db.Observations.Where(o => o.PatientProfile.Id == patient.Id).OrderByDescending(s => s.ObservationTime);
+            var observations = db.Observations.Where(o => o.PatientProfile.Id == patient.Id).OrderByDescending(s => s.ObservationTime).ToList();
 
             List<MedicationsViewModel> medications = new List<MedicationsViewModel>();
 
@@ -325,7 +325,7 @@ namespace tpo10_rest.Controllers
                 return NotFound();
             }
 
-            var observations = db.Observations.Where(o => o.PatientProfile.Id == patient.Id).OrderByDescending(s => s.ObservationTime);
+            var observations = db.Observations.Where(o => o.PatientProfile.Id == patient.Id).OrderByDescending(s => s.ObservationTime).ToList();
 
             List<MeasurementsViewModel> measurements = new List<MeasurementsViewModel>();
 
@@ -380,7 +380,7 @@ namespace tpo10_rest.Controllers
                 return NotFound();
             }
 
-            var observations = db.Observations.Where(o => o.PatientProfile.Id == patient.Id).OrderByDescending(s => s.ObservationTime);
+            var observations = db.Observations.Where(o => o.PatientProfile.Id == patient.Id).OrderByDescending(s => s.ObservationTime).ToList();
 
             List<OldObservationsViewModel> oldObservations = new List<OldObservationsViewModel>();
 
