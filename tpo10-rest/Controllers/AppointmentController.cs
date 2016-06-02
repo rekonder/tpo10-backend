@@ -258,14 +258,23 @@ namespace tpo10_rest.Controllers
         }
 
 
-        // GET: api/Appointment/upcoming/patient/{PatientProfileId}
-        [Route("upcoming/patient/{PatientProfileId}")]
+        // GET: api/Appointment/upcoming/patient/{PatientProfileId}/{number}
+        [Route("upcoming/patient/{PatientProfileId}/{number}")]
         [ResponseType(typeof(List<Appointment>))]
-        public async Task<IHttpActionResult> GetUpcomingAppointments(Guid PatientProfileId)
+        public async Task<IHttpActionResult> GetUpcomingAppointments(Guid PatientProfileId, int number)
         {
-            var result = db.Appointments.Where(o => o.PatientProfile.Id == PatientProfileId).Where(o => o.StartDateTime > DateTime.Now).ToList();
             
-            return Ok(result);
+            var patient = db.PatientProfiles.Find(PatientProfileId) as PatientProfile;
+            if (patient == null)
+            {
+                return NotFound();
+            }
+
+            var appointments = db.Appointments.Where(o => o.PatientProfile.Id == PatientProfileId).Where(o => o.StartDateTime > DateTime.Now).ToList();
+            return Ok(appointments);
+
+
+
         }
     }
 }
