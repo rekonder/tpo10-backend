@@ -16,7 +16,15 @@ namespace tpo10_rest.Models
         [Required]
         public virtual Guid DoctorProfileId { get; set; }
         public virtual Guid ObservationId { get; set; }
-        public bool delete { get; set; }
     }
 
+    public class AppointmentSubscriptionBindingModel
+    {
+        [Required]
+        public virtual Guid PatientProfileId { get; set; }
+        [Required]
+        public virtual Guid DoctorProfileId { get; set; }
+        [Required]
+        public bool Subscribe { get; set; }
+    }
 }
