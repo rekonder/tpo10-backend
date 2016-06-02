@@ -26,5 +26,7 @@ namespace tpo10_rest.Models
         public virtual Guid DoctorProfileId { get; set; }
         [Required]
         public bool Subscribe { get; set; }
+        [Required]
+        public Guid SubscriberId { get; set; }
     }
 }

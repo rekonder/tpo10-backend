@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -107,10 +108,16 @@ namespace tpo10_rest.Controllers
                 return NotFound();
             }
 
+            var subscriber = await db.Profiles.FindAsync(model.SubscriberId);
             var patientProfile = await db.PatientProfiles.FindAsync(model.PatientProfileId) as PatientProfile;
             var doctorProfile = await db.DoctorProfile.FindAsync(model.DoctorProfileId) as DoctorProfile;
 
-            if(patientProfile == null)
+            if (subscriber == null)
+            {
+                return NotFound();
+            }
+
+            if (patientProfile == null)
             {
                 return NotFound();
             }
@@ -133,6 +140,7 @@ namespace tpo10_rest.Controllers
                         {
                             appointment.PatientProfile = patientProfile;
                             appointment.IsAvailable = false;
+                            appointment.Subscriber = subscriber;
                         } else
                         {
                             return Content(HttpStatusCode.Forbidden, "Trenutno že imate rezerviran termin.");
@@ -145,8 +153,15 @@ namespace tpo10_rest.Controllers
                     {
                        if(appointment.StartDateTime.AddHours(-12) >= DateTime.Now)
                         {
+                            if (appointment.Subscriber.GetType().BaseType == typeof(PatientProfile) && User.IsInRole("Doctor")) // Or nurse ? not yet implemented
+                            {
+                               return Content(HttpStatusCode.Forbidden, "Kot zdravnik ne morate sproščati terminov, ki so jih rezervirali pacientje.");
+                            }  
+
                             appointment.PatientProfile = null;
+                            appointment.Subscriber = null;
                             appointment.IsAvailable = true;
+
                         } else
                         {
                             return Content(HttpStatusCode.Forbidden, "Rok za odjavo/preklic termina je potekel.");

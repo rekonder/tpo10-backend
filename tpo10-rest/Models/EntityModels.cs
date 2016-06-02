@@ -300,6 +300,9 @@ namespace tpo10_rest.Models
         {
             get { return (this.Observation != null); }
         }
+
+        [JsonIgnore]
+        public virtual Profile Subscriber { get; set; } // either patient himself, doctor or nurse.
         
         [Required]
         public bool IsAvailable { get; set; }
