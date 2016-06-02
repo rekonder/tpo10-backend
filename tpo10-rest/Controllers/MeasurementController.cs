@@ -18,9 +18,9 @@ namespace tpo10_rest.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/Measurement
-        public IQueryable<Measurement> GetMeasurements()
+        public IHttpActionResult GetMeasurements()
         {
-            return db.Measurements;
+            return Ok(db.Measurements.ToList());
         }
 
         // GET: api/Measurement/5

@@ -19,9 +19,9 @@ namespace tpo10_rest.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/PatientProfileMeasurement
-        public IQueryable<PatientProfileMeasurement> GetAllPatientProfileMeasurements()
+        public IHttpActionResult GetAllPatientProfileMeasurements()
         {
-            return db.PatientProfileMeasurements;
+            return Ok(db.PatientProfileMeasurements.ToList());
         }
 
         // GET: api/PatientProfileMeasurement/PatientProfile/:patientProfileId
