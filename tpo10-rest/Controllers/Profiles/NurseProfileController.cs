@@ -20,9 +20,9 @@ namespace tpo10_rest.Controllers.Profiles
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/NurseProfile
-        public IQueryable<NurseProfile> GetProfiles()
+        public async Task<IHttpActionResult> GetProfiles()
         {
-            return db.Profiles.OfType<NurseProfile>();
+            return Ok(db.Profiles.OfType<NurseProfile>().ToList());
         }
 
         // GET: api/NurseProfile/5
