@@ -1416,7 +1416,7 @@
             var doctor1 = context.Users.FirstOrDefault(e => e.Email == "doctor1@tpo10.com") as Doctor;
 
             // Add appointments
-            for(int i = 0; i < 10; i++)
+            for(int i = 0; i < 14; i++)
             {
                 Appointment appointment = new Appointment()
                 {

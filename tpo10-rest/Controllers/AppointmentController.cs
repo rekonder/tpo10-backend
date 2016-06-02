@@ -143,7 +143,7 @@ namespace tpo10_rest.Controllers
                     // must be >=12h before appointment StartDateTime
                     else
                     {
-                       if(appointment.StartDateTime.AddHours(12) >= DateTime.Now)
+                       if(appointment.StartDateTime.AddHours(-12) >= DateTime.Now)
                         {
                             appointment.PatientProfile = null;
                             appointment.IsAvailable = true;
