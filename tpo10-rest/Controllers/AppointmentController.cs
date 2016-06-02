@@ -256,5 +256,16 @@ namespace tpo10_rest.Controllers
         {
             return db.Appointments.Count(e => e.Id == id) > 0;
         }
+
+
+        // GET: api/Appointment/upcoming/patient/{PatientProfileId}
+        [Route("upcoming/patient/{PatientProfileId}")]
+        [ResponseType(typeof(List<Appointment>))]
+        public async Task<IHttpActionResult> GetUpcomingAppointments(Guid PatientProfileId)
+        {
+            var result = db.Appointments.Where(o => o.PatientProfile.Id == PatientProfileId).Where(o => o.StartDateTime > DateTime.Now).ToList();
+            
+            return Ok(result);
+        }
     }
 }
