@@ -400,6 +400,7 @@ namespace tpo10_rest.Controllers
                     oldObservations.Add(al);
                 else
                     break;
+
             }
             return Ok(oldObservations.ToList());
         }
@@ -435,14 +436,39 @@ namespace tpo10_rest.Controllers
             return Ok(diets);
         }
 
-        // GET: api/Observation/Medications
+        // POST: api/Observation/Medications
         [Route("Medications")]
         [ResponseType(typeof(List<Medication>))]
-        public async Task<IHttpActionResult> GetAllMedications()
+        [HttpPost]
+        public async Task<IHttpActionResult> RetrieveAllMedicationsForGivenCauses(MedicationObservationBindingModel model)
         {
-            var medications = db.Medications.ToList();
+            List<Medication> result = new List<Medication>();
 
-            return Ok(medications);
+            foreach(var d in model.Diseases)
+            {
+                Disease dis = db.Diseases.FirstOrDefault(x => x.DiseaseKey == d.DiseaseKey);
+                result = result.Union(dis.Medications.ToList()).ToList(); 
+            }
+
+            foreach (var a in model.Allergies)
+            {
+                Allergy allergy = db.Allergies.FirstOrDefault(x=> x.AllergyKey == a.AllergyKey);
+                result = result.Union(allergy.Medications.ToList()).ToList();
+            }
+
+            // If there is no cause given  return all medications
+            //if (model.Allergies.Count == 0 && model.Diseases.Count == 0)
+            //{
+            //    result = result.Union(db.Medications.ToList()).ToList();
+            //}
+            if (model.Allergies.Count == 0 && model.Diseases.Count == 0)
+            {
+                // Second option - return no content!
+                return Ok();
+            }
+
+
+            return Ok(result);
         }
 
         protected override void Dispose(bool disposing)

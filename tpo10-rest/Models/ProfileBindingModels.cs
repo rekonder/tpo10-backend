@@ -40,6 +40,8 @@ namespace tpo10_rest.Models
         [Required]
         public string ContactFamilyRelationship { get; set; }
 
+        public bool IsGuardian { get; set; } = false; // default value is false
+
     }
 
 

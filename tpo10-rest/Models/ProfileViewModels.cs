@@ -25,6 +25,7 @@ namespace tpo10_rest.Models
         public string ContactTelephone { get; set; }
         public string ContactFamilyRelationship { get; set; }
 
+        public bool IsGuardian { get; set; }
         //public virtual PatientProfileContact ContactProfile { get; set; }
 
         public virtual DoctorProfile PersonalDoctor { get; set; }

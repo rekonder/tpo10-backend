@@ -55,6 +55,8 @@ namespace tpo10_rest.Models
         public string Gender { get; set; }
         [Required]
         public DateTime BirthDate { get; set; }
+        [Required]
+        public bool IsGuardian { get; set; } = false;   
 
         public virtual DoctorProfile PersonalDoctor { get; set; }
         public virtual DoctorProfile DentistDoctor { get; set; }
@@ -286,5 +288,28 @@ namespace tpo10_rest.Models
         //public virtual ICollection<ObservationMeasurementParts> ObservationMeasurementParts { get; set; } = new List<ObservationMeasurementParts>();
         //public virtual ICollection<PatientProfile> PatientsProfile { get; set; } = new List<PatientProfile>();
     }
-    
+
+    public partial class Appointment : Entity
+    {
+        [Required]
+        public DateTime StartDateTime { get; set; }
+        [Required]
+        public DateTime EndDateTime { get; set; }
+        [NotMapped]
+        public bool IsFinished
+        {
+            get { return (this.Observation != null); }
+        }
+        
+        [Required]
+        public bool IsAvailable { get; set; }
+
+        public string Notes { get; set; }
+
+        public virtual PatientProfile PatientProfile { get; set; } // If null -> appointment is available (untaken, !But doctor can also cancel appointment)
+        [Required]
+        public virtual DoctorProfile DoctorProfile { get; set; }  
+        public virtual Observation Observation { get; set; }    // If null -> appointment is not finished
+    }
+
 }

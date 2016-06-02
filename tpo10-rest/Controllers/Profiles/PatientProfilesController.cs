@@ -57,6 +57,7 @@ namespace tpo10_rest.Controllers.Profiles
                     ContactTelephone = patientProfile.PatientProfileContact.Telephone,
                     ContactFamilyRelationship = patientProfile.PatientProfileContact.FamilyRelationship,
 
+                    IsGuardian = patientProfile.IsGuardian,
                     //ContactProfile = patientProfile.PatientProfileContact,
 
                     PersonalDoctor = patientProfile.PersonalDoctor,
@@ -233,8 +234,17 @@ namespace tpo10_rest.Controllers.Profiles
                         Telephone               = model.Telephone,
                         Gender                  = model.Gender,
                         BirthDate               = model.BirthDate,
-                        PatientProfileContact   = contact
+                        PatientProfileContact   = contact,
+                        IsGuardian = false
                     };
+
+                    bool hasNoGuardian = (user.PatientProfiles.Any(p=>p.IsGuardian == true))? false: true;
+                    if(hasNoGuardian)
+                    {
+                        // Make it guardian profile (also applies when user creates first profile)
+                        profile.IsGuardian = true;
+                    }
+
                     db.Profiles.Add(profile);
                     await db.SaveChangesAsync();
 

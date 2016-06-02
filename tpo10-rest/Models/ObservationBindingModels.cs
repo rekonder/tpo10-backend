@@ -18,6 +18,12 @@ namespace tpo10_rest.Models
         public ICollection<ObservationMeasurementBindingModel> ObservationMeasurements { get; set; } = new List<ObservationMeasurementBindingModel>();
     }
 
+    public class MedicationObservationBindingModel
+    {
+        public ICollection<AllergyBindingModel> Allergies { get; set; } = new List<AllergyBindingModel>();
+        public ICollection<DiseaseBindingModel> Diseases { get; set; } = new List<DiseaseBindingModel>();
+    }
+
     public class AllergyBindingModel
     {
         public string AllergyKey { get; set; }
