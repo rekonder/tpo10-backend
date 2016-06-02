@@ -1414,9 +1414,10 @@
             context.SaveChanges();
           
             var doctor1 = context.Users.FirstOrDefault(e => e.Email == "doctor1@tpo10.com") as Doctor;
+            var doctor2 = context.Users.FirstOrDefault(e => e.Email == "doctor2@tpo10.com") as Doctor;
 
             // Add appointments
-            for(int i = 0; i < 14; i++)
+            for (int i = 0; i < 14; i++)
             {
                 Appointment appointment = new Appointment()
                 {
@@ -1427,7 +1428,17 @@
                     IsAvailable = true
                 };
 
+                Appointment appointment2 = new Appointment()
+                {
+                    DoctorProfile = doctor2.DoctorProfile,
+                    StartDateTime = DateTime.Now.AddDays(1).AddHours(1 * i),
+                    EndDateTime = DateTime.Now.AddDays(1).AddHours(1 * i + 0.75),
+                    Notes = "Prosti termin " + (i + 1).ToString(),
+                    IsAvailable = true
+                };
+
                 context.Appointments.AddOrUpdate(appointment);
+                context.Appointments.AddOrUpdate(appointment2);
                 context.SaveChanges();
 
             }
