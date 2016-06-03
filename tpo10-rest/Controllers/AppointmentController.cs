@@ -136,7 +136,7 @@ namespace tpo10_rest.Controllers
                     {
                         // All appointments that are not finished yet but are subscribed by a patient
                         var q = db.Appointments.Where(x => x.Observation == null && x.StartDateTime > DateTime.Now &&  x.PatientProfile.Id == patientProfile.Id).ToList();
-                        if (q.Count() == 0)
+                        if ((User.IsInRole("Patient") && q.Count() == 0) ||  User.IsInRole("Doctor"))
                         {
                             appointment.PatientProfile = patientProfile;
                             appointment.IsAvailable = false;
