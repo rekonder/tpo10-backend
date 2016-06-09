@@ -279,10 +279,10 @@ namespace tpo10_rest.Controllers
 
 
         // POST: api/Appointment/InitializeAppointments/{doctorEmail}
-        [Route("InitializeAppointments/{doctorId}")]
+        [Route("InitializeAppointments")]
         public async Task<IHttpActionResult> InitializeAppointments(string doctorEmail)
         {
-            var doctor = db.Users.FirstOrDefault(e => e.Email == "doctor2@tpo10.com") as Doctor;
+            var doctor = db.Users.FirstOrDefault(e => e.Email == doctorEmail) as Doctor;
 
             if (doctor == null)
             {
@@ -295,15 +295,15 @@ namespace tpo10_rest.Controllers
             }
 
             // Two week appointments schedule
-            for (int i = 0; i < 14; i++)
+            for (int i = 0; i < 8; i++)
             {
-                DateTime currentDate = new DateTime(DateTime.Now.Year + i, DateTime.Now.Month, DateTime.Now.Day, 7, 30, 0);
+                DateTime currentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day + i, 7, 30, 0);
 
-                int appointmentEndHour = 17;
+                int appointmentEndHour = 15;
 
                 if (currentDate.DayOfWeek == DayOfWeek.Saturday || currentDate.DayOfWeek == DayOfWeek.Sunday)
                 {
-                    appointmentEndHour = 15;
+                    appointmentEndHour = 14;
                 }
 
                 int j = 0;
@@ -313,14 +313,19 @@ namespace tpo10_rest.Controllers
                     {
                         DoctorProfile = doctor.DoctorProfile,
                         StartDateTime = currentDate,
-                        EndDateTime = currentDate.AddMinutes(30),
+                        EndDateTime = currentDate.AddMinutes(40),
                         Notes = "Prosti termin " + (j + 1).ToString(),
                         IsAvailable = true
                     };
 
                     db.Appointments.Add(appointment);
 
-                    currentDate = currentDate.AddMinutes(40);
+                    currentDate = currentDate.AddMinutes(50);
+
+                    // Fix
+                    //if (currentDate.Hour == 12 && currentDate.Minute == 10)
+                    //    currentDate = currentDate.AddMinutes(-10);
+
                     j++;
                 }
 
