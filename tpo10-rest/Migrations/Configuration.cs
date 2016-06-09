@@ -19,7 +19,7 @@
 
         protected override void Seed(ApplicationDbContext context)
         {
-#if false
+#if true
             #region Roles
             var roleAdministrator = new IdentityRole { Name = nameof(Administrator) };
             var roleDoctor = new IdentityRole { Name = nameof(Doctor) };
@@ -1421,56 +1421,263 @@
             AddOrUpdateApplicationUser(context, "matjaz.mav@tpo10.com", "matjazmav1", nameof(Administrator));
             AddOrUpdateApplicationUser(context, "admin@tpo10.com", "geslo123", nameof(Administrator));
 
-            AddOrUpdateApplicationUser(context, "doctor1@tpo10.com", "geslo123", nameof(Doctor));
-            AddOrUpdateApplicationUser(context, "doctor2@tpo10.com", "geslo123", nameof(Doctor));
-            AddOrUpdateApplicationUser(context, "doctor3@tpo10.com", "geslo123", nameof(Doctor));
-            AddOrUpdateApplicationUser(context, "doctor4@tpo10.com", "geslo123", nameof(Doctor));
+
+            /*
+                janez.doctor@tpo10.com
+                joze.doctor@tpo10.com
+                franci.doctor@tpo10.com
+                vlado.doctor@tpo10.com
+                marko.doctor@tpo10.com
+
+                eva.doctor@tpo10.com
+                ana.doctor@tpo10.com
+                neza.doctor@tpo10.com
+                karmen.doctor@tpo10.com
+                petra.doctor@tpo10.com
+             * */
+
+
+
+            AddOrUpdateApplicationUser(context, "janez.doctor@tpo10.com", "geslo123", nameof(Doctor));
+            AddOrUpdateApplicationUser(context, "joze.doctor@tpo10.com", "geslo123", nameof(Doctor));
+            AddOrUpdateApplicationUser(context, "franci.doctor@tpo10.com", "geslo123", nameof(Doctor));
+            AddOrUpdateApplicationUser(context, "vlado.doctor@tpo10.com", "geslo123", nameof(Doctor));
+            AddOrUpdateApplicationUser(context, "marko.doctor@tpo10.com", "geslo123", nameof(Doctor));
+            AddOrUpdateApplicationUser(context, "eva.doctor@tpo10.com", "geslo123", nameof(Doctor));
+            AddOrUpdateApplicationUser(context, "ana.doctor@tpo10.com", "geslo123", nameof(Doctor));
+            AddOrUpdateApplicationUser(context, "neza.doctor@tpo10.com", "geslo123", nameof(Doctor));
+            AddOrUpdateApplicationUser(context, "karmen.doctor@tpo10.com", "geslo123", nameof(Doctor));
+            AddOrUpdateApplicationUser(context, "petra.doctor@tpo10.com", "geslo123", nameof(Doctor));
+
 
             context.SaveChanges();
 
             //context, key, Fname, Lname, phone, patient#, HCprovider, doc(0)/dentist(1), email
-            AddDoctorProfile(context, "1111", "Primož", "Trubar", "11111111", 10, "00016", 0, "doctor1@tpo10.com");
-            AddDoctorProfile(context, "2222", "Adam", "Bohorič", "222222222", 0, "00016", 0, "doctor2@tpo10.com");
-            
-            AddDoctorProfile(context, "3333", "France", "Prešeren", "333333333", 10, "00016", 1, "doctor3@tpo10.com");
-            AddDoctorProfile(context, "4444", "Ivan", "Cankar", "444444444", 0, "00016", 1, "doctor4@tpo10.com");
+            AddDoctorProfile(context, "0000", "Janez", "DoctorJa", "000000000", 100, "00016", 0, "janez.doctor@tpo10.com");
+            AddDoctorProfile(context, "0001", "Joze", "DoctorJo", "000000001", 100, "00016", 0, "joze.doctor@tpo10.com");
+            AddDoctorProfile(context, "0002", "Franci", "DoctorFr", "000000002", 100, "00016", 0, "franci.doctor@tpo10.com");
+            AddDoctorProfile(context, "0003", "Vlado", "DoctorVl", "000000003", 100, "00016", 0, "vlado.doctor@tpo10.com");
+            AddDoctorProfile(context, "0004", "Marko", "DoctorMa", "000000004", 100, "00016", 0, "marko.doctor@tpo10.com");
+            AddDoctorProfile(context, "0005", "Eva", "DoctorEv", "000000005", 100, "00016", 1, "eva.doctor@tpo10.com");
+            AddDoctorProfile(context, "0006", "Ana", "DoctorAn", "000000006", 100, "00016", 1, "ana.doctor@tpo10.com");
+            AddDoctorProfile(context, "0007", "Neza", "DoctorNe", "000000007", 100, "00016", 1, "neza.doctor@tpo10.com");
+            AddDoctorProfile(context, "0008", "Karmen", "DoctorKa", "000000008", 100, "00016", 1, "karmen.doctor@tpo10.com");
+            AddDoctorProfile(context, "0009", "Petra", "DoctorPe", "000000009", 100, "00016", 1, "petra.doctor@tpo10.com");
+
 
             context.SaveChanges();
           
-            var doctor1 = context.Users.FirstOrDefault(e => e.Email == "doctor1@tpo10.com") as Doctor;
-            var doctor2 = context.Users.FirstOrDefault(e => e.Email == "doctor2@tpo10.com") as Doctor;
+            var janezDoctor = context.Users.FirstOrDefault(e => e.Email == "janez.doctor@tpo10.com") as Doctor;
+            var jozeDoctor = context.Users.FirstOrDefault(e => e.Email == "joze.doctor@tpo10.com") as Doctor;
+            var franciDoctor = context.Users.FirstOrDefault(e => e.Email == "franci.doctor@tpo10.com") as Doctor;
 
             // Add appointments
-            for (int i = 0; i < 14; i++)
+            Appointment janezAppointment0 = new Appointment()
             {
-                Appointment appointment = new Appointment()
-                {
-                    DoctorProfile = doctor1.DoctorProfile,
-                    StartDateTime = DateTime.Now.AddHours(1*i),
-                    EndDateTime = DateTime.Now.AddHours(1*i + 0.75),
-                    Notes = "Prosti termin " + (i+1).ToString(),
-                    IsAvailable = true
-                };
+                DoctorProfile = janezDoctor.DoctorProfile,
+                StartDateTime = new DateTime(2016, 06, 13, 11, 20, 00),
+                EndDateTime = new DateTime(2016, 06, 13, 11, 50, 00),
+                Notes = "Prosti termin",
+                IsAvailable = true
+            };
+            Appointment janezAppointment1 = new Appointment()
+            {
+                DoctorProfile = janezDoctor.DoctorProfile,
+                StartDateTime = new DateTime(2016, 06, 13, 12, 00, 00),
+                EndDateTime = new DateTime(2016, 06, 13, 12, 30, 00),
+                Notes = "Prosti termin",
+                IsAvailable = true
+            };
+            Appointment janezAppointment2 = new Appointment()
+            {
+                DoctorProfile = janezDoctor.DoctorProfile,
+                StartDateTime = new DateTime(2016, 06, 13, 12, 40, 00),
+                EndDateTime = new DateTime(2016, 06, 13, 13, 10, 00),
+                Notes = "Prosti termin",
+                IsAvailable = true
+            };
+            Appointment janezAppointment3 = new Appointment()
+            {
+                DoctorProfile = janezDoctor.DoctorProfile,
+                StartDateTime = new DateTime(2016, 06, 13, 13, 20, 00),
+                EndDateTime = new DateTime(2016, 06, 13, 13, 50, 00),
+                Notes = "Prosti termin",
+                IsAvailable = true
+            };
 
-                Appointment appointment2 = new Appointment()
-                {
-                    DoctorProfile = doctor2.DoctorProfile,
-                    StartDateTime = DateTime.Now.AddDays(1).AddHours(1 * i),
-                    EndDateTime = DateTime.Now.AddDays(1).AddHours(1 * i + 0.75),
-                    Notes = "Prosti termin " + (i + 1).ToString(),
-                    IsAvailable = true
-                };
+            Appointment janezAppointment4 = new Appointment()
+            {
+                DoctorProfile = janezDoctor.DoctorProfile,
+                StartDateTime = new DateTime(2016, 06, 14, 07, 30, 00),
+                EndDateTime = new DateTime(2016, 06, 14, 08, 00, 00),
+                Notes = "Prosti termin",
+                IsAvailable = true
+            };
 
-                context.Appointments.AddOrUpdate(appointment);
-                context.Appointments.AddOrUpdate(appointment2);
-                context.SaveChanges();
+            Appointment janezAppointment5 = new Appointment()
+            {
+                DoctorProfile = janezDoctor.DoctorProfile,
+                StartDateTime = new DateTime(2016, 06, 14, 08, 10, 00),
+                EndDateTime = new DateTime(2016, 06, 14, 08, 40, 00),
+                Notes = "Prosti termin",
+                IsAvailable = true
+            };
 
-            }
-            
+            Appointment janezAppointment6 = new Appointment()
+            {
+                DoctorProfile = janezDoctor.DoctorProfile,
+                StartDateTime = new DateTime(2016, 06, 14, 08, 50, 00),
+                EndDateTime = new DateTime(2016, 06, 14, 09, 20, 00),
+                Notes = "Prosti termin",
+                IsAvailable = true
+            };
 
-            
+            context.Appointments.AddOrUpdate(janezAppointment0);
+            context.Appointments.AddOrUpdate(janezAppointment1);
+            context.Appointments.AddOrUpdate(janezAppointment2);
+            context.Appointments.AddOrUpdate(janezAppointment3);
+            context.Appointments.AddOrUpdate(janezAppointment4);
+            context.Appointments.AddOrUpdate(janezAppointment5);
+            context.Appointments.AddOrUpdate(janezAppointment6);
+
+            Appointment jozeAppointment0 = new Appointment()
+            {
+                DoctorProfile = jozeDoctor.DoctorProfile,
+                StartDateTime = new DateTime(2016, 06, 13, 11, 20, 00),
+                EndDateTime = new DateTime(2016, 06, 13, 11, 50, 00),
+                Notes = "Prosti termin",
+                IsAvailable = true
+            };
+            Appointment jozeAppointment1 = new Appointment()
+            {
+                DoctorProfile = jozeDoctor.DoctorProfile,
+                StartDateTime = new DateTime(2016, 06, 13, 12, 00, 00),
+                EndDateTime = new DateTime(2016, 06, 13, 12, 30, 00),
+                Notes = "Prosti termin",
+                IsAvailable = true
+            };
+            Appointment jozeAppointment2 = new Appointment()
+            {
+                DoctorProfile = jozeDoctor.DoctorProfile,
+                StartDateTime = new DateTime(2016, 06, 13, 12, 40, 00),
+                EndDateTime = new DateTime(2016, 06, 13, 13, 10, 00),
+                Notes = "Prosti termin",
+                IsAvailable = true
+            };
+            Appointment jozeAppointment3 = new Appointment()
+            {
+                DoctorProfile = jozeDoctor.DoctorProfile,
+                StartDateTime = new DateTime(2016, 06, 13, 13, 20, 00),
+                EndDateTime = new DateTime(2016, 06, 13, 13, 50, 00),
+                Notes = "Prosti termin",
+                IsAvailable = true
+            };
+
+            Appointment jozeAppointment4 = new Appointment()
+            {
+                DoctorProfile = jozeDoctor.DoctorProfile,
+                StartDateTime = new DateTime(2016, 06, 14, 07, 30, 00),
+                EndDateTime = new DateTime(2016, 06, 14, 08, 00, 00),
+                Notes = "Prosti termin",
+                IsAvailable = true
+            };
+
+            Appointment jozeAppointment5 = new Appointment()
+            {
+                DoctorProfile = jozeDoctor.DoctorProfile,
+                StartDateTime = new DateTime(2016, 06, 14, 08, 10, 00),
+                EndDateTime = new DateTime(2016, 06, 14, 08, 40, 00),
+                Notes = "Prosti termin",
+                IsAvailable = true
+            };
+
+            Appointment jozeAppointment6 = new Appointment()
+            {
+                DoctorProfile = jozeDoctor.DoctorProfile,
+                StartDateTime = new DateTime(2016, 06, 14, 08, 50, 00),
+                EndDateTime = new DateTime(2016, 06, 14, 09, 20, 00),
+                Notes = "Prosti termin",
+                IsAvailable = true
+            };
+
+            context.Appointments.AddOrUpdate(jozeAppointment0);
+            context.Appointments.AddOrUpdate(jozeAppointment1);
+            context.Appointments.AddOrUpdate(jozeAppointment2);
+            context.Appointments.AddOrUpdate(jozeAppointment3);
+            context.Appointments.AddOrUpdate(jozeAppointment4);
+            context.Appointments.AddOrUpdate(jozeAppointment5);
+            context.Appointments.AddOrUpdate(jozeAppointment6);
+
+            Appointment franciAppointment0 = new Appointment()
+            {
+                DoctorProfile = franciDoctor.DoctorProfile,
+                StartDateTime = new DateTime(2016, 06, 13, 11, 20, 00),
+                EndDateTime = new DateTime(2016, 06, 13, 11, 50, 00),
+                Notes = "Prosti termin",
+                IsAvailable = true
+            };
+            Appointment franciAppointment1 = new Appointment()
+            {
+                DoctorProfile = franciDoctor.DoctorProfile,
+                StartDateTime = new DateTime(2016, 06, 13, 12, 00, 00),
+                EndDateTime = new DateTime(2016, 06, 13, 12, 30, 00),
+                Notes = "Prosti termin",
+                IsAvailable = true
+            };
+            Appointment franciAppointment2 = new Appointment()
+            {
+                DoctorProfile = franciDoctor.DoctorProfile,
+                StartDateTime = new DateTime(2016, 06, 13, 12, 40, 00),
+                EndDateTime = new DateTime(2016, 06, 13, 13, 10, 00),
+                Notes = "Prosti termin",
+                IsAvailable = true
+            };
+            Appointment franciAppointment3 = new Appointment()
+            {
+                DoctorProfile = franciDoctor.DoctorProfile,
+                StartDateTime = new DateTime(2016, 06, 13, 13, 20, 00),
+                EndDateTime = new DateTime(2016, 06, 13, 13, 50, 00),
+                Notes = "Prosti termin",
+                IsAvailable = true
+            };
+
+            Appointment franciAppointment4 = new Appointment()
+            {
+                DoctorProfile = franciDoctor.DoctorProfile,
+                StartDateTime = new DateTime(2016, 06, 14, 07, 30, 00),
+                EndDateTime = new DateTime(2016, 06, 14, 08, 00, 00),
+                Notes = "Prosti termin",
+                IsAvailable = true
+            };
+
+            Appointment franciAppointment5 = new Appointment()
+            {
+                DoctorProfile = franciDoctor.DoctorProfile,
+                StartDateTime = new DateTime(2016, 06, 14, 08, 10, 00),
+                EndDateTime = new DateTime(2016, 06, 14, 08, 40, 00),
+                Notes = "Prosti termin",
+                IsAvailable = true
+            };
+
+            Appointment franciAppointment6 = new Appointment()
+            {
+                DoctorProfile = franciDoctor.DoctorProfile,
+                StartDateTime = new DateTime(2016, 06, 14, 08, 50, 00),
+                EndDateTime = new DateTime(2016, 06, 14, 09, 20, 00),
+                Notes = "Prosti termin",
+                IsAvailable = true
+            };
+
+            context.Appointments.AddOrUpdate(franciAppointment0);
+            context.Appointments.AddOrUpdate(franciAppointment1);
+            context.Appointments.AddOrUpdate(franciAppointment2);
+            context.Appointments.AddOrUpdate(franciAppointment3);
+            context.Appointments.AddOrUpdate(franciAppointment4);
+            context.Appointments.AddOrUpdate(franciAppointment5);
+            context.Appointments.AddOrUpdate(franciAppointment6);
+
+            context.SaveChanges();
         
-
 #endif
         }
 
