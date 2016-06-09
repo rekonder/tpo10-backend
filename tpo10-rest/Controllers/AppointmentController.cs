@@ -299,7 +299,7 @@ namespace tpo10_rest.Controllers
             {
                 DateTime currentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day + i, 7, 30, 0);
 
-                int appointmentEndHour = 15;
+                int appointmentEndHour = 17;
 
                 if (currentDate.DayOfWeek == DayOfWeek.Saturday || currentDate.DayOfWeek == DayOfWeek.Sunday)
                 {
