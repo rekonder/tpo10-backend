@@ -276,5 +276,67 @@ namespace tpo10_rest.Controllers
 
 
         }
+
+
+        // POST: api/Appointment/InitializeAppointments/{doctorEmail}
+        [Route("InitializeAppointments/{doctorId}")]
+        public async Task<IHttpActionResult> InitializeAppointments(string doctorEmail)
+        {
+            var doctor = db.Users.FirstOrDefault(e => e.Email == "doctor2@tpo10.com") as Doctor;
+
+            if (doctor == null)
+            {
+                return BadRequest("Zdravnik ne obstaja");
+            }
+
+            if(doctor.DoctorProfile == null)
+            {
+                return BadRequest("Zdravnik nima profila");
+            }
+
+            // Two week appointments schedule
+            for (int i = 0; i < 14; i++)
+            {
+                DateTime currentDate = new DateTime(DateTime.Now.Year + i, DateTime.Now.Month, DateTime.Now.Day, 7, 30, 0);
+
+                int appointmentEndHour = 17;
+
+                if (currentDate.DayOfWeek == DayOfWeek.Saturday || currentDate.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    appointmentEndHour = 15;
+                }
+
+                int j = 0;
+                while(currentDate.Hour < appointmentEndHour)
+                {
+                    Appointment appointment = new Appointment()
+                    {
+                        DoctorProfile = doctor.DoctorProfile,
+                        StartDateTime = currentDate,
+                        EndDateTime = currentDate.AddMinutes(30),
+                        Notes = "Prosti termin " + (j + 1).ToString(),
+                        IsAvailable = true
+                    };
+
+                    db.Appointments.Add(appointment);
+
+                    currentDate = currentDate.AddMinutes(40);
+                    j++;
+                }
+
+            }
+
+            try
+            {
+                await db.SaveChangesAsync();
+                return StatusCode(HttpStatusCode.NoContent);
+            } catch (Exception e)
+            {
+                throw e;
+            }
+
+        }
+
+
     }
 }
